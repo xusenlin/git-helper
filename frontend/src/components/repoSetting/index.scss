@@ -1,0 +1,29 @@
+.repo-stting{
+    padding:30px;
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:flex-start;
+    .card{
+        width: 32%;
+        overflow: hidden;
+        margin:0.6666%;
+        .card-content{
+            width: 100%;
+            padding: 6px 16px;
+            max-height: 200px;
+            min-height: 100px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            .node{
+                margin: 6px 0;
+                width: 100%;
+                height: 32px;
+                display: flex;
+                background: #fff;
+                align-items: center;
+                padding: 0 6px;
+                border-radius: 6px;
+            }
+        }
+    }
+}

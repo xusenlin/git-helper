@@ -1,0 +1,31 @@
+.main-block{
+    flex: 1;
+    height: 100%;
+    border: 1px solid #dfe3e3;
+    margin: 6px;
+    border-radius: 8px;
+    overflow: hidden;
+    .top-title{
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 0 12px;
+        font-size: 14px;
+        justify-content: space-between;
+        height: 40px;
+        background: #f2f6f6;
+    }
+    .main-block-content{
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 40px);
+        .top{
+            flex: 1;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .bottom{
+
+        }
+    }
+}

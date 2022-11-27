@@ -1,0 +1,19 @@
+html {
+    background-color: rgba(103,58,183,.1);
+    color: white;
+}
+
+body {
+    margin: 0;
+    color: black;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+
+#app {
+    height: 100vh;
+    text-align: center;
+}

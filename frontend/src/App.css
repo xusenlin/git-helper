@@ -1,0 +1,38 @@
+.app {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+}
+.sides{
+    width: 24%;
+    overflow: hidden;
+    background-color: #dfe3e3;
+    height: 100%;
+}
+.sides-top{
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    justify-content: flex-end;
+    --wails-draggable:drag;
+}
+.theme-icon{
+    width: 15px;
+    position: relative;
+    top:1px;
+    cursor: pointer;
+    opacity: 0.45
+}
+.container{
+    flex: 1;
+    height: 100%;
+    background-color: #fff;
+}
+.main{
+    display: flex;
+    width: 100%;
+    height: calc(100vh - 72px);
+    padding: 6px;
+}
