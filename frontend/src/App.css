@@ -5,6 +5,7 @@
 }
 .sides{
     width: 24%;
+    min-width: 140px;
     overflow: hidden;
     background-color: #dfe3e3;
     height: 100%;

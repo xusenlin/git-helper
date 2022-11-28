@@ -40,9 +40,7 @@ func main() {
 			TitleBar:             mac.TitleBarHiddenInset(),
 			Appearance:           mac.NSAppearanceNameAqua,
 		},
-		Bind: []interface{}{
-			app,
-		},
+		Bind: []interface{}{app},
 	})
 
 	if err != nil {

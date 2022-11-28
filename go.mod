@@ -1,4 +1,4 @@
-module changeme
+module git-helper
 
 go 1.18
 

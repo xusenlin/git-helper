@@ -1,7 +1,10 @@
 import {Breadcrumb} from 'antd';
-import {useSelector, useDispatch} from "react-redux";
 import {State} from "../../../store/dataType";
 import {setBranch} from "../../../store/sliceMain"
+import {getRepositoryById} from "../../../utils/repo"
+import {useSelector, useDispatch} from "react-redux";
+import {success, warning} from "../../../utils/common"
+import { GitCheckout } from "../../../../wailsjs/go/main/App"
 import {HomeOutlined, BranchesOutlined} from '@ant-design/icons';
 
 
@@ -10,15 +13,24 @@ const Nav = () => {
   const categories = useSelector((state: State) => state.categories);
   const dispatch = useDispatch();
 
-  const selectBranch = (b: string) => {
-    dispatch(setBranch(b))
+  const selectBranch = async (b: string) => {
+    if(b===main.selectedRepositoryBranch){
+      return
+    }
+    try {
+      const out = await GitCheckout(main.selectedRepositoryId,b)
+      dispatch(setBranch(b))
+      success(out)
+    }catch (e) {
+      warning(JSON.stringify(e))
+    }
+
+
+
   }
   const getCategoryNameById = (id: string): string | null => {
-    for (let i = 0; i < categories.length; i++) {
-      let category = categories[i]
-      let repo = category.repositories.find(r => r.id === id)
-      if (repo && repo.name) return repo.name
-    }
+    let r = getRepositoryById(id,categories)
+    if(r)return r.name
     return null
   }
 
@@ -36,7 +48,7 @@ const Nav = () => {
               <span style={{opacity: 0.45}}>select repository</span>}</span>
         </Breadcrumb.Item>
         {main.selectedRepositoryId &&
-            <Breadcrumb.Item menu={{items: branch}}>
+            <Breadcrumb.Item className="branch" menu={{items: branch}} >
               <BranchesOutlined/>
               <span>{main.selectedRepositoryBranch || <span style={{opacity: 0.45}}>select branch</span>}</span>
             </Breadcrumb.Item>}

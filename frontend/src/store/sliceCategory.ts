@@ -1,5 +1,6 @@
-import {Category} from "./dataType"
+import {Category, Repository} from "./dataType"
 import {createSlice} from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit'
 
 const initialState: Category[] = [
   {
@@ -24,16 +25,18 @@ const categoriesSlice = createSlice({
   name: 'categoriesSlice',
   initialState,
   reducers: {
-    addCard(state, action) {
-
-    },
-    removeCard(state, action) {
+    addDefaultRepository(state, action: PayloadAction<Repository>) {
+      let defaultIndex =  state.findIndex(r=>r.name === "Default")
+      state[defaultIndex].repositories.push(action.payload)
     },
   },
 });
 
+
+
+
 export const categoriesReducer = categoriesSlice.reducer
-export const { removeCard } = categoriesSlice.actions
+export const { addDefaultRepository } = categoriesSlice.actions
 
 
 

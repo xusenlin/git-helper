@@ -17,3 +17,11 @@ body {
     height: 100vh;
     text-align: center;
 }
+
+.ant-dropdown-menu{
+    max-height: 60vh;
+    overflow-y: auto;
+}
+.branch{
+    cursor: pointer;
+}

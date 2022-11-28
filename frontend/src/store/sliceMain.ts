@@ -1,5 +1,5 @@
-import {createSlice} from "@reduxjs/toolkit";
 import {Main} from "./dataType"
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState: Main = {
   selectedRepositoryId: "",
@@ -10,13 +10,14 @@ const mainSlice = createSlice({
   name: 'mainSlice',
   initialState,
   reducers: {
-    setRepository(state, action) {
+    setRepository(state, action: PayloadAction<string>) {
       state.selectedRepositoryId = action.payload
+
     },
-    setBranch(state, action) {
+    setBranch(state, action: PayloadAction<string>) {
       state.selectedRepositoryBranch = action.payload
     },
-    setAllBranch(state, action) {
+    setAllBranch(state, action: PayloadAction<string[]>) {
       state.currentlyRepositoryAllBranch = action.payload
     },
   },

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"git-helper/utils"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -9,18 +10,21 @@ import (
 
 // App struct
 type App struct {
-	ctx context.Context
+	ctx        context.Context
+	repository map[string]string
 }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
-	return &App{}
+	app := &App{repository: make(map[string]string)}
+	return app
 }
 
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+
 }
 
 // Greet returns a greeting for the given name
@@ -37,7 +41,9 @@ func (a *App) menu() *menu.Menu {
 		if err != nil || len(path) == 0 {
 			return
 		}
-		runtime.EventsEmit(a.ctx, "Repository_A", path)
+		id := utils.Md5(path)
+		a.repository[id] = path
+		runtime.EventsEmit(a.ctx, "Repository_A", id, path)
 	})
 
 	branch := appMenu.AddSubmenu("Branch")
