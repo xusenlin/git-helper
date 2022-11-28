@@ -3,6 +3,8 @@ import Card from "./Card"
 import React from 'react';
 import {Modal, Button, Input} from 'antd';
 import {DragDropContext} from 'react-beautiful-dnd'
+import {useSelector} from "react-redux";
+import {State} from "../../store/dataType";
 
 type propType = {
     open: boolean,
@@ -10,6 +12,9 @@ type propType = {
 }
 
 const RepoSetting = (props: propType) => {
+    const categories = useSelector((state: State) => state.categories);
+
+
     return (
 
         <Modal
@@ -27,16 +32,12 @@ const RepoSetting = (props: propType) => {
         >
             <div className='repo-stting'>
                 <DragDropContext
-                    onDragEnd={() => {
+                    onDragEnd={e => {
+                        console.log(e)
                     }}
                 >
-                    <Card id='ada' item={['111','222','333']}/>
-                    <Card id='www' item={['444','555','666']}/>
-                    <Card id='rrr' item={['777','888','999']}/>
-                    <Card id='tyt' item={['qqq','www','eee','rrr','ttt','yyy']}/>
-
+                    {categories.map(r=><Card key={r.name} name={r.name} repositories={r.repositories}/>)}
                 </DragDropContext>
-
             </div>
         </Modal>
     );

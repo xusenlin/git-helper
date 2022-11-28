@@ -1,17 +1,14 @@
-import Action from "./Action"
 import React from 'react';
 import {Card} from 'antd';
+import Action from "./Action"
+import {Category} from "../../store/dataType";
 import {Droppable, Draggable} from 'react-beautiful-dnd'
 
-type propType = {
-    id: string,
-    item: string[]
-}
 
-const Block = (props: propType) => {
+const Block = (props: Category) => {
     return (
-        <Card bodyStyle={{padding:0}} size="small" title="Recent" extra={<Action/>} className='card'>
-            <Droppable droppableId={props.id} type="TASK">
+        <Card bodyStyle={{padding:0}} size="small" title={props.name} extra={props.name==='Default'?'':<Action/>} className='card'>
+            <Droppable droppableId={props.name} type="TASK">
                 {(provided, snapshot) => (
                     <div
                         className='card-content'
@@ -19,8 +16,8 @@ const Block = (props: propType) => {
                         style={{backgroundColor: snapshot.isDraggingOver ? '#f2f6f6' : '#fff'}}
                         {...provided.droppableProps}
                     >
-                        {props.item.map((n, i)=>(
-                            <Draggable key={n} draggableId={n} index={i}>
+                        {props.repositories.map((r, i)=>(
+                            <Draggable key={r.id} draggableId={r.id} index={i}>
                                 {(provided, snapshot) => (
                                     <div
                                         className="node"
@@ -28,7 +25,7 @@ const Block = (props: propType) => {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                     >
-                                       I am a droppable!{n}
+                                      { r.name }
                                     </div>
                                 )}
                             </Draggable>
