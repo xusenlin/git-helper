@@ -28,10 +28,10 @@ const getItem = (
 const Sides = () => {
   const dispatch = useDispatch();
   const repositoryName = useSelector((state: State) => state.main.selectedRepositoryId);
-  const category = useSelector((state: State) => state.category);
+  const categories = useSelector((state: State) => state.categories);
 
 
-  const menuData: MenuItem[] = category.map(c=>{
+  const menuData: MenuItem[] = categories.map(c=>{
     let children = c.repositories.map(r => getItem(r.name, r.id))
     return getItem(c.name, c.name, null, children, 'group')
   })

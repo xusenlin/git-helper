@@ -20,8 +20,8 @@ const initialState: Category[] = [
 ];
 
 
-const categorySlice = createSlice({
-  name: 'categorySlice',
+const categoriesSlice = createSlice({
+  name: 'categoriesSlice',
   initialState,
   reducers: {
     addCard(state, action) {
@@ -32,8 +32,8 @@ const categorySlice = createSlice({
   },
 });
 
-export const categoryReducer = categorySlice.reducer
-export const { removeCard } = categorySlice.actions
+export const categoriesReducer = categoriesSlice.reducer
+export const { removeCard } = categoriesSlice.actions
 
 
 

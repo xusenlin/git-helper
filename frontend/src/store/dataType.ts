@@ -14,6 +14,6 @@ export type Main = {
   currentlyRepositoryAllBranch:string[]
 }
 export type State = {
-  category:Category[]
+  categories:Category[]
   main:Main
 }
