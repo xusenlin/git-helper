@@ -1,10 +1,8 @@
-import { createStore } from 'redux';
-import reducer from './reducer';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { mainReducer } from "./sliceMain"
+import { categoryReducer } from "./sliceCategory"
+import { configureStore } from '@reduxjs/toolkit';
 
 
+const store = configureStore({ reducer: {category:categoryReducer,main:mainReducer}});
 
-const store = createStore(reducer, composeWithDevTools());
-const persister = '';
-
-export { store, persister };
+export { store };

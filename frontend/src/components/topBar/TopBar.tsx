@@ -4,33 +4,6 @@ import Action from './action/Action'
 import {Input} from 'antd';
 
 
-const branch = [
-  {
-    key: '1',
-    label: (
-        <span>
-          Master
-        </span>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-        <span>
-          Main
-        </span>
-    ),
-  },
-  {
-    key: '3',
-    label: (
-        <span>
-          Branch
-        </span>
-    ),
-  },
-];
-
 function TopBar() {
 
     return (
@@ -38,7 +11,7 @@ function TopBar() {
           <div className="top-bar-content">
             <div className="breadcrumb"><Nav/></div>
             <Action/>
-            <Input style={{width:240}} placeholder="请输入关键词搜索项目名称" />
+            <Input style={{width:200}} placeholder="Search repository name." />
           </div>
         </div>
     )

@@ -26,7 +26,7 @@ function App() {
         </div>
         <div className="container">
           <TopBar/>
-          {main.selectedRepositoryName && main.selectedRepositoryBranch ? content : empty}
+          {main.selectedRepositoryId && main.selectedRepositoryBranch ? content : empty}
         </div>
       </div>
   )

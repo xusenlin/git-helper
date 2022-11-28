@@ -1,7 +1,7 @@
 import {Breadcrumb} from 'antd';
 import {useSelector, useDispatch} from "react-redux";
 import {State} from "../../../store/dataType";
-import {SET_SELECT_BRANCH} from "../../../store/actions"
+import {setBranch} from "../../../store/sliceMain"
 import {HomeOutlined, BranchesOutlined} from '@ant-design/icons';
 
 
@@ -10,12 +10,12 @@ const Nav = () => {
   const dispatch = useDispatch();
 
   const selectBranch = (b: string) => {
-    dispatch({type: SET_SELECT_BRANCH, selectedRepositoryBranch: b})
+    dispatch(setBranch(b))
   }
 
   const branch = main.currentlyRepositoryAllBranch.map(r => {
     return {
-      key: r, label: <a href="javascript:void(0)" onClick={()=>selectBranch(r)}>{r}</a>
+      key: r, label: <a href="#!" onClick={()=>selectBranch(r)}>{r}</a>
     }
   })
 
@@ -23,14 +23,13 @@ const Nav = () => {
       <Breadcrumb separator=">">
         <Breadcrumb.Item>
           <HomeOutlined/>
-          <span>{main.selectedRepositoryName || <span style={{opacity: 0.45}}>select repository</span>}</span>
+          <span>{main.selectedRepositoryId || <span style={{opacity: 0.45}}>select repository</span>}</span>
         </Breadcrumb.Item>
-        {main.selectedRepositoryName &&
+        {main.selectedRepositoryId &&
             <Breadcrumb.Item menu={{items: branch}}>
               <BranchesOutlined/>
               <span>{main.selectedRepositoryBranch || <span style={{opacity: 0.45}}>select branch</span>}</span>
             </Breadcrumb.Item>}
-
       </Breadcrumb>
   )
 }

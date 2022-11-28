@@ -1,6 +1,7 @@
 
 export type Repository = {
-  name:string //唯一
+  id:string
+  name:string
   path:string
 }
 export type Category = {
@@ -8,7 +9,7 @@ export type Category = {
   repositories:Repository[]
 }
 export type Main = {
-  selectedRepositoryName:string
+  selectedRepositoryId:string
   selectedRepositoryBranch:string
   currentlyRepositoryAllBranch:string[]
 }

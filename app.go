@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -32,15 +31,13 @@ func (a *App) menu() *menu.Menu {
 
 	repo := appMenu.AddSubmenu("Repository")
 	repo.AddText("Add Local Repository", keys.CmdOrCtrl("a"), func(_ *menu.CallbackData) {
-		paht, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
+		path, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
 			Title: "Select Local Git Repository",
 		})
-		if err != nil {
-			fmt.Println(err)
+		if err != nil || len(path) == 0 {
 			return
 		}
-		runtime.EventsEmit(a.ctx, "Repository_A", paht)
-		fmt.Println(paht)
+		runtime.EventsEmit(a.ctx, "Repository_A", path)
 	})
 
 	branch := appMenu.AddSubmenu("Branch")
