@@ -2,7 +2,7 @@ import './App.css';
 import {Empty} from "antd"
 import Sides from "./components/sides/Sides"
 import SidesTop from "./components/sides/SidesTop"
-import Changes from "./components/changes/Index"
+import Changes from "./components/status/Index"
 import History from "./components/history/Index"
 import Tag from "./components/tag/Index"
 import TopBar from "./components/topBar/TopBar"

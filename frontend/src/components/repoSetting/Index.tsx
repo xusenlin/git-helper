@@ -1,46 +1,41 @@
 import './index.scss';
 import Card from "./Card"
 import React from 'react';
-import {Modal, Button, Input} from 'antd';
-import {DragDropContext} from 'react-beautiful-dnd'
-import {useSelector} from "react-redux";
+import {Modal } from 'antd';
 import {State} from "../../store/dataType";
-
-type propType = {
-    open: boolean,
-    setOpen: (val: boolean) => void
-}
-
-const RepoSetting = (props: propType) => {
-    const categories = useSelector((state: State) => state.categories);
+import {DragDropContext} from 'react-beautiful-dnd'
+import {useSelector, useDispatch} from "react-redux";
+import {moveRepository} from "../../store/sliceCategory";
+import {setOpenRepositorySetting} from "../../store/sliceMain";
 
 
-    return (
+const RepoSetting = () => {
+  const categories = useSelector((state: State) => state.categories);
+  const showRepositorySetting = useSelector((state: State) => state.main.showRepositorySetting);
 
-        <Modal
-            title="Repository Setting"
-            centered
-            open={props.open}
-            onCancel={() => props.setOpen(false)}
-            footer={[
-                <Input style={{width:200,marginRight:10}} placeholder="Input Category Name" />,
-                <Button type="primary" onClick={()=>{}}>
-                    Add Category
-                </Button>
-            ]}
-            width='80%'
-        >
-            <div className='repo-stting'>
-                <DragDropContext
-                    onDragEnd={e => {
-                        console.log(e)
-                    }}
-                >
-                    {categories.map(r=><Card key={r.name} name={r.name} repositories={r.repositories}/>)}
-                </DragDropContext>
-            </div>
-        </Modal>
-    );
+  const dispatch = useDispatch()
+  return (
+
+      <Modal
+          title="Repository Setting"
+          centered
+          open={showRepositorySetting}
+          onCancel={()=>{dispatch(setOpenRepositorySetting(false))}}
+          width='80%'
+          footer={[]}
+      >
+        <div className='repo-setting'>
+          <DragDropContext
+              onDragEnd={e => {
+                let {source, destination} = e
+                destination && dispatch(moveRepository({source, destination}))
+              }}
+          >
+            {categories.map(r => <Card key={r.name} name={r.name} repositories={r.repositories}/>)}
+          </DragDropContext>
+        </div>
+      </Modal>
+  );
 };
 
 export default RepoSetting;

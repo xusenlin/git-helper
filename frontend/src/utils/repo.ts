@@ -8,3 +8,12 @@ export const getRepositoryById = (id: string,categories:Category[]): Repository 
   }
   return null
 }
+
+export const getRepositoryPathById = (id: string,categories:Category[]): string | null => {
+  for (let i = 0; i < categories.length; i++) {
+    let category = categories[i]
+    let repo = category.repositories.find(r => r.id === id)
+    if (repo) return repo.path
+  }
+  return null
+}

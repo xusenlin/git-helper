@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"git-helper/utils"
+	"github.com/go-git/go-git/v5"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -11,20 +12,18 @@ import (
 // App struct
 type App struct {
 	ctx        context.Context
-	repository map[string]string
+	repository *git.Repository
 }
 
 // NewApp creates a new App application struct
 func NewApp() *App {
-	app := &App{repository: make(map[string]string)}
-	return app
+	return &App{}
 }
 
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-
 }
 
 // Greet returns a greeting for the given name
@@ -34,36 +33,45 @@ func (a *App) menu() *menu.Menu {
 	appMenu.Append(menu.EditMenu())
 
 	repo := appMenu.AddSubmenu("Repository")
-	repo.AddText("Add Local Repository", keys.CmdOrCtrl("a"), func(_ *menu.CallbackData) {
+	repo.AddText("Add local repository", keys.CmdOrCtrl("a"), func(_ *menu.CallbackData) {
 		path, err := runtime.OpenDirectoryDialog(a.ctx, runtime.OpenDialogOptions{
 			Title: "Select Local Git Repository",
 		})
 		if err != nil || len(path) == 0 {
 			return
 		}
-		id := utils.Md5(path)
-		a.repository[id] = path
+		id := utils.Sha256(path)
 		runtime.EventsEmit(a.ctx, "Repository_A", id, path)
+	})
+	repo.AddText("Repository manage", keys.CmdOrCtrl(""), func(_ *menu.CallbackData) {
+		runtime.EventsEmit(a.ctx, "Repository_M")
 	})
 
 	branch := appMenu.AddSubmenu("Branch")
-	branch.AddText("New Branch", keys.CmdOrCtrl("b"), func(_ *menu.CallbackData) {
+	branch.AddText("New Branch", keys.CmdOrCtrl(""), func(_ *menu.CallbackData) {
 
 	})
-
-	other := appMenu.AddSubmenu("Other")
-	other.AddText("Theme", keys.CmdOrCtrl("t"), func(_ *menu.CallbackData) {
-
+	branch.AddText("Branch manage", keys.CmdOrCtrl(""), func(_ *menu.CallbackData) {
+		runtime.EventsEmit(a.ctx, "Branch_M")
 	})
-	other.AddText("About", keys.CmdOrCtrl("a"), func(_ *menu.CallbackData) {
 
+	settings := appMenu.AddSubmenu("Settings")
+	settings.AddText("Theme", keys.CmdOrCtrl("t"), func(_ *menu.CallbackData) {
+		runtime.EventsEmit(a.ctx, "Settings_Theme")
 	})
-	other.AddText("Version", keys.CmdOrCtrl("v"), func(_ *menu.CallbackData) {
+	//settings.AddText("Branch", keys.CmdOrCtrl("b"), func(_ *menu.CallbackData) {
+	//
+	//})
 
-	})
-	other.AddText("Github", keys.CmdOrCtrl("g"), func(_ *menu.CallbackData) {
-
-	})
+	//other.AddText("About", keys.CmdOrCtrl("a"), func(_ *menu.CallbackData) {
+	//
+	//})
+	//other.AddText("Version", keys.CmdOrCtrl("v"), func(_ *menu.CallbackData) {
+	//
+	//})
+	//other.AddText("Github", keys.CmdOrCtrl("g"), func(_ *menu.CallbackData) {
+	//
+	//})
 
 	return appMenu
 }

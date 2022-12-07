@@ -3,9 +3,10 @@ import React from 'react';
 import type {MenuProps} from 'antd';
 import {State} from '../../store/dataType'
 import {warning} from "../../utils/common";
+import {getRepositoryPathById} from "../../utils/repo";
 import {setRepository,setAllBranch} from "../../store/sliceMain"
 import {useDispatch, useSelector} from 'react-redux';
-import {GetBranchByPath} from "../../../wailsjs/go/main/App";
+import {BindRepository,GetBranch} from "../../../wailsjs/go/main/App";
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -40,10 +41,21 @@ const Sides = () => {
 
   const onClick: MenuProps['onClick'] = async (e) => {
     try {
-      let {key} = e
+      const {key} = e
+      const path = getRepositoryPathById(key,categories)
+      if(!path){
+        warning("No git repository path was found for the specified ID.")
+        return
+      }
+      const ok = await BindRepository(path)
+      if(!ok){
+        warning("Error binding repository.")
+        return
+      }
       dispatch(setRepository(key))
-      let b = await GetBranchByPath(key)
+      const b = await GetBranch()
       dispatch(setAllBranch(b))
+
     } catch (e) {
       dispatch(setAllBranch([]))
       warning(JSON.stringify(e))

@@ -1,0 +1,34 @@
+.status-file-list {
+  .file {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 6px 0;
+
+    .file-name {
+      max-width: 100%;
+      overflow: hidden;/*超出部分隐藏*/
+      text-overflow:ellipsis;/* 超出部分显示省略号 */
+      white-space: nowrap;/*规定段落中的文本不进行换行 */
+      opacity: 0.45;
+    }
+
+    &:hover  .file-name {
+      opacity: 1;
+    }
+
+    .dot {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      border-radius: 50%;
+      color: #fff;
+      width: 18px;
+      height: 18px;
+      margin: 0 2px;
+      background: #eee;
+    }
+  }
+}

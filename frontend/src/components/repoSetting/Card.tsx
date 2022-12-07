@@ -7,7 +7,7 @@ import {Droppable, Draggable} from 'react-beautiful-dnd'
 
 const Block = (props: Category) => {
     return (
-        <Card bodyStyle={{padding:0}} size="small" title={props.name} extra={props.name==='Default'?'':<Action/>} className='card'>
+        <Card bodyStyle={{padding:0}} size="small" title={props.name} extra={props.name==='Default'?'':<Action name={props.name} />} className='card'>
             <Droppable droppableId={props.name} type="TASK">
                 {(provided, snapshot) => (
                     <div

@@ -1,9 +1,8 @@
 package utils
 
 import (
-	"crypto/md5"
+	"crypto/sha256"
 	"errors"
-	"fmt"
 	"os"
 	"os/exec"
 )
@@ -31,6 +30,8 @@ func RunCmdByPath(path string, cmdName string, arg ...string) (string, error) {
 	return string(out), nil
 }
 
-func Md5(s string) string {
-	return fmt.Sprintf("%x", md5.Sum([]byte(s)))
+func Sha256(s string) string {
+	h := sha256.New()
+	h.Write([]byte(s))
+	return string(h.Sum(nil))
 }

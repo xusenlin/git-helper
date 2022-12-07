@@ -1,10 +1,10 @@
 import {Breadcrumb} from 'antd';
 import {State} from "../../../store/dataType";
-import {setBranch} from "../../../store/sliceMain"
+import {setBranch,setStatus} from "../../../store/sliceMain"
 import {getRepositoryById} from "../../../utils/repo"
 import {useSelector, useDispatch} from "react-redux";
 import {success, warning} from "../../../utils/common"
-import { GitCheckout } from "../../../../wailsjs/go/main/App"
+import { SwitchBranch,FileStatus ,Tag} from "../../../../wailsjs/go/main/App"
 import {HomeOutlined, BranchesOutlined} from '@ant-design/icons';
 
 
@@ -18,12 +18,34 @@ const Nav = () => {
       return
     }
     try {
-      const out = await GitCheckout(main.selectedRepositoryId,b)
+      const ok = await SwitchBranch(b)
+      if(!ok){
+        warning("Switch branch failed.")
+        return
+      }
       dispatch(setBranch(b))
-      success(out)
+
+
+
     }catch (e) {
+      console.log(e)
       warning(JSON.stringify(e))
     }
+
+    FileStatus().then(s=>{
+      dispatch(setStatus(s))
+    }).catch(e=>{
+      console.log(e)
+      warning(JSON.stringify(e))
+    })
+
+    Tag().then(t=>{
+      console.log(t)
+      // dispatch(setStatus(s))
+    }).catch(e=>{
+      console.log(e)
+      warning(JSON.stringify(e))
+    })
 
 
 
@@ -36,7 +58,7 @@ const Nav = () => {
 
   const branch = main.currentlyRepositoryAllBranch.map(r => {
     return {
-      key: r, label: <a href="#!" onClick={() => selectBranch(r)}>{r}</a>
+      key: r.name, label: <a href="#!" onClick={() => selectBranch(r.name)}>{r.name}</a>
     }
   })
 

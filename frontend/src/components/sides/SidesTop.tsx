@@ -1,11 +1,15 @@
+import React from 'react';
 import {Space} from 'antd';
-import React, {useState} from 'react';
-import {SettingOutlined} from '@ant-design/icons';
+import {useDispatch} from "react-redux";
+import DialogInput from "../dialog/Input"
 import RepoSetting from '../repoSetting/Index'
+import {SettingOutlined,PlusOutlined} from '@ant-design/icons';
+import {setOpenRepositorySetting} from "../../store/sliceMain";
+import {addCategory} from "../../store/sliceCategory";
 
 const SidesTop: React.FC = () => {
-  const [open, setOpen] = useState(false);
 
+  const dispatch = useDispatch()
   return (
       <>
         <Space className='sides-top' size="middle">
@@ -27,9 +31,10 @@ const SidesTop: React.FC = () => {
                 d="M606.2087337 295.85044411m-56.26801201 0a56.26801236 56.26801236 0 1 0 112.5360242 0 56.26801236 56.26801236 0 1 0-112.5360242 0Z"
                 fill="#000000"></path>
           </svg>
-          <SettingOutlined onClick={() => setOpen(true)} style={{cursor: "pointer", opacity: 0.45}}/>
+          <SettingOutlined onClick={() => dispatch(setOpenRepositorySetting(true))} style={{cursor: "pointer", opacity: 0.45}}/>
+          <DialogInput action={<PlusOutlined style={{cursor: "pointer", opacity: 0.45}} />} title="Add Category" inputVal={v=>{dispatch(addCategory(v))}}/>
         </Space>
-        <RepoSetting open={open} setOpen={setOpen}/>
+        <RepoSetting />
       </>
   )
 }

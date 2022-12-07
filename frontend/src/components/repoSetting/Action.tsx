@@ -1,12 +1,15 @@
 import {Space} from 'antd';
+import {useDispatch} from "react-redux";
+import {delCategory} from "../../store/sliceCategory";
 import { EditOutlined,DeleteOutlined } from '@ant-design/icons';
+function Action(props:{name:string}) {
 
-function Action() {
+    const dispatch = useDispatch()
 
     return (
         <Space size="middle" className="action">
-            <EditOutlined style={{cursor: "pointer", opacity: 0.45}} />
-            <DeleteOutlined style={{cursor: "pointer", opacity: 0.45}} />
+            {/*<EditOutlined style={{cursor: "pointer", opacity: 0.45}} />*/}
+            <DeleteOutlined onClick={()=>{dispatch(delCategory(props.name))}} style={{cursor: "pointer", opacity: 0.45}} />
         </Space>
     )
 }
