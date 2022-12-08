@@ -1,4 +1,4 @@
-import {Category, Repository} from "../store/dataType";
+import {Category, Repository} from "../store/sliceCategory";
 
 export const getRepositoryById = (id: string,categories:Category[]): Repository | null => {
   for (let i = 0; i < categories.length; i++) {

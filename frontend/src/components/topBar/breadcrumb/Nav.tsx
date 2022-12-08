@@ -1,16 +1,16 @@
 import {Breadcrumb} from 'antd';
-import {State} from "../../../store/dataType";
-import {setBranch,setStatus} from "../../../store/sliceMain"
+import {State} from "../../../store";
+import {setBranch,setStatus,setTag,setLog} from "../../../store/sliceMain"
 import {getRepositoryById} from "../../../utils/repo"
 import {useSelector, useDispatch} from "react-redux";
-import {success, warning} from "../../../utils/common"
-import { SwitchBranch,FileStatus ,Tag} from "../../../../wailsjs/go/main/App"
+import {warning} from "../../../utils/common"
+import { SwitchBranch,FileStatus ,Tag, Log} from "../../../../wailsjs/go/main/App"
 import {HomeOutlined, BranchesOutlined} from '@ant-design/icons';
 
 
 const Nav = () => {
   const main = useSelector((state: State) => state.main);
-  const categories = useSelector((state: State) => state.categories);
+  const categories = useSelector((state: State) => state.categories.val);
   const dispatch = useDispatch();
 
   const selectBranch = async (b: string) => {
@@ -24,30 +24,33 @@ const Nav = () => {
         return
       }
       dispatch(setBranch(b))
-
-
-
     }catch (e) {
       console.log(e)
       warning(JSON.stringify(e))
     }
 
+
+
     FileStatus().then(s=>{
       dispatch(setStatus(s))
     }).catch(e=>{
       console.log(e)
-      warning(JSON.stringify(e))
+      warning("Status："+JSON.stringify(e))
     })
 
     Tag().then(t=>{
       console.log(t)
-      // dispatch(setStatus(s))
+      dispatch(setTag(t))
+    }).catch(e=>{
+      console.log(e)
+      warning("Tag："+JSON.stringify(e))
+    })
+    Log().then(l=>{
+      dispatch(setLog(l))
     }).catch(e=>{
       console.log(e)
       warning(JSON.stringify(e))
     })
-
-
 
   }
   const getCategoryNameById = (id: string): string | null => {

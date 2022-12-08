@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
@@ -14,12 +13,14 @@ type Tag struct {
 }
 
 func (a *App) Tag() ([]Tag, error) {
+	var tags []Tag
 	tagRefs, err := a.repository.Tags()
 	if err != nil {
-		return nil, err
+		return tags, err
 	}
-	var tags []Tag
+
 	err = tagRefs.ForEach(func(t *plumbing.Reference) error {
+
 		o, err := a.repository.Object(plumbing.AnyObject, t.Hash())
 		if err != nil {
 			return err
@@ -37,7 +38,6 @@ func (a *App) Tag() ([]Tag, error) {
 				Message: tag.Message,
 				Hash:    tag.Hash.String(),
 			})
-			fmt.Println(tag)
 		} else {
 			c, err := a.repository.CommitObject(t.Hash())
 			if err != nil {
@@ -55,5 +55,8 @@ func (a *App) Tag() ([]Tag, error) {
 
 		return nil
 	})
+	if err != nil {
+		return tags, err
+	}
 	return tags, nil
 }

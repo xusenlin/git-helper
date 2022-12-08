@@ -1,8 +1,12 @@
 import Block from "../block/Index"
 import Item from "./Item"
 import {Button, Input, Space} from "antd";
+import {useSelector} from "react-redux";
+import "./style.scss"
+import {State} from "../../store";
 const { TextArea } = Input;
 const Tag = () => {
+  const tags = useSelector((state: State) => state.main.currentlyRepositoryTag);
 
   const bottom = <div style={{padding:12}}>
     <Space direction="vertical" size="middle" style={{display: 'flex'}}>
@@ -15,10 +19,7 @@ const Tag = () => {
   return (
       <Block title="Tag" bottom={bottom}>
         <div style={{padding:12}}>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
+          { tags.map(r=><Item t={r}/>)}
         </div>
 
       </Block>

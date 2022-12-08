@@ -16,6 +16,28 @@ export namespace main {
 	        this.refName = source["refName"];
 	    }
 	}
+	export class Log {
+	    hash: string;
+	    author: string;
+	    committer: string;
+	    message: string;
+	    treeHash: string;
+	    parentHashes: string[];
+	
+	    static createFrom(source: any = {}) {
+	        return new Log(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.hash = source["hash"];
+	        this.author = source["author"];
+	        this.committer = source["committer"];
+	        this.message = source["message"];
+	        this.treeHash = source["treeHash"];
+	        this.parentHashes = source["parentHashes"];
+	    }
+	}
 	export class Status {
 	    file: string;
 	    staging: string;

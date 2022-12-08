@@ -5,11 +5,12 @@ type Props = {
   title:string
   msg?:string
   action:ReactNode
+  defaultVal?:string
   inputVal:(v:string)=>void
 }
 
 const DialogInput:React.FC<Props> =  (props:Props) => {
-  const [val,setVal] = useState<string>("")
+  const [val,setVal] = useState<string>(props.defaultVal?props.defaultVal:"")
   const [open,setOpen] = useState<boolean>(false)
 
   return (<>
@@ -23,7 +24,6 @@ const DialogInput:React.FC<Props> =  (props:Props) => {
         footer={[
           <Button type="primary" onClick={() => {
             props.inputVal(val)
-            setVal("")
             setOpen(false)
           }}>OK</Button>
         ]}

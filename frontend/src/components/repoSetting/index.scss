@@ -16,8 +16,12 @@
             .node{
                 margin: 6px 0;
                 width: 100%;
+                white-space: nowrap;
                 height: 32px;
+                text-overflow: ellipsis;
+                overflow: hidden;
                 display: flex;
+                justify-content: space-between;
                 background: #fff;
                 align-items: center;
                 padding: 0 6px;

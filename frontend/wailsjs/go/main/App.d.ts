@@ -10,9 +10,15 @@ export function GetBranch():Promise<Array<main.Branch>>;
 
 export function IsGitRepository(arg1:string):Promise<boolean>;
 
+export function Log():Promise<Array<main.Log>>;
+
 export function MessageDialog(arg1:string,arg2:string):Promise<void>;
 
-export function Sha256(arg1:string):Promise<string>;
+export function ReadJsonFile():Promise<string>;
+
+export function SaveJsonFile(arg1:string):Promise<Error>;
+
+export function Sha1(arg1:string):Promise<string>;
 
 export function SwitchBranch(arg1:string):Promise<boolean>;
 

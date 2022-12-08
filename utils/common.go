@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/sha256"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 )
@@ -31,7 +32,22 @@ func RunCmdByPath(path string, cmdName string, arg ...string) (string, error) {
 }
 
 func Sha256(s string) string {
-	h := sha256.New()
-	h.Write([]byte(s))
-	return string(h.Sum(nil))
+	h := sha256.Sum256([]byte(s))
+	hashString := fmt.Sprintf("%x", h)
+	return hashString
+}
+
+func FileIsExisted(filename string) bool {
+	existed := true
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		existed = false
+	}
+	return existed
+}
+
+func RemoveFile(file string) error {
+	if FileIsExisted(file) {
+		return os.Remove(file)
+	}
+	return nil
 }

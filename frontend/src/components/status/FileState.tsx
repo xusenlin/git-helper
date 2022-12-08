@@ -1,6 +1,6 @@
 import { main } from "../../../wailsjs/go/models"
 import React from "react";
-import { Checkbox } from 'antd';
+import { Checkbox,Row } from 'antd';
 import { yellow } from '@ant-design/colors';
 
 const color = (s:string) => {
@@ -32,7 +32,7 @@ const color = (s:string) => {
 }
 
 const FileState = (props:{s:main.Status}) => <div className="file">
-  <Checkbox style={{flex:1,overflow:"hidden",marginRight:6}}><span className="file-name">{props.s.file}</span></Checkbox>
+  <Checkbox value={props.s.file} style={{flex:1,overflow:"hidden",marginRight:6}}><span className="file-name">{props.s.file}</span></Checkbox>
   <div style={{display:"flex"}}>
     <span className="dot" style={color(props.s.staging)}>{props.s.staging}</span>
     <span className="dot" style={color(props.s.worktree)}>{props.s.worktree}</span>

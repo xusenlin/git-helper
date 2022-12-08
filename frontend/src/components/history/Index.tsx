@@ -1,17 +1,15 @@
 import Block from "../block/Index"
 import Item from "./Item"
+import {useSelector} from "react-redux";
+import {State} from "../../store";
 
 const History = () => {
+  const logs = useSelector((state: State) => state.main.currentlyRepositoryLogs);
 
   return (
       <Block title="History" >
         <div style={{padding:12}}>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
+          {logs.map(r=><Item l={r} />)}
         </div>
 
       </Block>

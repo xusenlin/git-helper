@@ -1,13 +1,13 @@
 import {Card} from "antd"
 import { CopyOutlined } from "@ant-design/icons"
+import {main} from "../../../wailsjs/go/models";
 
-const Item = () => {
+const Item = (props:{l:main.Log}) => {
 
   return (
-      <Card size="small" title="8fb214a" extra={<CopyOutlined />} style={{marginBottom:10}}>
-        <p>title：提交改变</p>
-        <p>username：徐森林</p>
-        <p>Card contentCard contentCard contentCard content</p>
+      <Card size="small" title={props.l.hash.substring(0,7)} extra={<CopyOutlined />} style={{marginBottom:10}}>
+        <p>author：{props.l.author}</p>
+        <p>{props.l.message}</p>
       </Card>
   );
 };

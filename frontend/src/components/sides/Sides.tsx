@@ -1,10 +1,10 @@
 import {Menu} from 'antd';
 import React from 'react';
 import type {MenuProps} from 'antd';
-import {State} from '../../store/dataType'
+import {State} from '../../store/index'
 import {warning} from "../../utils/common";
 import {getRepositoryPathById} from "../../utils/repo";
-import {setRepository,setAllBranch} from "../../store/sliceMain"
+import {setRepository,setAllBranch,resetState} from "../../store/sliceMain"
 import {useDispatch, useSelector} from 'react-redux';
 import {BindRepository,GetBranch} from "../../../wailsjs/go/main/App";
 
@@ -30,8 +30,8 @@ const getItem = (
 
 const Sides = () => {
   const dispatch = useDispatch();
-  const repositoryName = useSelector((state: State) => state.main.selectedRepositoryId);
-  const categories = useSelector((state: State) => state.categories);
+  const repositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
+  const categories = useSelector((state: State) => state.categories.val);
 
 
   const menuData: MenuItem[] = categories.map(c => {
@@ -40,8 +40,11 @@ const Sides = () => {
   })
 
   const onClick: MenuProps['onClick'] = async (e) => {
+    const {key} = e
+    if(key === repositoryId){
+      return
+    }
     try {
-      const {key} = e
       const path = getRepositoryPathById(key,categories)
       if(!path){
         warning("No git repository path was found for the specified ID.")
@@ -52,12 +55,12 @@ const Sides = () => {
         warning("Error binding repository.")
         return
       }
+      dispatch(resetState())
+
       dispatch(setRepository(key))
       const b = await GetBranch()
       dispatch(setAllBranch(b))
-
     } catch (e) {
-      dispatch(setAllBranch([]))
       warning(JSON.stringify(e))
     }
 
@@ -67,7 +70,7 @@ const Sides = () => {
         <Menu
             onClick={onClick}
             style={{background: "transparent"}}
-            defaultSelectedKeys={[repositoryName]}
+            defaultSelectedKeys={[repositoryId]}
             defaultOpenKeys={['Recent']}
             mode="inline"
             items={menuData}

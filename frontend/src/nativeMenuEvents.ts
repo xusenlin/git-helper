@@ -1,15 +1,21 @@
 import {store} from './store';
 import {warning} from './utils/common';
+import {getRepositoryPathById} from './utils/repo';
 import {EventsOn} from "../wailsjs/runtime"
 import {IsGitRepository} from "../wailsjs/go/main/App"
 import {addDefaultRepository} from "./store/sliceCategory"
-import {setOpenRepositorySetting} from "./store/sliceMain"
+import {setOpenRepositorySetting} from "./store/sliceSetting"
 
 
 
 //===================Repository Menu Event========
 
 EventsOn("Repository_A", async (id:string,path: string) => {
+  let has = getRepositoryPathById(id,store.getState().categories.val)
+  if(has){
+    warning("This git repository already exists.");
+    return
+  }
   try {
     const is = await IsGitRepository(path)
     if (!is) {
@@ -17,12 +23,8 @@ EventsOn("Repository_A", async (id:string,path: string) => {
       return
     }
     const p = path.split('/')
-    let name = path
-    if (p.length >= 2) {
-      name = [p[p.length - 2], p[p.length - 1]].join('/')
-    }else if(p.length >= 1){
-      name = p[0]
-    }
+    let name = p[p.length-1]
+
     store.dispatch(addDefaultRepository({id, path, name}))
   } catch (e) {
     console.log(e)
@@ -45,3 +47,4 @@ EventsOn("Settings_Theme",()=>{
 
 
 
+//

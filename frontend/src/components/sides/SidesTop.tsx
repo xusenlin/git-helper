@@ -4,7 +4,7 @@ import {useDispatch} from "react-redux";
 import DialogInput from "../dialog/Input"
 import RepoSetting from '../repoSetting/Index'
 import {SettingOutlined,PlusOutlined} from '@ant-design/icons';
-import {setOpenRepositorySetting} from "../../store/sliceMain";
+import {setOpenRepositorySetting} from "../../store/sliceSetting";
 import {addCategory} from "../../store/sliceCategory";
 
 const SidesTop: React.FC = () => {
