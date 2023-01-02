@@ -1,11 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {DiffWorkStage} from "../../wailsjs/go/main/App"
+import {main} from "../../wailsjs/go/models"
 import {warning} from "../utils/common";
 import {store} from './index';
 
 
 export type DiffState = {
-  content: string[]
+  content: main.DiffContent[]
   filePath: string
 }
 
@@ -17,7 +18,7 @@ const diffSlice = createSlice({
   name: 'diffSlice',
   initialState,
   reducers: {
-    updateContent(state, action: PayloadAction<string[]>) {
+    updateContent(state, action: PayloadAction<main.DiffContent[]>) {
       state.content = action.payload
     },
     updatePath(state, action: PayloadAction<string>) {

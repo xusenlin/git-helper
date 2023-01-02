@@ -16,6 +16,22 @@ export namespace main {
 	        this.refName = source["refName"];
 	    }
 	}
+	export class DiffContent {
+	    content: string;
+	    type: number;
+	    index: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new DiffContent(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.content = source["content"];
+	        this.type = source["type"];
+	        this.index = source["index"];
+	    }
+	}
 	export class Signature {
 	    name: string;
 	    email: string;

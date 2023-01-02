@@ -12,6 +12,20 @@ type Status struct {
 	Worktree string `json:"worktree"`
 }
 
+type DiffFlag = uint
+
+const (
+	DEFAULT DiffFlag = iota
+	ADDED
+	REMOVED
+)
+
+type DiffContent struct {
+	Content string   `json:"content"`
+	Type    DiffFlag `json:"type"`
+	Index   int      `json:"index"`
+}
+
 func (a *App) FileStatus() ([]Status, error) {
 	//w, err := a.repository.Worktree()
 	//if err != nil {
@@ -98,10 +112,10 @@ func (a *App) Commit(title, msg string, fileList []string) (string, error) {
 
 }
 
-func (a *App) DiffWorkStage(filePath string) ([]string, error) {
+func (a *App) DiffWorkStage(filePath string) ([]DiffContent, error) {
 	path, err := a.RepositoryPath()
 
-	var content []string
+	var content []DiffContent
 
 	if err != nil {
 		return content, err
@@ -110,6 +124,26 @@ func (a *App) DiffWorkStage(filePath string) ([]string, error) {
 	if err != nil {
 		return content, err
 	}
-	content = strings.Split(out, "\n")
+	outs := strings.Split(out, "\n")
+
+	for i, s := range outs {
+		f := getDiffFlag(s)
+		content = append(content, DiffContent{
+			Index:   i,
+			Content: s,
+			Type:    f,
+		})
+	}
+
 	return content, nil
+}
+
+func getDiffFlag(c string) DiffFlag {
+	if strings.HasPrefix(c, "+") {
+		return ADDED
+	}
+	if strings.HasPrefix(c, "-") {
+		return REMOVED
+	}
+	return DEFAULT
 }

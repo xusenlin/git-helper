@@ -16,7 +16,7 @@ export function DelBranch(arg1:string,arg2:boolean):Promise<string>;
 
 export function DelTag(arg1:string):Promise<Error>;
 
-export function DiffWorkStage(arg1:string):Promise<Array<string>>;
+export function DiffWorkStage(arg1:string):Promise<Array<main.DiffContent>>;
 
 export function FileStatus():Promise<Array<main.Status>>;
 
