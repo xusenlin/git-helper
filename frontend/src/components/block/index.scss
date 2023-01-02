@@ -1,9 +1,9 @@
 .main-block{
-    flex: 1;
-    height: 100%;
-    border: 1px solid #dfe3e3;
-    margin: 6px;
-    border-radius: 8px;
+    //flex: 1;
+    height: calc(100vh - 106px);
+    //border: 1px solid #dfe3e3;
+    //margin: 6px;
+    //border-radius: 8px;
     overflow: hidden;
     .top-title{
         display: flex;
@@ -18,7 +18,6 @@
     .main-block-content{
         display: flex;
         flex-direction: column;
-        height: calc(100% - 40px);
         .top{
             flex: 1;
             overflow-x: hidden;

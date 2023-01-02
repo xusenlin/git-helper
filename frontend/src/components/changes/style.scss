@@ -15,15 +15,17 @@
         width: 100%;
       }
     }
-
     .file-name {
       width: 100%;
       display: block;
+      flex: 1;
       overflow: hidden;
+      max-width: 220px;
       text-overflow: ellipsis;
       white-space: nowrap;
       opacity: 0.45;
       font-size: 13px;
+      cursor: pointer;
     }
 
 

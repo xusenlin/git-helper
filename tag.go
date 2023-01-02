@@ -1,15 +1,18 @@
 package main
 
 import (
+	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 )
 
 type Tag struct {
-	Name    string `json:"name"`
-	RefName string `json:"refName"`
-	Type    uint   `json:"type"`
-	Message string `json:"message"`
-	Hash    string `json:"hash"`
+	Name       string `json:"name"`
+	RefName    string `json:"refName"`
+	Type       uint   `json:"type"`
+	Message    string `json:"message"`
+	Hash       string `json:"hash"`
+	Time       string `json:"time"`
+	CommitHash string `json:"commitHash"`
 }
 
 func (a *App) Tag() ([]Tag, error) {
@@ -30,26 +33,32 @@ func (a *App) Tag() ([]Tag, error) {
 			if err != nil {
 				return err
 			}
-
-			tags = append(tags, Tag{
-				Name:    t.Name().Short(),
-				RefName: t.Name().String(),
-				Type:    1,
-				Message: tag.Message,
-				Hash:    tag.Hash.String(),
-			})
-		} else {
-			c, err := a.repository.CommitObject(t.Hash())
+			commit, err := tag.Commit()
 			if err != nil {
 				return err
 			}
-
 			tags = append(tags, Tag{
-				Name:    t.Name().Short(),
-				RefName: t.Name().String(),
-				Type:    2,
-				Message: c.Message,
-				Hash:    c.Hash.String(),
+				Name:       t.Name().Short(),
+				RefName:    t.Name().String(),
+				Type:       1,
+				Message:    tag.Message,
+				Hash:       tag.Hash.String(),
+				Time:       tag.Tagger.When.Format(TimeLayout),
+				CommitHash: commit.Hash.String(),
+			})
+		} else {
+			commit, err := a.repository.CommitObject(t.Hash())
+			if err != nil {
+				return err
+			}
+			tags = append(tags, Tag{
+				Name:       t.Name().Short(),
+				RefName:    t.Name().String(),
+				Type:       2,
+				Message:    "",
+				Hash:       "",
+				Time:       commit.Author.When.Format(TimeLayout),
+				CommitHash: commit.Hash.String(),
 			})
 		}
 
@@ -59,4 +68,31 @@ func (a *App) Tag() ([]Tag, error) {
 		return tags, err
 	}
 	return tags, nil
+}
+
+func (a *App) DelTag(tag string) error {
+
+	return a.repository.DeleteTag(tag)
+}
+func (a *App) CreateTag(tag string, msg string) error {
+	h, err := a.repository.Head()
+	if err != nil {
+		return err
+	}
+	var opts *git.CreateTagOptions = nil
+	if len(msg) != 0 {
+		opts = &git.CreateTagOptions{
+			//Tagger: &object.Signature{
+			//	Name:  "John Doe",
+			//	Email: "john@example.com",
+			//	When:  time.Now(),
+			//},
+			Message: msg,
+		}
+	}
+	_, err = a.repository.CreateTag(tag, h.Hash(), opts)
+	if err != nil {
+		return err
+	}
+	return nil
 }

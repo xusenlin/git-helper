@@ -8,14 +8,16 @@ type propType = {
   action?:ReactNode
 }
 
-const Changes = (props: propType) => {
+const Block = (props: propType) => {
   return (
       <div className="main-block">
-        <div className="top-title">
-          <div className='title'>{props.title}</div>
+        { props.action?<div className="top-title">
+          {/*<div className='title'>{props.title}</div>*/}
+          <div className='title'></div>
           <div className="action">{props.action}</div>
-        </div>
-        <div className="main-block-content">
+        </div>:'' }
+
+        <div className="main-block-content" style={{ height: props.action?"calc(100% - 40px)":"100%"}}>
           <div className="top">
             {props.children}
           </div>
@@ -27,4 +29,4 @@ const Changes = (props: propType) => {
   );
 };
 
-export default Changes;
+export default Block;

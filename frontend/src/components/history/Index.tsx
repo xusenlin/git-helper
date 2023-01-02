@@ -9,9 +9,8 @@ const History = () => {
   return (
       <Block title="History" >
         <div style={{padding:12}}>
-          {logs.map(r=><Item l={r} />)}
+          {logs.map(r=><Item l={r} key={r.hash} />)}
         </div>
-
       </Block>
   );
 };

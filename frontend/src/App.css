@@ -3,37 +3,64 @@
     width: 100%;
     display: flex;
 }
-.sides{
+
+.sides {
     width: 24%;
     min-width: 170px;
     overflow: hidden;
     background-color: #dfe3e3;
     height: 100%;
 }
-.sides-top{
+
+.sides-top {
     width: 100%;
     height: 60px;
     display: flex;
     align-items: center;
     padding: 0 20px;
     justify-content: flex-end;
-    --wails-draggable:drag;
+    --wails-draggable: drag;
 }
-.theme-icon{
+
+.theme-icon {
     width: 15px;
     position: relative;
-    top:1px;
+    top: 1px;
     cursor: pointer;
     opacity: 0.45
 }
-.container{
+
+.container {
     flex: 1;
     height: 100%;
+    position: relative;
     background-color: #fff;
 }
-.main{
+
+.main {
     display: flex;
     width: 100%;
-    height: calc(100vh - 72px);
-    padding: 6px;
+    position: relative;
+    height: calc(100vh - 60px);
+    justify-content: center;
+    align-items: center
+}
+
+.main .ant-tabs-nav {
+    margin: 0;
+}
+
+.left {
+    width: 300px;
+    min-width: 300px;
+    max-width: 360px;
+    height: 100%;
+    border-right: 1px solid rgba(5, 5, 5, 0.06);
+}
+
+.right {
+    flex: 1;
+    height: 100%;
+    padding: 12px;
+    overflow-y: auto;
 }

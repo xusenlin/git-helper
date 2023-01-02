@@ -1,7 +1,7 @@
 import { main } from "../../../wailsjs/go/models"
 import React from "react";
-import { Checkbox,Row } from 'antd';
-import { yellow } from '@ant-design/colors';
+import { Checkbox } from 'antd';
+import { asyncDiffWorkStage } from "../../store/sliceDiff"
 
 const color = (s:string) => {
   // Unmodified         StatusCode = ' '
@@ -31,11 +31,17 @@ const color = (s:string) => {
 
 }
 
-const FileState = (props:{s:main.Status}) => <div className="file">
-  <Checkbox value={props.s.file} style={{flex:1,overflow:"hidden",marginRight:6}}><span className="file-name">{props.s.file}</span></Checkbox>
-  <div style={{display:"flex"}}>
-    <span className="dot" style={color(props.s.staging)}>{props.s.staging}</span>
-    <span className="dot" style={color(props.s.worktree)}>{props.s.worktree}</span>
+
+const FileState = (props:{s:main.Status}) => {
+
+  return <div className="file">
+    <Checkbox value={props.s.file} style={{marginRight:6}}/>
+    <span className="file-name" onClick={()=>{asyncDiffWorkStage(props.s.file)}}>{props.s.file}</span>
+    <div style={{display:"flex"}}>
+      <span className="dot" style={color(props.s.staging)}>{props.s.staging}</span>
+      <span className="dot" style={color(props.s.worktree)}>{props.s.worktree}</span>
+    </div>
   </div>
-</div>
+}
+
 export default FileState

@@ -16,10 +16,26 @@ export namespace main {
 	        this.refName = source["refName"];
 	    }
 	}
+	export class Signature {
+	    name: string;
+	    email: string;
+	    when: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Signature(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.email = source["email"];
+	        this.when = source["when"];
+	    }
+	}
 	export class Log {
 	    hash: string;
 	    author: string;
-	    committer: string;
+	    committer: Signature;
 	    message: string;
 	    treeHash: string;
 	    parentHashes: string[];
@@ -32,12 +48,31 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.hash = source["hash"];
 	        this.author = source["author"];
-	        this.committer = source["committer"];
+	        this.committer = this.convertValues(source["committer"], Signature);
 	        this.message = source["message"];
 	        this.treeHash = source["treeHash"];
 	        this.parentHashes = source["parentHashes"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
+	
 	export class Status {
 	    file: string;
 	    staging: string;
@@ -60,6 +95,8 @@ export namespace main {
 	    type: number;
 	    message: string;
 	    hash: string;
+	    time: string;
+	    commitHash: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Tag(source);
@@ -72,6 +109,8 @@ export namespace main {
 	        this.type = source["type"];
 	        this.message = source["message"];
 	        this.hash = source["hash"];
+	        this.time = source["time"];
+	        this.commitHash = source["commitHash"];
 	    }
 	}
 

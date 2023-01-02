@@ -4,9 +4,9 @@ import type {MenuProps} from 'antd';
 import {State} from '../../store/index'
 import {warning} from "../../utils/common";
 import {getRepositoryPathById} from "../../utils/repo";
-import {setRepository,setAllBranch,resetState} from "../../store/sliceMain"
+import {setRepository, setAllBranch, resetState, setTag} from "../../store/sliceMain"
 import {useDispatch, useSelector} from 'react-redux';
-import {BindRepository,GetBranch} from "../../../wailsjs/go/main/App";
+import {BindRepository, GetBranch, Tag} from "../../../wailsjs/go/main/App";
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -38,7 +38,6 @@ const Sides = () => {
     let children = c.repositories.map(r => getItem(r.name, r.id))
     return getItem(c.name, c.name, null, children, 'group')
   })
-
   const onClick: MenuProps['onClick'] = async (e) => {
     const {key} = e
     if(key === repositoryId){
@@ -58,8 +57,13 @@ const Sides = () => {
       dispatch(resetState())
 
       dispatch(setRepository(key))
+
       const b = await GetBranch()
       dispatch(setAllBranch(b))
+
+      const t = await Tag()
+      dispatch(setTag(t))
+
     } catch (e) {
       warning(JSON.stringify(e))
     }
