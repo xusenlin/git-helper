@@ -19,8 +19,8 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "GitUI",
-		Width:  1200,
-		Height: 768,
+		Width:  1300,
+		Height: 868,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},

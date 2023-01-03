@@ -1,9 +1,13 @@
-import {Card} from "antd"
+import {Card, Space} from "antd"
 import {copyHashClipboard} from "../../utils/common"
-import {SnippetsOutlined, FieldTimeOutlined,UserOutlined} from "@ant-design/icons"
+import {SnippetsOutlined, FieldTimeOutlined, UserOutlined, EyeOutlined} from "@ant-design/icons"
 import {main} from "../../../wailsjs/go/models";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
+import {asyncDiffCommit} from "../../store/sliceCommitDiff";
+import {mainBranch} from "../../config/app";
+import {useSelector} from "react-redux";
+import {State} from "../../store";
 
 dayjs.extend(relativeTime)
 
@@ -18,14 +22,23 @@ const style = {
 }
 
 const Item = (props: { l: main.Log }) => {
+  const themeColor = useSelector((state: State) => state.setting.themeColor);
+  const commitId = useSelector((state: State) => state.diffCommit.commitId);
+
+  const extra = <Space>
+    <SnippetsOutlined
+        onClick={async () => {await copyHashClipboard(props.l.hash)}}
+        style={{cursor: "pointer", opacity: 0.45}}/>
+    <EyeOutlined
+        onClick={()=>{asyncDiffCommit(props.l.hash)}}
+        style={{cursor: "pointer",opacity: 0.45}} />
+  </Space>
 
   return (
       <Card size="small"
             title={props.l.hash.substring(0, 7)}
-            extra={<SnippetsOutlined onClick={() => {
-              copyHashClipboard(props.l.hash)
-            }} style={{cursor: "pointer", opacity: 0.45}}/>}
-            style={{marginBottom: 10}}
+            extra={extra}
+            style={{marginBottom: 10,borderColor:props.l.hash === commitId?themeColor:"#f0f0f0"}}
       >
         <div style={style.item}>
           <div>

@@ -61,6 +61,5 @@
 .right {
     flex: 1;
     height: 100%;
-    padding: 12px 0;
     overflow-y: auto;
 }

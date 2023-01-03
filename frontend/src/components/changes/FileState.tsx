@@ -1,7 +1,7 @@
 import { main } from "../../../wailsjs/go/models"
 import React from "react";
 import { Checkbox } from 'antd';
-import { asyncDiffWorkStage } from "../../store/sliceDiff"
+import { asyncDiffWorkStage } from "../../store/sliceWorkDiff"
 import {useSelector} from "react-redux";
 import {State} from "../../store";
 
@@ -35,7 +35,7 @@ const color = (s:string) => {
 
 
 const FileState = (props:{s:main.Status}) => {
-  const path = useSelector((state: State) => state.diff.filePath);
+  const path = useSelector((state: State) => state.diffWork.filePath);
 
   return <div className="file">
     <Checkbox value={props.s.file} style={{marginRight:6}}/>

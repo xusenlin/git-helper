@@ -4,13 +4,15 @@ import {categoriesReducer} from "./sliceCategory";
 import {SettingState,settingReducer} from "./sliceSetting";
 import {CategoryState} from "./sliceCategory";
 import { Main } from "./sliceMain"
-import { DiffState,diffReducer } from "./sliceDiff"
+import { DiffWorkState,diffWorkReducer } from "./sliceWorkDiff"
+import { DiffCommitState,diffCommitReducer } from "./sliceCommitDiff"
 
 export type State = {
-  categories:CategoryState
-  main:Main
-  setting:SettingState
-  diff:DiffState
+  categories:CategoryState,
+  main:Main,
+  setting:SettingState,
+  diffWork:DiffWorkState,
+  diffCommit:DiffCommitState,
 }
 
 const store = configureStore({
@@ -18,7 +20,8 @@ const store = configureStore({
     main: mainReducer,
     categories: categoriesReducer,
     setting:settingReducer,
-    diff:diffReducer
+    diffWork:diffWorkReducer,
+    diffCommit:diffCommitReducer
   }
 });
 

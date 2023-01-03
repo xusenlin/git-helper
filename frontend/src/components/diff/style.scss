@@ -1,0 +1,36 @@
+.diff{
+    p{
+        margin:0;
+        padding:6px;
+        white-space: pre-wrap;
+        font-size:14px;
+    }
+}
+.diff-commit{
+    display: flex;
+    height: calc(100vh - 60px);
+    flex-direction: column;
+    .diff-commit-row{
+        padding:8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        .diff-commit-left{
+            color: #222;
+
+        }
+        .diff-commit-right{
+            margin-left: 10px;
+        }
+        .diff-commit-left,.diff-commit-right{
+            width: 50%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    .diff-changes-file{
+        flex: 1;
+        overflow-y: auto;
+    }
+}

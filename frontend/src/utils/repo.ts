@@ -1,6 +1,8 @@
 import {Category, Repository} from "../store/sliceCategory";
 import {FileStatus, Log} from "../../wailsjs/go/main/App";
 import {setLog, setStatus} from "../store/sliceMain";
+
+
 import {warning} from "./common";
 import {store} from "../store";
 
@@ -28,6 +30,7 @@ export const updateWorkZone = async () => {
     store.dispatch(setStatus(s))
     const l = await Log()
     store.dispatch(setLog(l))
+
   } catch (e) {
     console.log(e)
     warning("updateWorkZone：" + JSON.stringify(e))

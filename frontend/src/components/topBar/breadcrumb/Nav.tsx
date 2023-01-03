@@ -6,7 +6,8 @@ import {useSelector, useDispatch} from "react-redux";
 import {warning} from "../../../utils/common"
 import { SwitchBranch} from "../../../../wailsjs/go/main/App"
 import {HomeOutlined, BranchesOutlined} from '@ant-design/icons';
-
+import {resetState as resetWorkDiffState} from "../../../store/sliceWorkDiff";
+import {resetState as resetCommitDiffState} from "../../../store/sliceCommitDiff";
 
 const Nav = () => {
   const main = useSelector((state: State) => state.main);
@@ -26,6 +27,10 @@ const Nav = () => {
       dispatch(setBranch(b))
 
       await updateWorkZone()
+
+      dispatch(resetCommitDiffState())
+      dispatch(resetWorkDiffState())
+
     }catch (e) {
       console.log(e)
       warning(JSON.stringify(e))

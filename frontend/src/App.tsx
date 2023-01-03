@@ -1,4 +1,5 @@
 import './App.css';
+import {State} from "./store";
 import {Empty, ConfigProvider, Tabs} from "antd"
 import Sides from "./components/sides/Sides"
 import SidesTop from "./components/sides/SidesTop"
@@ -9,17 +10,21 @@ import Theme from "./components/dialog/Theme"
 import Branch from "./components/branch/Index"
 // import Helper from "./components/helper/Index"
 import TopBar from "./components/topBar/TopBar"
-import DiffView from "./components/diff/DiffView"
+import DiffWorkView from "./components/diff/DiffWorkView"
+import DiffCommitView from "./components/diff/DiffCommitView"
 import {setRepository, Category} from "./store/sliceCategory"
 import {useDispatch, useSelector} from "react-redux";
-import {State} from "./store";
 import {ReadJsonFile} from "../wailsjs/go/main/App";
+import { resetState as resetDiffState } from "./store/sliceWorkDiff";
+import {useState} from "react";
 
 
 function App() {
   const main = useSelector((state: State) => state.main);
   const themeColor = useSelector((state: State) => state.setting.themeColor);
   const dispatch = useDispatch();
+  const [activeTab,setActiveTab] = useState("1")
+
 
   ReadJsonFile().then(r => {
     const data = JSON.parse(r) as Category[]
@@ -34,8 +39,9 @@ function App() {
     <div className="left">
       <Tabs
           style={{height:"100%"}}
-          defaultActiveKey="1"
+          defaultActiveKey={activeTab}
           centered
+          onChange={(k:string)=>{setActiveTab(k)}}
           items={[
             {
               label: `Changes`,
@@ -51,7 +57,12 @@ function App() {
       />
     </div>
     <div className="right">
-      <DiffView/>
+      <div style={{display:activeTab==="1"?"block":"none",padding: "12px 0"}}>
+        <DiffWorkView />
+      </div>
+      <div style={{display:activeTab==="2"?"block":"none",padding:0}}>
+        <DiffCommitView/>
+      </div>
     </div>
   </>
 
