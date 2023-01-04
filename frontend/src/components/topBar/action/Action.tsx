@@ -1,12 +1,23 @@
 import {useDispatch} from "react-redux";
 import {Button, message, notification, Space} from 'antd';
-import { warning } from "../../../utils/common";
-import {OpenFileManage, OpenTerminal,GitPull,GitPush} from "../../../../wailsjs/go/main/App"
-import {setOpenRepositoryTag,setOpenRepositoryBranch,setOpenMoreHelper} from "../../../store/sliceSetting";
-import {ArrowUpOutlined, ArrowDownOutlined, CodeOutlined, FolderOpenOutlined,TagOutlined,BranchesOutlined,MoreOutlined} from '@ant-design/icons';
-import React from "react";
+import {warning} from "../../../utils/common";
+import {OpenFileManage, OpenTerminal, GitPull, GitPush} from "../../../../wailsjs/go/main/App"
+import {setOpenRepositoryTag, setOpenRepositoryBranch, setOpenMoreHelper} from "../../../store/sliceSetting";
+import {
+  ArrowUpOutlined,
+  ArrowDownOutlined,
+  CodeOutlined,
+  FolderOpenOutlined,
+  TagOutlined,
+  BranchesOutlined,
+  // MoreOutlined
+} from '@ant-design/icons';
+import React, {useState} from "react";
 
-function Action() {
+const Action = () => {
+  const [pullLoading,setPullLoading] = useState<boolean>(false)
+  const [pushLoading,setPushLoading] = useState<boolean>(false)
+
   const dispatch = useDispatch();
 
   const openTerminal = async () => {
@@ -18,7 +29,8 @@ function Action() {
     }
   }
   const openFileManage = () => {
-    OpenFileManage().then(()=>{}).catch(e=>{
+    OpenFileManage().then(() => {
+    }).catch(e => {
       warning(JSON.stringify(e))
     })
   }
@@ -32,8 +44,9 @@ function Action() {
   const openMoreHelper = () => {
     dispatch(setOpenMoreHelper(true))
   }
-  const pushRepo = ()=>{
-    GitPush().then(out=>{
+  const pushRepo = () => {
+    setPushLoading(true)
+    GitPush().then(out => {
       notification.success({
         message: `Out`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{out}</div>,
@@ -43,7 +56,7 @@ function Action() {
           top: 40,
         },
       });
-    }).catch(e=>{
+    }).catch(e => {
       notification.warning({
         message: `Tip`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{e}</div>,
@@ -53,10 +66,11 @@ function Action() {
           top: 40,
         },
       });
-    })
+    }).finally(()=>{setPushLoading(false)})
   }
-  const pullRepo = ()=>{
-    GitPull().then(out=>{
+  const pullRepo = () => {
+    setPullLoading(true)
+    GitPull().then(out => {
       notification.success({
         message: `Out`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{out}</div>,
@@ -66,7 +80,7 @@ function Action() {
           top: 40,
         },
       });
-    }).catch(e=>{
+    }).catch(e => {
       notification.warning({
         message: `Tip`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{e}</div>,
@@ -76,14 +90,14 @@ function Action() {
           top: 40,
         },
       });
-    })
+    }).finally(()=>{setPullLoading(false)})
   }
   return (
       <Space className="action">
-        <Button shape="circle" type="primary" onClick={pullRepo} icon={<ArrowDownOutlined/>}/>
-        <Button shape="circle" type="primary" onClick={pushRepo} icon={<ArrowUpOutlined/>}/>
+        <Button loading={pullLoading} shape="circle" type="primary" onClick={pullRepo} icon={<ArrowDownOutlined/>}/>
+        <Button loading={pushLoading} shape="circle" type="primary" onClick={pushRepo} icon={<ArrowUpOutlined/>}/>
         <Button shape="circle" type="primary" onClick={openTerminal} icon={<CodeOutlined/>}/>
-        <Button shape="circle" type="primary" onClick={openFileManage} icon={<FolderOpenOutlined />}/>
+        <Button shape="circle" type="primary" onClick={openFileManage} icon={<FolderOpenOutlined/>}/>
         <Button shape="circle" type="primary" onClick={openRepositoryBranch} icon={<BranchesOutlined/>}/>
         <Button shape="circle" type="primary" onClick={openRepositoryTag} icon={<TagOutlined/>}/>
         {/*<Button shape="circle" type="primary" onClick={openMoreHelper} icon={<MoreOutlined/>}/>*/}

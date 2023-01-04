@@ -26,7 +26,7 @@ const Nav = () => {
       }
       dispatch(setBranch(b))
 
-      await updateWorkZone()
+      await updateWorkZone(main.selectedRepositoryId)
 
       dispatch(resetCommitDiffState())
       dispatch(resetWorkDiffState())

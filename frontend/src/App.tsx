@@ -8,15 +8,13 @@ import History from "./components/history/Index"
 import Tag from "./components/tag/Index"
 import Theme from "./components/dialog/Theme"
 import Branch from "./components/branch/Index"
-// import Helper from "./components/helper/Index"
 import TopBar from "./components/topBar/TopBar"
 import DiffWorkView from "./components/diff/DiffWorkView"
 import DiffCommitView from "./components/diff/DiffCommitView"
 import {setRepository, Category} from "./store/sliceCategory"
 import {useDispatch, useSelector} from "react-redux";
 import {ReadJsonFile} from "../wailsjs/go/main/App";
-import { resetState as resetDiffState } from "./store/sliceWorkDiff";
-import {useState} from "react";
+import {useState,useEffect} from "react";
 
 
 function App() {
@@ -26,13 +24,15 @@ function App() {
   const [activeTab,setActiveTab] = useState("1")
 
 
-  ReadJsonFile().then(r => {
-    const data = JSON.parse(r) as Category[]
-    dispatch(setRepository(data))
-  }).catch(e => {
-    // warning(JSON.stringify(e))
-    // console.log(e)
-  })
+
+  // ReadJsonFile().then(r => {
+  //   console.log("ReadJsonFile")
+  //   const data = JSON.parse(r) as Category[]
+  //   dispatch(setRepository(data))
+  // }).catch(e => {
+  //   // warning(JSON.stringify(e))
+  //   // console.log(e)
+  // })
 
 
   const content = <>

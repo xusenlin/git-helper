@@ -15,7 +15,7 @@ type DiffCommitInfo struct {
 	Statistics   string        `json:"statistics"`
 }
 
-func (a *App) DiffCommit(commitId string) (DiffCommitInfo, error) {
+func (a *App) DiffCommit(newCommitId, oldCommitId string) (DiffCommitInfo, error) {
 	path, err := a.RepositoryPath()
 
 	var content DiffCommitInfo
@@ -23,7 +23,7 @@ func (a *App) DiffCommit(commitId string) (DiffCommitInfo, error) {
 	if err != nil {
 		return content, err
 	}
-	out, err := utils.RunCmdByPath(path, "git", "diff", commitId, "--stat")
+	out, err := utils.RunCmdByPath(path, "git", "diff", oldCommitId, newCommitId, "--stat")
 	if err != nil {
 		return content, err
 	}

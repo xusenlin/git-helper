@@ -39,8 +39,8 @@ const mainSlice = createSlice({
     setAllBranch(state, action: PayloadAction<main.Branch[]>) {
       state.currentlyRepositoryAllBranch = action.payload || []
     },
-    setStatus(state, action: PayloadAction<main.Status[]>) {
-      state.currentlyRepositoryState = action.payload || []
+    setStatus(state, {payload}: PayloadAction<main.Status[]>) {
+      state.currentlyRepositoryState = payload || []
     },
     setTag(state, action: PayloadAction<main.Tag[]>) {
       state.currentlyRepositoryTag = action.payload || []

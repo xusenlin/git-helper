@@ -1,4 +1,4 @@
-import {Menu} from 'antd';
+import {Badge, Menu} from 'antd';
 import React from 'react';
 import type {MenuProps} from 'antd';
 import {State} from '../../store/index'
@@ -35,7 +35,7 @@ const Sides = () => {
 
 
   const menuData: MenuItem[] = categories.map(c => {
-    let children = c.repositories.map(r => getItem(r.name, r.id))
+    let children = c.repositories.map(r => getItem(<Badge style={{paddingLeft:6}} status={r.status || "error"} text={r.name}/>, r.id))
     return getItem(c.name, c.name, null, children, 'group')
   })
   const onClick: MenuProps['onClick'] = async (e) => {

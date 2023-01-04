@@ -7,7 +7,6 @@ import {addDefaultRepository} from "./store/sliceCategory"
 import {setOpenRepositorySetting} from "./store/sliceSetting"
 
 
-
 //===================Repository Menu Event========
 
 EventsOn("Repository_A", async (id:string,path: string) => {
@@ -25,7 +24,7 @@ EventsOn("Repository_A", async (id:string,path: string) => {
     const p = path.split('/')
     let name = p[p.length-1]
 
-    store.dispatch(addDefaultRepository({id, path, name}))
+    store.dispatch(addDefaultRepository({id, path, name,status:"success"}))
   } catch (e) {
     console.log(e)
     warning(JSON.stringify(e))

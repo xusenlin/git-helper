@@ -7,9 +7,9 @@ const History = () => {
   const logs = useSelector((state: State) => state.main.currentlyRepositoryLogs);
 
   return (
-      <Block title="History" >
+      <Block>
         <div style={{padding:12}}>
-          {logs.map(r=><Item l={r} key={r.hash} />)}
+          {logs.map((r,index)=><Item nextHash={index===(logs.length-1)?"":logs[index+1].hash} l={r} key={r.hash} />)}
         </div>
       </Block>
   );

@@ -2,7 +2,6 @@ package main
 
 import (
 	"git-helper/utils"
-	"github.com/go-git/go-git/v5"
 	"strings"
 )
 
@@ -60,40 +59,40 @@ func (a *App) FileStatus() ([]Status, error) {
 }
 
 func (a *App) Commit(title, msg string, fileList []string) (string, error) {
-	w, err := a.repository.Worktree()
-
-	if err != nil {
-		return "", err
-	}
-	for _, f := range fileList {
-		_, err := w.Add(f)
-		if err != nil {
-			return "", err
-		}
-	}
-	h, err := w.Commit(title+": "+msg, &git.CommitOptions{})
-	if err != nil {
-		return "", err
-	}
-
-	return h.String(), nil
-	//path, err := a.RepositoryPath()
+	//w, err := a.repository.Worktree()
 	//
 	//if err != nil {
 	//	return "", err
 	//}
-	//
 	//for _, f := range fileList {
-	//	out, err := utils.RunCmdByPath(path, "git", "add", f)
+	//	_, err := w.Add(f)
 	//	if err != nil {
-	//		return out, err
+	//		return "", err
 	//	}
 	//}
-	//out, err := utils.RunCmdByPath(path, "git", "commit", "-m", title+"/n"+msg)
-	//
+	//h, err := w.Commit(title+": "+msg, &git.CommitOptions{})
 	//if err != nil {
-	//	return out, err
+	//	return "", err
 	//}
-	//return out, nil
+	//
+	//return h.String(), nil
+	path, err := a.RepositoryPath()
+
+	if err != nil {
+		return "", err
+	}
+
+	for _, f := range fileList {
+		out, err := utils.RunCmdByPath(path, "git", "add", f)
+		if err != nil {
+			return out, err
+		}
+	}
+	out, err := utils.RunCmdByPath(path, "git", "commit", "-m", title+":"+msg)
+
+	if err != nil {
+		return out, err
+	}
+	return out, nil
 
 }

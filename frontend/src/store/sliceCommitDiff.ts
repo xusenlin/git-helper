@@ -34,8 +34,8 @@ export const {
 } = diffCommitSlice.actions
 
 //async action ===============
-export const asyncDiffCommit = (commitId: string) => {
-  DiffCommit(commitId).then(r => {
+export const asyncDiffCommit = (commitId: string,commitId2: string) => {
+  DiffCommit(commitId,commitId2).then(r => {
     store.dispatch(updateState({
       commitId,
       filesInfo:r.changesFiles||[],

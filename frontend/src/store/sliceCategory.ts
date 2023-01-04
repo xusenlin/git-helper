@@ -1,11 +1,13 @@
 import {warning} from '../utils/common'
 import {createSlice} from '@reduxjs/toolkit';
+import { PresetStatusColorType } from "antd/es/_util/colors"
 import type {PayloadAction} from '@reduxjs/toolkit'
 import {SaveJsonFile} from "../../wailsjs/go/main/App"
 
 export type Repository = {
   id: string
   name: string
+  status: PresetStatusColorType
   path: string
 }
 export type Category = {
@@ -53,27 +55,26 @@ const categoriesSlice = createSlice({
       saveJsonData(state.val)
     },
     delRepository(state, action: PayloadAction<string>){
-      let cIndex=-1,rIndex=-1;
-      state.val.forEach((c,i)=>{
-        rIndex = c.repositories.findIndex(r=>r.id === action.payload)
-        if(rIndex!==-1){
-          cIndex = i
+      for (let i = 0; i < state.val.length; i++) {
+        let c =  state.val[i]
+        let index = c.repositories.findIndex(r=>r.id === action.payload)
+        if(index!==-1){
+          state.val[index].repositories.splice(i, 1)
+          saveJsonData(state.val)
+          return
         }
-      })
-      state.val[cIndex].repositories.splice(rIndex, 1)
-      saveJsonData(state.val)
+      }
     },
     editRepositoryName(state, action: PayloadAction<{ id:string,name:string }>){
-      let cIndex=-1,rIndex=-1;
-      state.val.forEach((c,i)=>{
-        rIndex = c.repositories.findIndex(r=>r.id === action.payload.id)
-        if(rIndex!==-1){
-          cIndex = i
+      for (let i = 0; i < state.val.length; i++) {
+        let c =  state.val[i]
+        let index = c.repositories.findIndex(r=>r.id === action.payload.id)
+        if(index!==-1){
+          state.val[i].repositories[index].name = action.payload.name
+          saveJsonData(state.val)
+          return
         }
-      })
-      state.val[cIndex].repositories[rIndex].name = action.payload.name
-
-      saveJsonData(state.val)
+      }
     },
     moveRepository(state, action: PayloadAction<{ source: Droppable, destination: Droppable }>) {
       let sourceIndex = state.val.findIndex(r => r.name === action.payload.source.droppableId)
@@ -82,6 +83,18 @@ const categoriesSlice = createSlice({
       state.val[destinationIndex].repositories.splice(action.payload.destination.index, 0, r[0])
 
       saveJsonData(state.val)
+
+    },
+    updateRepositoryStatus(state, {payload}: PayloadAction<{ id:string,status:PresetStatusColorType }>){
+      for (let i = 0; i < state.val.length; i++) {
+        let c =  state.val[i]
+        let index = c.repositories.findIndex(r=>r.id === payload.id)
+        if(index!==-1){
+          state.val[i].repositories[index].status = payload.status
+          saveJsonData(state.val)
+          return
+        }
+      }
 
     },
     addCategory(state, action: PayloadAction<string>) {
@@ -125,7 +138,7 @@ export const {
   delCategory,
   setRepository,
   delRepository,
-  editRepositoryName
+  editRepositoryName,updateRepositoryStatus
 } = categoriesSlice.actions
 
 

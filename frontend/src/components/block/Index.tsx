@@ -2,7 +2,7 @@ import "./index.scss"
 import {ReactNode} from "react"
 
 type propType = {
-  title: string
+  title?: string|ReactNode
   children: ReactNode
   bottom?: ReactNode
   action?:ReactNode
@@ -11,9 +11,9 @@ type propType = {
 const Block = (props: propType) => {
   return (
       <div className="main-block">
-        { props.action?<div className="top-title">
-          {/*<div className='title'>{props.title}</div>*/}
-          <div className='title'></div>
+        { props.action || props.title ?<div className="top-title">
+          <div className='title'>{props.title}</div>
+          {/*<div className='title'></div>*/}
           <div className="action">{props.action}</div>
         </div>:'' }
 

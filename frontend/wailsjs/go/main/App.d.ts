@@ -18,7 +18,7 @@ export function DelBranch(arg1:string,arg2:boolean):Promise<string>;
 
 export function DelTag(arg1:string):Promise<Error>;
 
-export function DiffCommit(arg1:string):Promise<main.DiffCommitInfo>;
+export function DiffCommit(arg1:string,arg2:string):Promise<main.DiffCommitInfo>;
 
 export function DiffWorkStage(arg1:string):Promise<Array<main.DiffContent>>;
 

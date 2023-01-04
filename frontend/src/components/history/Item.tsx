@@ -21,7 +21,7 @@ const style = {
   msg:{color: "#6a6a6a",fontSize:13,marginTop:10}
 }
 
-const Item = (props: { l: main.Log }) => {
+const Item = (props: { l: main.Log,nextHash:string }) => {
   const themeColor = useSelector((state: State) => state.setting.themeColor);
   const commitId = useSelector((state: State) => state.diffCommit.commitId);
 
@@ -29,9 +29,11 @@ const Item = (props: { l: main.Log }) => {
     <SnippetsOutlined
         onClick={async () => {await copyHashClipboard(props.l.hash)}}
         style={{cursor: "pointer", opacity: 0.45}}/>
+    {props.nextHash &&
     <EyeOutlined
-        onClick={()=>{asyncDiffCommit(props.l.hash)}}
+        onClick={()=>{asyncDiffCommit(props.l.hash,props.nextHash)}}
         style={{cursor: "pointer",opacity: 0.45}} />
+    }
   </Space>
 
   return (

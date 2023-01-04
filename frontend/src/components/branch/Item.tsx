@@ -1,20 +1,21 @@
 import {Card, Modal,Space,Checkbox} from "antd"
 import dayjs from "dayjs"
-import {useState} from "react"
-import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {warning, success, copyHashClipboard} from "../../utils/common";
 import {main} from "../../../wailsjs/go/models"
 import {DelBranch, GetBranch} from "../../../wailsjs/go/main/App"
-import {DeleteOutlined, SnippetsOutlined,ArrowRightOutlined} from "@ant-design/icons"
+import {DeleteOutlined, SnippetsOutlined,ArrowLeftOutlined} from "@ant-design/icons"
 import {setAllBranch} from "../../store/sliceMain";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {mainBranch} from "../../config/app";
+import {State} from "../../store";
 
 dayjs.extend(relativeTime)
 
 
 const Item = (props: { b: main.Branch }) => {
+  const sledBranch = useSelector((state: State) => state.main.selectedRepositoryBranch);
+
   const dispatch = useDispatch();
 
   const delBranch = (name: string) => {
@@ -41,12 +42,14 @@ const Item = (props: { b: main.Branch }) => {
 
   const extra = <Space>
     {
-        (mainBranch != props.b.name) &&
+        (sledBranch != props.b.name ) && <ArrowLeftOutlined style={{cursor: "pointer", opacity: 0.45}} />
+    }
+    {
+        (mainBranch != props.b.name) && (sledBranch != props.b.name ) &&
         <DeleteOutlined onClick={() => {
           delBranch(props.b.name)
         }} style={{cursor: "pointer", opacity: 0.45}}/>
     }
-    <ArrowRightOutlined style={{cursor: "pointer", opacity: 0.45}} />
   </Space>
 
   return (
