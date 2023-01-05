@@ -3,7 +3,7 @@ import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {warning, success, copyHashClipboard} from "../../utils/common";
 import {main} from "../../../wailsjs/go/models"
-import {DelBranch, GetBranch} from "../../../wailsjs/go/main/App"
+import {DelBranch, GetBranch,GetLastCommit,PreMergeResult} from "../../../wailsjs/go/main/App"
 import {DeleteOutlined, SnippetsOutlined,ArrowLeftOutlined} from "@ant-design/icons"
 import {setAllBranch} from "../../store/sliceMain";
 import {useDispatch, useSelector} from "react-redux";
@@ -40,9 +40,21 @@ const Item = (props: { b: main.Branch }) => {
     });
   }
 
+  const merge = async () => {
+    try {
+      const hash = await GetLastCommit(sledBranch)
+      console.log(hash)
+      console.log(props.b.hash)
+      const result = await PreMergeResult(hash,props.b.hash)
+      console.log(result)
+    }catch (e) {
+      console.log(e)
+      warning(JSON.stringify(e))
+    }
+  }
   const extra = <Space>
     {
-        (sledBranch != props.b.name ) && <ArrowLeftOutlined style={{cursor: "pointer", opacity: 0.45}} />
+        (sledBranch != props.b.name ) && <ArrowLeftOutlined onClick={merge} style={{cursor: "pointer", opacity: 0.45}} />
     }
     {
         (mainBranch != props.b.name) && (sledBranch != props.b.name ) &&

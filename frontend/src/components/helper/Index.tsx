@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {cmd} from "../../config/gitCmd"
 import {useDispatch, useSelector} from "react-redux";
 import {PlayCircleOutlined} from "@ant-design/icons";
-import {RunGitCmd} from "../../../wailsjs/go/main/App"
+import {RunCmd} from "../../../wailsjs/go/main/App"
 import {setOpenMoreHelper} from "../../store/sliceSetting";
 import {Input, Space, Drawer, Empty, Tag, theme, Tooltip, notification} from "antd";
 
@@ -19,7 +19,7 @@ const Helper = () => {
     dispatch(setOpenMoreHelper(false))
   }
   const runCmd = (cmd: string) => {
-    RunGitCmd(cmd).then(out => {
+    RunCmd(cmd).then(out => {
       notification.success({
         message: `Tip`,
         description: <pre>{out}</pre>,

@@ -50,6 +50,10 @@ export function GetBranch() {
   return window['go']['main']['App']['GetBranch']();
 }
 
+export function GetLastCommit(arg1) {
+  return window['go']['main']['App']['GetLastCommit'](arg1);
+}
+
 export function GitPull() {
   return window['go']['main']['App']['GitPull']();
 }
@@ -78,6 +82,10 @@ export function OpenTerminal() {
   return window['go']['main']['App']['OpenTerminal']();
 }
 
+export function PreMergeResult(arg1, arg2) {
+  return window['go']['main']['App']['PreMergeResult'](arg1, arg2);
+}
+
 export function ReadJsonFile() {
   return window['go']['main']['App']['ReadJsonFile']();
 }
@@ -86,8 +94,8 @@ export function RepositoryPath() {
   return window['go']['main']['App']['RepositoryPath']();
 }
 
-export function RunGitCmd(arg1) {
-  return window['go']['main']['App']['RunGitCmd'](arg1);
+export function RunCmd(arg1) {
+  return window['go']['main']['App']['RunCmd'](arg1);
 }
 
 export function SaveJsonFile(arg1) {

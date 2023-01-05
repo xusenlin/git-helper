@@ -26,6 +26,8 @@ export function FileStatus():Promise<Array<main.Status>>;
 
 export function GetBranch():Promise<Array<main.Branch>>;
 
+export function GetLastCommit(arg1:string):Promise<string>;
+
 export function GitPull():Promise<string>;
 
 export function GitPush():Promise<string>;
@@ -40,11 +42,13 @@ export function OpenFileManage():Promise<Error>;
 
 export function OpenTerminal():Promise<Error>;
 
+export function PreMergeResult(arg1:string,arg2:string):Promise<main.MergeResult>;
+
 export function ReadJsonFile():Promise<string>;
 
 export function RepositoryPath():Promise<string>;
 
-export function RunGitCmd(arg1:string):Promise<string>;
+export function RunCmd(arg1:string):Promise<string>;
 
 export function SaveJsonFile(arg1:string):Promise<Error>;
 

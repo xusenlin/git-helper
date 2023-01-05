@@ -45,7 +45,7 @@ func (a *App) Clipboard(t string) error {
 	return clipboard.WriteAll(t)
 }
 
-func (a *App) RunGitCmd(cmd string) (string, error) {
+func (a *App) RunCmd(cmd string) (string, error) {
 	path, err := a.RepositoryPath()
 	if err != nil {
 		return "", err
@@ -53,4 +53,5 @@ func (a *App) RunGitCmd(cmd string) (string, error) {
 	c := strings.Split(cmd, " ")
 
 	return utils.RunCmdByPath(path, c[0], c[1:]...)
+
 }

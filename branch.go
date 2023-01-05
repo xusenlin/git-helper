@@ -3,6 +3,7 @@ package main
 import (
 	"git-helper/utils"
 	"github.com/go-git/go-git/v5/plumbing"
+	"strings"
 )
 
 type Branch struct {
@@ -88,4 +89,18 @@ func (a *App) AddBranch(branchName string) error {
 		return err
 	}
 	return nil
+}
+
+func (a *App) GetLastCommit(branchName string) (string, error) {
+
+	path, err := a.RepositoryPath()
+	if err != nil {
+		return "", err
+	}
+	hash, err := utils.RunCmdByPath(path, "git", "rev-parse", branchName)
+	if err != nil {
+		return "", err
+	}
+	h := strings.TrimSpace(hash)
+	return h, nil
 }
