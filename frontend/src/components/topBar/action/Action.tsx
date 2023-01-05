@@ -50,7 +50,7 @@ const Action = () => {
       notification.success({
         message: `Out`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{out}</div>,
-        placement: "topLeft",
+        placement: "bottomRight",
         style: {
           width: 500,
           top: 40,
@@ -60,7 +60,7 @@ const Action = () => {
       notification.warning({
         message: `Tip`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{e}</div>,
-        placement: "topLeft",
+        placement: "bottomRight",
         style: {
           width: 500,
           top: 40,
@@ -74,7 +74,7 @@ const Action = () => {
       notification.success({
         message: `Out`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{out}</div>,
-        placement: "topLeft",
+        placement: "bottomRight",
         style: {
           width: 500,
           top: 40,
@@ -84,7 +84,7 @@ const Action = () => {
       notification.warning({
         message: `Tip`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{e}</div>,
-        placement: "topLeft",
+        placement: "bottomRight",
         style: {
           width: 500,
           top: 40,

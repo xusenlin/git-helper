@@ -23,7 +23,7 @@ const Helper = () => {
       notification.success({
         message: `Tip`,
         description: <pre>{out}</pre>,
-        placement: "topLeft",
+        placement: "bottomRight",
         style: {
           top: 40,
         },
@@ -33,7 +33,7 @@ const Helper = () => {
       notification.warning({
         message: `Tip`,
         description: <div style={{whiteSpace: "pre-wrap"}}>{e}</div>,
-        placement: "topLeft",
+        placement: "bottomRight",
         style: {
           width: 500,
           top: 40,
