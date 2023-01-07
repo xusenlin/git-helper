@@ -23,7 +23,6 @@ const Action = () => {
   const openTerminal = async () => {
     try {
       await OpenTerminal()
-      await message.success("Dir cmd has been copied to clipboard.")
     } catch (e) {
       warning(JSON.stringify(e))
     }

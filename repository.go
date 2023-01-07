@@ -40,14 +40,10 @@ func (a *App) OpenTerminal() error {
 	if err != nil {
 		return err
 	}
-	err = a.Clipboard("cd " + path)
-	if err != nil {
-		return err
-	}
 	var cmd *exec.Cmd
 	switch sysRuntime.GOOS {
 	case "darwin":
-		cmd = exec.Command("open", "-a", "Terminal")
+		cmd = exec.Command("open", "-b", "com.apple.Terminal", path)
 	case "linux":
 		cmd = exec.Command("x-terminal-emulator")
 	case "windows":
