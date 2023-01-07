@@ -13,7 +13,7 @@ import {State} from "../../store";
 dayjs.extend(relativeTime)
 
 
-const Item = (props: { b: main.Branch }) => {
+const Item = (props: { b: main.Branch,merge:()=>void }) => {
   const sledBranch = useSelector((state: State) => state.main.selectedRepositoryBranch);
 
   const dispatch = useDispatch();
@@ -41,17 +41,13 @@ const Item = (props: { b: main.Branch }) => {
   }
 
   const merge = async () => {
-    try {
-      const hash = await GetLastCommit(sledBranch)
-      console.log(hash)
-      console.log(props.b.hash)
-      const result = await PreMergeResult(hash,props.b.hash)
-      console.log(result)
-    }catch (e) {
-      console.log(e)
-      warning(JSON.stringify(e))
+    if(!sledBranch){
+      warning("please select a branch first")
+      return
     }
+    props.merge()
   }
+
   const extra = <Space>
     {
         (sledBranch != props.b.name ) && <ArrowLeftOutlined onClick={merge} style={{cursor: "pointer", opacity: 0.45}} />

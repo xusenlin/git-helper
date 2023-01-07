@@ -36,6 +36,12 @@ export function IsGitRepository(arg1:string):Promise<boolean>;
 
 export function Log():Promise<Array<main.Log>>;
 
+export function MergeCommit(arg1:string,arg2:string):Promise<string>;
+
+export function MergeRebase(arg1:string,arg2:string):Promise<string>;
+
+export function MergeSquash(arg1:string,arg2:string):Promise<string>;
+
 export function MessageDialog(arg1:string,arg2:string):Promise<void>;
 
 export function OpenFileManage():Promise<Error>;

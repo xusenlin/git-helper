@@ -1,8 +1,9 @@
 import {useDispatch} from "react-redux";
 import {Button, message, notification, Space} from 'antd';
 import {warning} from "../../../utils/common";
+import {warningNotification,successNotification} from "../../../utils/notification";
 import {OpenFileManage, OpenTerminal, GitPull, GitPush} from "../../../../wailsjs/go/main/App"
-import {setOpenRepositoryTag, setOpenRepositoryBranch, setOpenMoreHelper} from "../../../store/sliceSetting";
+import {setOpenRepositoryTag, setOpenRepositoryBranch} from "../../../store/sliceSetting";
 import {
   ArrowUpOutlined,
   ArrowDownOutlined,
@@ -10,7 +11,6 @@ import {
   FolderOpenOutlined,
   TagOutlined,
   BranchesOutlined,
-  // MoreOutlined
 } from '@ant-design/icons';
 import React, {useState} from "react";
 
@@ -41,55 +41,23 @@ const Action = () => {
     dispatch(setOpenRepositoryBranch(true))
 
   }
-  const openMoreHelper = () => {
-    dispatch(setOpenMoreHelper(true))
-  }
+  // const openMoreHelper = () => {
+  //   dispatch(setOpenMoreHelper(true))
+  // }
   const pushRepo = () => {
     setPushLoading(true)
     GitPush().then(out => {
-      notification.success({
-        message: `Out`,
-        description: <div style={{whiteSpace: "pre-wrap"}}>{out}</div>,
-        placement: "bottomRight",
-        style: {
-          width: 500,
-          top: 40,
-        },
-      });
+      successNotification(out,{width:500})
     }).catch(e => {
-      notification.warning({
-        message: `Tip`,
-        description: <div style={{whiteSpace: "pre-wrap"}}>{e}</div>,
-        placement: "bottomRight",
-        style: {
-          width: 500,
-          top: 40,
-        },
-      });
+      warningNotification(e,{width:500})
     }).finally(()=>{setPushLoading(false)})
   }
   const pullRepo = () => {
     setPullLoading(true)
     GitPull().then(out => {
-      notification.success({
-        message: `Out`,
-        description: <div style={{whiteSpace: "pre-wrap"}}>{out}</div>,
-        placement: "bottomRight",
-        style: {
-          width: 500,
-          top: 40,
-        },
-      });
+      successNotification(out,{width:500})
     }).catch(e => {
-      notification.warning({
-        message: `Tip`,
-        description: <div style={{whiteSpace: "pre-wrap"}}>{e}</div>,
-        placement: "bottomRight",
-        style: {
-          width: 500,
-          top: 40,
-        },
-      });
+      warningNotification(e,{width:500})
     }).finally(()=>{setPullLoading(false)})
   }
   return (

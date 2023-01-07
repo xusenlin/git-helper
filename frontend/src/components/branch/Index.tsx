@@ -1,20 +1,22 @@
 import "./style.scss"
 import Item from "./Item"
 import {State} from "../../store";
-import React, {useState} from "react";
+import React, {useState,useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input, Space,Drawer,Empty} from "antd";
 import { AddBranch,GetBranch } from "../../../wailsjs/go/main/App"
 import {setOpenRepositoryBranch} from "../../store/sliceSetting";
 import {setAllBranch} from "../../store/sliceMain";
 import { warning } from "../../utils/common"
+import MergeDialog from "./mergeDialog"
+
 
 const Branch = () => {
   const dispatch = useDispatch();
   const branch = useSelector((state: State) => state.main.currentlyRepositoryAllBranch);
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
   const showRepositoryBranch = useSelector((state: State) => state.setting.showRepositoryBranch);
-
+  const mergeDialogComponentRef = useRef<{OpenMergeDialog:(branchName:string)=>void}>(null);
   const [branchName,setBranchName] = useState<string>("")
 
   const addBranch = async () => {
@@ -45,12 +47,15 @@ const Branch = () => {
 
   const content = <>
     <div style={{flex:1,overflowY:"auto",padding:20}}>
-      { branch.map(r=><Item b={r} key={r.hash} />)}
+      { branch.map(r=><Item merge={()=>{mergeDialogComponentRef.current?.OpenMergeDialog(r.name)}} b={r} key={r.name} />)}
     </div>
     <div style={{padding:20}}>
       {bottom}
     </div>
   </>
+
+
+
   return (
       <Drawer
           title="Branch manage"
@@ -59,6 +64,7 @@ const Branch = () => {
           onClose={onCloseBranch}
           open={showRepositoryBranch}
       >
+        <MergeDialog ref={mergeDialogComponentRef}/>
         {selectedRepositoryId?content:<Empty style={{marginTop:200}} description="please select a git repository first" />}
       </Drawer>
   );

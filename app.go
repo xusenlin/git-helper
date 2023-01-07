@@ -7,12 +7,14 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"os/user"
 )
 
 // App struct
 type App struct {
-	ctx        context.Context
-	repository *git.Repository
+	ctx          context.Context
+	repository   *git.Repository
+	dataSaveJson string
 }
 
 // NewApp creates a new App application struct
@@ -24,6 +26,11 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+	u, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+	a.dataSaveJson = u.HomeDir + "/Git_Helper.json"
 }
 
 // Greet returns a greeting for the given name

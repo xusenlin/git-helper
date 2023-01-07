@@ -70,6 +70,18 @@ export function Log() {
   return window['go']['main']['App']['Log']();
 }
 
+export function MergeCommit(arg1, arg2) {
+  return window['go']['main']['App']['MergeCommit'](arg1, arg2);
+}
+
+export function MergeRebase(arg1, arg2) {
+  return window['go']['main']['App']['MergeRebase'](arg1, arg2);
+}
+
+export function MergeSquash(arg1, arg2) {
+  return window['go']['main']['App']['MergeSquash'](arg1, arg2);
+}
+
 export function MessageDialog(arg1, arg2) {
   return window['go']['main']['App']['MessageDialog'](arg1, arg2);
 }

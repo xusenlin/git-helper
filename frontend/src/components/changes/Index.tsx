@@ -48,6 +48,7 @@ const Changes = () => {
       success("Commit hash:"+hash)
       setCommitName("")
       setCommitMessage("")
+      setCheckedList([])
       await updateWorkZone(selectedRepositoryId)
       dispatch(resetState())
     }catch (e) {
@@ -95,7 +96,8 @@ const Changes = () => {
     </Space>
   </div>
 
-  const action = <Space direction="vertical" size="middle" style={{display: 'flex'}}>
+  const action = <Space size="middle" style={{display: 'flex'}}>
+    <div>{checkedList.length}</div>
     <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
       Check all
     </Checkbox>

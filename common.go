@@ -8,7 +8,6 @@ import (
 	"strings"
 )
 
-const JsonDataPath = "./Data.json"
 const TimeLayout = "2006-01-02 15:04:05"
 
 func (a *App) Sha256(s string) string {
@@ -23,10 +22,10 @@ func (a *App) MessageDialog(title string, message string) {
 }
 func (a *App) SaveJsonFile(t string) error {
 
-	if err := utils.RemoveFile(JsonDataPath); err != nil {
+	if err := utils.RemoveFile(a.dataSaveJson); err != nil {
 		return err
 	}
-	err := ioutil.WriteFile(JsonDataPath, []byte(t), 0666)
+	err := ioutil.WriteFile(a.dataSaveJson, []byte(t), 0666)
 
 	if err != nil {
 		return err
@@ -35,7 +34,7 @@ func (a *App) SaveJsonFile(t string) error {
 }
 func (a *App) ReadJsonFile() (string, error) {
 
-	b, err := ioutil.ReadFile(JsonDataPath)
+	b, err := ioutil.ReadFile(a.dataSaveJson)
 	if err != nil {
 		return "", err
 	}

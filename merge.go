@@ -48,7 +48,7 @@ func (a *App) PreMergeResult(currentHash, MergeHash string) (MergeResult, error)
 	if len(matches) != 0 {
 		return MergeResult{Kind: Conflicted, Count: len(matches)}, nil
 	}
-	out, err = utils.RunCmdByPath(path, "git", "rev-list", "--left-right", "--count", currentHash, MergeHash)
+	out, err = utils.RunCmdByPath(path, "git", "rev-list", "--left-right", "--count", currentHash+"..."+MergeHash)
 	if err != nil {
 		return invalidResult, err
 	}
@@ -63,4 +63,64 @@ func (a *App) PreMergeResult(currentHash, MergeHash string) (MergeResult, error)
 		return invalidResult, err
 	}
 	return MergeResult{Kind: Clean, Count: int(i)}, nil
+}
+
+func (a *App) MergeRebase(ourBranch, theirBranch string) (string, error) {
+	path, err := a.RepositoryPath()
+	if err != nil {
+		return "", err
+	}
+	ok, err := a.SwitchBranch(ourBranch)
+	if err != nil {
+		return "", err
+	}
+	if !ok {
+		return "", errors.New("switch branch error")
+	}
+	out, err := utils.RunCmdByPath(path, "git", "rebase", theirBranch)
+
+	if err != nil {
+		return "", err
+	}
+	return out, nil
+}
+
+func (a *App) MergeCommit(ourBranch, theirBranch string) (string, error) {
+	path, err := a.RepositoryPath()
+	if err != nil {
+		return "", err
+	}
+	ok, err := a.SwitchBranch(ourBranch)
+	if err != nil {
+		return "", err
+	}
+	if !ok {
+		return "", errors.New("switch branch error")
+	}
+	out, err := utils.RunCmdByPath(path, "git", "merge", theirBranch)
+
+	if err != nil {
+		return "", err
+	}
+	return out, nil
+}
+
+func (a *App) MergeSquash(ourBranch, theirBranch string) (string, error) {
+	path, err := a.RepositoryPath()
+	if err != nil {
+		return "", err
+	}
+	ok, err := a.SwitchBranch(ourBranch)
+	if err != nil {
+		return "", err
+	}
+	if !ok {
+		return "", errors.New("switch branch error")
+	}
+	out, err := utils.RunCmdByPath(path, "git", "merge", "--squash", theirBranch)
+
+	if err != nil {
+		return "", err
+	}
+	return out, nil
 }
