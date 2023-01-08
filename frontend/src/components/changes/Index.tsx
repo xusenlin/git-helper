@@ -64,7 +64,7 @@ const Changes = () => {
   };
 
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    setCheckedList(e.target.checked ? fileState.map(r => r.file) : []);
+    setCheckedList(e.target.checked ? fileState.map(r => r.path) : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
   };
@@ -119,7 +119,7 @@ const Changes = () => {
             value={checkedList}
             onChange={onChange}
             className="status-file-list">
-          {fileState.map(s => <FileState key={s.file} s={s}/>)}
+          {fileState.map(s => <FileState key={s.path} s={s}/>)}
         </Checkbox.Group>
       </Block>
   );

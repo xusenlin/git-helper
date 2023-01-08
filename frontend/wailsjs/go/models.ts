@@ -152,7 +152,8 @@ export namespace main {
 	}
 	
 	export class Status {
-	    file: string;
+	    name: string;
+	    path: string;
 	    staging: string;
 	    worktree: string;
 	
@@ -162,7 +163,8 @@ export namespace main {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.file = source["file"];
+	        this.name = source["name"];
+	        this.path = source["path"];
 	        this.staging = source["staging"];
 	        this.worktree = source["worktree"];
 	    }

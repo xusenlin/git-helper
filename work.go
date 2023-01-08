@@ -1,12 +1,14 @@
 package main
 
 import (
+	"errors"
 	"git-helper/utils"
 	"strings"
 )
 
 type Status struct {
-	File     string `json:"file"`
+	Name     string `json:"name"`
+	Path     string `json:"path"`
 	Staging  string `json:"staging"`
 	Worktree string `json:"worktree"`
 }
@@ -49,10 +51,23 @@ func (a *App) FileStatus() ([]Status, error) {
 		if len(c) < 4 {
 			continue
 		}
+		staging := c[0:1]
+		worktree := c[1:2]
+		path := c[3:]
+
+		if staging == "R" {
+			p := strings.Split(path, "->")
+			if len(p) != 2 {
+				return changes, errors.New("staging r error")
+			}
+			path = strings.TrimSpace(p[1])
+		}
+
 		changes = append(changes, Status{
-			File:     c[3:],
-			Staging:  c[0:1],
-			Worktree: c[1:2],
+			Name:     c[3:],
+			Path:     path,
+			Staging:  staging,
+			Worktree: worktree,
 		})
 	}
 	return changes, nil
@@ -95,4 +110,19 @@ func (a *App) Commit(title, msg string, fileList []string) (string, error) {
 	}
 	return out, nil
 
+}
+
+func (a *App) DiscardChanges(path string) (string, error) {
+	path, err := a.RepositoryPath()
+
+	if err != nil {
+		return "", err
+	}
+
+	out, err := utils.RunCmdByPath(path, "git", "checkout", "HEAD", "--", path)
+
+	if err != nil {
+		return "", err
+	}
+	return out, nil
 }

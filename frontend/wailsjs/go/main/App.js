@@ -10,10 +10,6 @@ export function BindRepository(arg1) {
   return window['go']['main']['App']['BindRepository'](arg1);
 }
 
-export function ChangesInfo(arg1) {
-  return window['go']['main']['App']['ChangesInfo'](arg1);
-}
-
 export function Clipboard(arg1) {
   return window['go']['main']['App']['Clipboard'](arg1);
 }
@@ -40,6 +36,10 @@ export function DiffCommit(arg1, arg2) {
 
 export function DiffWorkStage(arg1) {
   return window['go']['main']['App']['DiffWorkStage'](arg1);
+}
+
+export function DiscardChanges(arg1) {
+  return window['go']['main']['App']['DiscardChanges'](arg1);
 }
 
 export function FileStatus() {
