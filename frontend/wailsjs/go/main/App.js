@@ -66,8 +66,8 @@ export function IsGitRepository(arg1) {
   return window['go']['main']['App']['IsGitRepository'](arg1);
 }
 
-export function Log() {
-  return window['go']['main']['App']['Log']();
+export function Log(arg1) {
+  return window['go']['main']['App']['Log'](arg1);
 }
 
 export function MergeCommit(arg1, arg2) {

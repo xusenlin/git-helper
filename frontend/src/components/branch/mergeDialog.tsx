@@ -73,7 +73,7 @@ const MergeDialog = (props: {}, ref: any) => {
   const rebaseMerge = () => {
     MergeRebase(mergeContent.ourBranchName,mergeContent.theirBranchName).then(out=>{
       success(out)
-      return Log()
+      return Log(currentBranchName)
     }).then(l=>{
       dispatch(setLog(l))
       setOpenMerge(false)
@@ -85,7 +85,7 @@ const MergeDialog = (props: {}, ref: any) => {
   const squashMerge = () => {
     MergeSquash(mergeContent.ourBranchName,mergeContent.theirBranchName).then(out=>{
       success(out)
-      return Log()
+      return Log(currentBranchName)
     }).then(l=>{
       dispatch(setLog(l))
       setOpenMerge(false)
@@ -96,7 +96,7 @@ const MergeDialog = (props: {}, ref: any) => {
   const commitMerge = () => {
     MergeCommit(mergeContent.ourBranchName,mergeContent.theirBranchName).then(out=>{
       success(out)
-      return Log()
+      return Log(currentBranchName)
     }).then(l=>{
       dispatch(setLog(l))
       setOpenMerge(false)

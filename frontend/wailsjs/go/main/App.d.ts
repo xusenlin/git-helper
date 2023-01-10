@@ -34,7 +34,7 @@ export function GitPush():Promise<string>;
 
 export function IsGitRepository(arg1:string):Promise<boolean>;
 
-export function Log():Promise<Array<main.Log>>;
+export function Log(arg1:string):Promise<Array<main.Log>>;
 
 export function MergeCommit(arg1:string,arg2:string):Promise<string>;
 

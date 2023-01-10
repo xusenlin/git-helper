@@ -41,6 +41,7 @@ const color = (s: string) => {
 const FileState = (props: { s: main.Status }) => {
   const path = useSelector((state: State) => state.diffWork.filePath);
   const repoId = useSelector((state: State) => state.main.selectedRepositoryId);
+  const branchName = useSelector((state: State) => state.main.selectedRepositoryBranch);
 
   const contextMenu = (path:string):MenuProps['items'] => {
 
@@ -56,7 +57,7 @@ const FileState = (props: { s: main.Status }) => {
           return new Promise((resolve, reject) => {
             DiscardChanges(path).then(()=>{
               resolve("success")
-              return updateWorkZone(repoId)
+              return updateWorkZone(repoId,branchName)
             }).catch((e)=>{
               reject(e)
             })

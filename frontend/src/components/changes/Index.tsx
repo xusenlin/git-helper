@@ -49,7 +49,7 @@ const Changes = () => {
       setCommitName("")
       setCommitMessage("")
       setCheckedList([])
-      await updateWorkZone(selectedRepositoryId)
+      await updateWorkZone(selectedRepositoryId,branch)
       dispatch(resetState())
     }catch (e) {
       console.log(e)

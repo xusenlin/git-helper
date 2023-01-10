@@ -102,7 +102,8 @@ export namespace main {
 	    committer: Signature;
 	    message: string;
 	    treeHash: string;
-	    parentHashes: string[];
+	    parentHashes: string;
+	    onMainBranch: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new Log(source);
@@ -116,6 +117,7 @@ export namespace main {
 	        this.message = source["message"];
 	        this.treeHash = source["treeHash"];
 	        this.parentHashes = source["parentHashes"];
+	        this.onMainBranch = source["onMainBranch"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {

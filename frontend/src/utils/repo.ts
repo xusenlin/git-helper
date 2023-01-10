@@ -23,12 +23,12 @@ export const getRepositoryPathById = (id: string, categories: Category[]): strin
   return null
 }
 
-export const updateWorkZone = async (id:string) => {
+export const updateWorkZone = async (id:string,branchName:string) => {
   try {
     const s = await FileStatus()
     store.dispatch(setStatus(s))
     setRepositoryStatus(id,Array.isArray(s)&&s.length!==0)
-    const l = await Log()
+    const l = await Log(branchName)
     store.dispatch(setLog(l))
   } catch (e) {
     console.log(e)
