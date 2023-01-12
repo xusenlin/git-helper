@@ -1,7 +1,7 @@
 import {Badge, Card, Space} from "antd"
 import {copyHashClipboard} from "../../utils/common"
 import {SnippetsOutlined, FieldTimeOutlined, UserOutlined, EyeOutlined} from "@ant-design/icons"
-import {main} from "../../../wailsjs/go/models";
+import {repository} from "../../../wailsjs/go/models";
 import {asyncDiffCommit} from "../../store/sliceCommitDiff";
 import {hashLength} from "../../config/app";
 import {useSelector} from "react-redux";
@@ -18,7 +18,7 @@ const style = {
   msg:{color: "#6a6a6a",fontSize:13,marginTop:10}
 }
 
-const Item = (props: { l: main.Log,nextHash:string }) => {
+const Item = (props: { l: repository.Commit,nextHash:string }) => {
   const themeColor = useSelector((state: State) => state.setting.themeColor);
   const commitId = useSelector((state: State) => state.diffCommit.commitId);
 
@@ -35,7 +35,7 @@ const Item = (props: { l: main.Log,nextHash:string }) => {
 
   return (
       <Card size="small"
-            title={<Badge status={props.l.onMainBranch?'success':'warning'} text={props.l.hash.substring(0, hashLength)} />}
+            title={<Badge status="success" text={props.l.hash.substring(0, hashLength)} />}
             extra={extra}
             style={{marginBottom: 10,borderColor:props.l.hash === commitId?themeColor:"#f0f0f0"}}
       >

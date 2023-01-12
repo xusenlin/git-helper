@@ -70,7 +70,8 @@ func (a *App) MergeRebase(ourBranch, theirBranch string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ok, err := a.SwitchBranch(ourBranch)
+	//TODO
+	ok, err := a.repo.SwitchBranch(ourBranch)
 	if err != nil {
 		return "", err
 	}
@@ -90,7 +91,7 @@ func (a *App) MergeCommit(ourBranch, theirBranch string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ok, err := a.SwitchBranch(ourBranch)
+	ok, err := a.repo.SwitchBranch(ourBranch)
 	if err != nil {
 		return "", err
 	}
@@ -110,7 +111,7 @@ func (a *App) MergeSquash(ourBranch, theirBranch string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	ok, err := a.SwitchBranch(ourBranch)
+	ok, err := a.repo.SwitchBranch(ourBranch)
 	if err != nil {
 		return "", err
 	}

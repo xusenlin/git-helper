@@ -1,13 +1,13 @@
-import {main} from "../../wailsjs/go/models"
+import {main,repository} from "../../wailsjs/go/models"
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type Main = {
   selectedRepositoryId: string
   selectedRepositoryBranch: string
-  currentlyRepositoryAllBranch: main.Branch[]
-  currentlyRepositoryTag: main.Tag[]
+  currentlyRepositoryAllBranch: repository.Branch[]
+  currentlyRepositoryTag: repository.Tag[]
   currentlyRepositoryState: main.Status[]
-  currentlyRepositoryLogs: main.Log[]
+  currentlyRepositoryLogs: repository.Commit[]
 }
 
 
@@ -36,16 +36,16 @@ const mainSlice = createSlice({
     setBranch(state, action: PayloadAction<string>) {
       state.selectedRepositoryBranch = action.payload
     },
-    setAllBranch(state, action: PayloadAction<main.Branch[]>) {
+    setAllBranch(state, action: PayloadAction<repository.Branch[]>) {
       state.currentlyRepositoryAllBranch = action.payload || []
     },
     setStatus(state, {payload}: PayloadAction<main.Status[]>) {
       state.currentlyRepositoryState = payload || []
     },
-    setTag(state, action: PayloadAction<main.Tag[]>) {
+    setTag(state, action: PayloadAction<repository.Tag[]>) {
       state.currentlyRepositoryTag = action.payload || []
     },
-    setLog(state, action: PayloadAction<main.Log[]>){
+    setLog(state, action: PayloadAction<repository.Commit[]>){
       state.currentlyRepositoryLogs = action.payload||[]
     }
   },

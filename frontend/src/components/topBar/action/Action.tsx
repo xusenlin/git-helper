@@ -2,7 +2,8 @@ import {useDispatch} from "react-redux";
 import {Button, message, notification, Space} from 'antd';
 import {warning} from "../../../utils/common";
 import {warningNotification,successNotification} from "../../../utils/notification";
-import {OpenFileManage, OpenTerminal, GitPull, GitPush} from "../../../../wailsjs/go/main/App"
+import {OpenTerminal,OpenFileManage,GitPull, GitPush} from "../../../../wailsjs/go/repository/Repository"
+
 import {setOpenRepositoryTag, setOpenRepositoryBranch} from "../../../store/sliceSetting";
 import {
   ArrowUpOutlined,

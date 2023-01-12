@@ -4,7 +4,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {State} from "../../store";
 import {useState, useImperativeHandle, forwardRef} from "react";
 import {success, warning} from "../../utils/common";
-import {GetLastCommit, PreMergeResult, MergeCommit, MergeRebase, MergeSquash, Log} from "../../../wailsjs/go/main/App";
+import { PreMergeResult, MergeCommit, MergeRebase, MergeSquash} from "../../../wailsjs/go/main/App";
+import {GetBranchHash,Commits} from "../../../wailsjs/go/repository/Repository";
 import {main} from "../../../wailsjs/go/models";
 import {warningNotification} from "../../utils/notification";
 import {setLog} from "../../store/sliceMain";
@@ -29,8 +30,8 @@ const MergeDialog = (props: {}, ref: any) => {
     setOpenMerge(true)
     setLoading(true)
     try {
-      let ourBranchHash = await GetLastCommit(currentBranchName)
-      let theirBranchHash = await GetLastCommit(mergeName)
+      let ourBranchHash = await GetBranchHash(currentBranchName)
+      let theirBranchHash = await GetBranchHash(mergeName)
       setMergeContent({
         ourBranchHash,
         ourBranchName: currentBranchName,
@@ -73,7 +74,7 @@ const MergeDialog = (props: {}, ref: any) => {
   const rebaseMerge = () => {
     MergeRebase(mergeContent.ourBranchName,mergeContent.theirBranchName).then(out=>{
       success(out)
-      return Log(currentBranchName)
+      return Commits(currentBranchName)
     }).then(l=>{
       dispatch(setLog(l))
       setOpenMerge(false)
@@ -85,7 +86,7 @@ const MergeDialog = (props: {}, ref: any) => {
   const squashMerge = () => {
     MergeSquash(mergeContent.ourBranchName,mergeContent.theirBranchName).then(out=>{
       success(out)
-      return Log(currentBranchName)
+      return Commits(currentBranchName)
     }).then(l=>{
       dispatch(setLog(l))
       setOpenMerge(false)
@@ -96,7 +97,7 @@ const MergeDialog = (props: {}, ref: any) => {
   const commitMerge = () => {
     MergeCommit(mergeContent.ourBranchName,mergeContent.theirBranchName).then(out=>{
       success(out)
-      return Log(currentBranchName)
+      return Commits(currentBranchName)
     }).then(l=>{
       dispatch(setLog(l))
       setOpenMerge(false)

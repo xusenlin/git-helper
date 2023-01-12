@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"git-helper/repository"
 	"git-helper/utils"
 	"github.com/go-git/go-git/v5"
 	"github.com/wailsapp/wails/v2/pkg/menu"
@@ -14,6 +16,7 @@ import (
 type App struct {
 	ctx          context.Context
 	repository   *git.Repository
+	repo         *repository.Repository
 	dataSaveJson string
 }
 
@@ -25,6 +28,7 @@ func NewApp() *App {
 // startup is called when the app starts. The context is saved
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
+	fmt.Println(ctx)
 	a.ctx = ctx
 	u, err := user.Current()
 	if err != nil {

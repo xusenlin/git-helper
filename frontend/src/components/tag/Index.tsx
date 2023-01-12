@@ -1,16 +1,20 @@
 import "./style.scss"
 import Item from "./Item"
 import {State} from "../../store";
-import React, {useState} from "react";
+import React, {useState,useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input, Space,Drawer,Empty} from "antd";
-import { CreateTag,Tag as GetTag } from "../../../wailsjs/go/main/App"
+import { CreateTag } from "../../../wailsjs/go/main/App"
+import { Tags } from "../../../wailsjs/go/repository/Repository"
 import {warning} from "../../utils/common";
 import {setTag} from "../../store/sliceMain";
 import {setOpenRepositoryTag} from "../../store/sliceSetting";
 
 const { TextArea } = Input;
 const Tag = () => {
+
+  const limit = 20
+
   const dispatch = useDispatch();
   const tags = useSelector((state: State) => state.main.currentlyRepositoryTag);
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
@@ -18,9 +22,13 @@ const Tag = () => {
 
   const [tagName,setTagName] = useState<string>("")
   const [tagMessage,setTagMessage] = useState<string>("")
+  const [keyword,setKeyword] = useState<string>("")
+
+  const computedTags = useMemo(() => (tags.filter(r=>r.name.indexOf(keyword)!==-1)), [keyword,tags]);
+
   const addTag = () => {
     CreateTag(tagName,tagMessage).then(()=>{
-      GetTag().then(t=>{
+      Tags().then(t=>{
         dispatch(setTag(t))
         setTagName("")
         setTagMessage("")
@@ -36,7 +44,6 @@ const Tag = () => {
     dispatch(setOpenRepositoryTag(false))
   }
 
-
   const bottom = <div>
     <Space direction="vertical" size="middle" style={{display: 'flex'}}>
       <Input placeholder="Name" value={tagName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +58,10 @@ const Tag = () => {
 
   const content = <>
     <div style={{flex:1,overflowY:"auto",padding:20}}>
-      { tags.map(r=><Item t={r} key={r.hash} />)}
+      <Input value={keyword} style={{marginBottom:10}} placeholder="Search all tags" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyword(e.target.value)
+      }} />
+      { (computedTags.length > limit ? computedTags.slice(0,limit) : computedTags).map(r=><Item t={r} key={r.hash} />)}
     </div>
     <div style={{padding:20}}>
       {bottom}
@@ -59,7 +69,10 @@ const Tag = () => {
   </>
   return (
       <Drawer
-          title="Tag manage"
+          title={<div className="tag-manage-title">
+            <div>Tag manage</div>
+            <div style={{fontSize:12,color:'#999'}}>Total：{tags.length}</div>
+          </div>}
           bodyStyle={{display:'flex',flexDirection:"column",padding:0}}
           placement="right"
           onClose={onCloseTag}

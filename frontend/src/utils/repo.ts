@@ -1,9 +1,10 @@
 import {Category, Repository,updateRepositoryStatus} from "../store/sliceCategory";
-import {FileStatus, Log} from "../../wailsjs/go/main/App";
+import {FileStatus} from "../../wailsjs/go/main/App";
+import {Commits} from "../../wailsjs/go/repository/Repository";
 import {setLog, setStatus} from "../store/sliceMain";
 import {warning} from "./common";
 import {store} from "../store";
-import {PresetStatusColorType} from "antd/es/_util/colors";
+
 
 export const getRepositoryById = (id: string, categories: Category[]): Repository | null => {
   for (let i = 0; i < categories.length; i++) {
@@ -28,7 +29,7 @@ export const updateWorkZone = async (id:string,branchName:string) => {
     const s = await FileStatus()
     store.dispatch(setStatus(s))
     setRepositoryStatus(id,Array.isArray(s)&&s.length!==0)
-    const l = await Log(branchName)
+    const l = await Commits(branchName)
     store.dispatch(setLog(l))
   } catch (e) {
     console.log(e)

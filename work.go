@@ -112,14 +112,14 @@ func (a *App) Commit(title, msg string, fileList []string) (string, error) {
 
 }
 
-func (a *App) DiscardChanges(path string) (string, error) {
+func (a *App) DiscardChanges(filePath string) (string, error) {
 	path, err := a.RepositoryPath()
 
 	if err != nil {
 		return "", err
 	}
 
-	out, err := utils.RunCmdByPath(path, "git", "checkout", "HEAD", "--", path)
+	out, err := utils.RunCmdByPath(path, "git", "checkout", "HEAD", "--", filePath)
 
 	if err != nil {
 		return "", err

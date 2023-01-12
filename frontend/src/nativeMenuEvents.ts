@@ -2,7 +2,7 @@ import {store} from './store';
 import {warning} from './utils/common';
 import {getRepositoryPathById} from './utils/repo';
 import {EventsOn} from "../wailsjs/runtime"
-import {IsGitRepository} from "../wailsjs/go/main/App"
+import {IsGitRepository} from "../wailsjs/go/repository/Repository"
 import {addDefaultRepository} from "./store/sliceCategory"
 import {setOpenRepositorySetting} from "./store/sliceSetting"
 

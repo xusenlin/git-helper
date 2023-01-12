@@ -1,27 +1,33 @@
-import dayjs from "dayjs"
-import {Card, Modal} from "antd"
+// import dayjs from "dayjs"
+import {Card, Checkbox, Modal} from "antd"
 import {useDispatch} from "react-redux";
 import {setTag} from "../../store/sliceMain";
-import { main } from "../../../wailsjs/go/models"
-import relativeTime from 'dayjs/plugin/relativeTime';
-import {DelTag, Tag} from "../../../wailsjs/go/main/App"
+import { repository } from "../../../wailsjs/go/models"
+// import relativeTime from 'dayjs/plugin/relativeTime';
+import {DelTag} from "../../../wailsjs/go/repository/Repository"
+import {Tags} from "../../../wailsjs/go/repository/Repository"
+
 import {warning, success, copyHashClipboard} from "../../utils/common";
 import {DeleteOutlined, FieldTimeOutlined, SnippetsOutlined, TagOutlined} from "@ant-design/icons"
 
-dayjs.extend(relativeTime)
+// dayjs.extend(relativeTime)
 
 
-const Item = (props:{t:main.Tag}) => {
+const Item = (props:{t:repository.Tag}) => {
   const dispatch = useDispatch();
   const delTag = (name:string)=>{
     Modal.warning({
       closable:true,
       title: 'Confirm message',
-      content: 'Are you sure you want to delete this tag?',
+      content: <div style={{padding:"20px 0"}}>
+        <p>Are you sure you want to delete this tag??</p>
+        <Checkbox id="delRemoteTagCheckbox" style={{marginRight:10}}>Delete the remote Tag at the same time.</Checkbox>
+      </div>,
       onOk(){
-        DelTag(name).then(()=>{
+        const checkbox = document.getElementById("delRemoteTagCheckbox") as HTMLInputElement
+        DelTag(name,checkbox.checked).then(()=>{
           success("Delete success");
-          Tag().then(t=>{
+          Tags().then(t=>{
             dispatch(setTag(t))
           }).catch(e=>{
             console.log(e)
@@ -39,22 +45,18 @@ const Item = (props:{t:main.Tag}) => {
       } style={{marginBottom:10}}>
         <div className="tag-content">
           <p>{props.t.refName}</p>
-          {props.t.type === 1&&<div className="item">
+          <div className="item">
             <div>hash:{props.t.hash.substring(0,7)}</div>
             <SnippetsOutlined onClick={async () => {await copyHashClipboard(props.t.hash)}} style={{cursor: "pointer", opacity: 0.65}}/>
-          </div>}
-          <div className="item">
-            <div>commitHash:{props.t.commitHash.substring(0,7)}</div>
-            <SnippetsOutlined onClick={async () => {await copyHashClipboard(props.t.commitHash)}} style={{cursor: "pointer", opacity: 0.65}}/>
           </div>
           <div className="item">
             <div>
               <TagOutlined />
-              <span style={{marginLeft:10}}>{props.t.type === 1?'annotated':'lightweight'}</span>
+              <span style={{marginLeft:10}}>{props.t.type}</span>
             </div>
             <div>
               <FieldTimeOutlined/>
-              <span style={{marginLeft:10}}>{dayjs(props.t.time).fromNow()}</span>
+              <span style={{marginLeft:10}}>{props.t.time}</span>
             </div>
           </div>
           <div className="msg">{props.t.message}</div>

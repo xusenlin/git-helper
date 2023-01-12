@@ -2,8 +2,8 @@ import {Card, Modal,Space,Checkbox} from "antd"
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {warning, success, copyHashClipboard} from "../../utils/common";
-import {main} from "../../../wailsjs/go/models"
-import {DelBranch, GetBranch,GetLastCommit,PreMergeResult} from "../../../wailsjs/go/main/App"
+import {repository} from "../../../wailsjs/go/models"
+import {DelBranch, GetLocalBranch} from "../../../wailsjs/go/repository/Repository"
 import {DeleteOutlined, SnippetsOutlined,ArrowLeftOutlined} from "@ant-design/icons"
 import {setAllBranch} from "../../store/sliceMain";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,7 +13,7 @@ import {State} from "../../store";
 dayjs.extend(relativeTime)
 
 
-const Item = (props: { b: main.Branch,merge:()=>void }) => {
+const Item = (props: { b: repository.Branch,merge:()=>void }) => {
   const sledBranch = useSelector((state: State) => state.main.selectedRepositoryBranch);
 
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ const Item = (props: { b: main.Branch,merge:()=>void }) => {
         const checkbox = document.getElementById("delRemoteBranchCheckbox") as HTMLInputElement
         DelBranch(name,checkbox.checked).then(out => {
           success(out);
-          return GetBranch()
+          return GetLocalBranch()
         }).then(b => {
           dispatch(setAllBranch(b))
         }).catch(e => {

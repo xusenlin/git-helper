@@ -6,7 +6,10 @@ import {warning} from "../../utils/common";
 import {getRepositoryPathById} from "../../utils/repo";
 import {setRepository, setAllBranch, resetState, setTag} from "../../store/sliceMain"
 import {useDispatch, useSelector} from 'react-redux';
-import {BindRepository, GetBranch, Tag} from "../../../wailsjs/go/main/App";
+import {BindRepository} from "../../../wailsjs/go/main/App";
+import { GetLocalBranch,Tags} from "../../../wailsjs/go/repository/Repository";
+
+
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -54,15 +57,17 @@ const Sides = () => {
         warning("Error binding repository.")
         return
       }
+
       dispatch(resetState())
 
       dispatch(setRepository(key))
 
-      const b = await GetBranch()
+      const b = await GetLocalBranch()
       dispatch(setAllBranch(b))
 
-      const t = await Tag()
+      const t = await Tags()
       dispatch(setTag(t))
+
 
     } catch (e) {
       warning(JSON.stringify(e))

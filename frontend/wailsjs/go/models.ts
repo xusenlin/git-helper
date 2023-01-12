@@ -1,21 +1,5 @@
 export namespace main {
 	
-	export class Branch {
-	    hash: string;
-	    name: string;
-	    refName: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Branch(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.hash = source["hash"];
-	        this.name = source["name"];
-	        this.refName = source["refName"];
-	    }
-	}
 	export class ChangesFile {
 	    fileName: string;
 	    index: number;
@@ -80,6 +64,61 @@ export namespace main {
 	        this.index = source["index"];
 	    }
 	}
+	export class MergeResult {
+	    kind: number;
+	    count: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new MergeResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.kind = source["kind"];
+	        this.count = source["count"];
+	    }
+	}
+	export class Status {
+	    name: string;
+	    path: string;
+	    staging: string;
+	    worktree: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Status(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.path = source["path"];
+	        this.staging = source["staging"];
+	        this.worktree = source["worktree"];
+	    }
+	}
+
+}
+
+export namespace repository {
+	
+	export class Branch {
+	    hash: string;
+	    name: string;
+	    refName: string;
+	    upstream: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Branch(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.hash = source["hash"];
+	        this.name = source["name"];
+	        this.refName = source["refName"];
+	        this.upstream = source["upstream"];
+	    }
+	}
 	export class Signature {
 	    name: string;
 	    email: string;
@@ -96,17 +135,16 @@ export namespace main {
 	        this.when = source["when"];
 	    }
 	}
-	export class Log {
+	export class Commit {
 	    hash: string;
 	    author: string;
 	    committer: Signature;
 	    message: string;
 	    treeHash: string;
 	    parentHashes: string;
-	    onMainBranch: boolean;
 	
 	    static createFrom(source: any = {}) {
-	        return new Log(source);
+	        return new Commit(source);
 	    }
 	
 	    constructor(source: any = {}) {
@@ -117,7 +155,6 @@ export namespace main {
 	        this.message = source["message"];
 	        this.treeHash = source["treeHash"];
 	        this.parentHashes = source["parentHashes"];
-	        this.onMainBranch = source["onMainBranch"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -138,47 +175,14 @@ export namespace main {
 		    return a;
 		}
 	}
-	export class MergeResult {
-	    kind: number;
-	    count: number;
 	
-	    static createFrom(source: any = {}) {
-	        return new MergeResult(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.kind = source["kind"];
-	        this.count = source["count"];
-	    }
-	}
-	
-	export class Status {
-	    name: string;
-	    path: string;
-	    staging: string;
-	    worktree: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Status(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.path = source["path"];
-	        this.staging = source["staging"];
-	        this.worktree = source["worktree"];
-	    }
-	}
 	export class Tag {
 	    name: string;
 	    refName: string;
-	    type: number;
+	    type: string;
 	    message: string;
 	    hash: string;
 	    time: string;
-	    commitHash: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Tag(source);
@@ -192,7 +196,6 @@ export namespace main {
 	        this.message = source["message"];
 	        this.hash = source["hash"];
 	        this.time = source["time"];
-	        this.commitHash = source["commitHash"];
 	    }
 	}
 

@@ -1,33 +1,52 @@
 import "./style.scss"
 import Item from "./Item"
 import {State} from "../../store";
-import React, {useState,useRef} from "react";
+import React, {useState, useRef, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Button, Input, Space,Drawer,Empty} from "antd";
-import { AddBranch,GetBranch } from "../../../wailsjs/go/main/App"
+import {Button, Input, Space, Drawer, Empty} from "antd";
+import {AddBranch, GetLocalBranch,GetAllBranch} from "../../../wailsjs/go/repository/Repository"
+import {repository} from "../../../wailsjs/go/models"
 import {setOpenRepositoryBranch} from "../../store/sliceSetting";
 import {setAllBranch} from "../../store/sliceMain";
-import { warning } from "../../utils/common"
+import {warning} from "../../utils/common"
 import MergeDialog from "./mergeDialog"
 
 
 const Branch = () => {
+  const limit = 20
+
   const dispatch = useDispatch();
-  const branch = useSelector((state: State) => state.main.currentlyRepositoryAllBranch);
+  // const branch = useSelector((state: State) => state.main.currentlyRepositoryAllBranch);
+  const [branch,setBranch] = useState<repository.Branch[]>([]);
+
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
   const showRepositoryBranch = useSelector((state: State) => state.setting.showRepositoryBranch);
-  const mergeDialogComponentRef = useRef<{OpenMergeDialog:(branchName:string)=>void}>(null);
-  const [branchName,setBranchName] = useState<string>("")
+  const mergeDialogComponentRef = useRef<{ OpenMergeDialog: (branchName: string) => void }>(null);
+  const [branchName, setBranchName] = useState<string>("")
+
+  const [keyword,setKeyword] = useState<string>("")
+  const computedBranch = useMemo(() => (branch.filter(r=>r.name.indexOf(keyword)!==-1)), [keyword,branch]);
+
+  const getAllBranch = () => {
+    GetAllBranch().then(b=>{
+      setBranch(b)
+    }).catch(e=>{
+      warning(JSON.stringify(e))
+    })
+  }
+  getAllBranch()
 
   const addBranch = async () => {
     try {
       await AddBranch(branchName)
-      const t = await GetBranch()
-      dispatch(setAllBranch(t))
+      // const t = await GetLocalBranch()
+      // const t = await GetAllBranch()
+      // dispatch(setAllBranch(t))
+      getAllBranch()
       setBranchName("")
-    }catch (e) {
+    } catch (e) {
       console.log(e)
-      warning("Branch："+JSON.stringify(e))
+      warning("Branch：" + JSON.stringify(e))
     }
   }
 
@@ -41,31 +60,40 @@ const Branch = () => {
       <Input placeholder="Name" value={branchName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         setBranchName(e.target.value)
       }}/>
-      <Button block type="primary" onClick={async ()=>{await addBranch()}}>Add New Branch</Button>
+      <Button block type="primary" onClick={async () => {
+        await addBranch()
+      }}>Add New Branch</Button>
     </Space>
   </div>
 
   const content = <>
-    <div style={{flex:1,overflowY:"auto",padding:20}}>
-      { branch.map(r=><Item merge={()=>{mergeDialogComponentRef.current?.OpenMergeDialog(r.name)}} b={r} key={r.name} />)}
+    <div style={{flex: 1, overflowY: "auto", padding: 20}}>
+      <Input value={keyword} style={{marginBottom:10}} placeholder="Search all branch" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        setKeyword(e.target.value)
+      }} />
+      {(computedBranch.length > limit ? computedBranch.slice(0, limit) : computedBranch).map(r => <Item merge={() => {
+        mergeDialogComponentRef.current?.OpenMergeDialog(r.name)
+      }} b={r} key={r.name}/>)}
     </div>
-    <div style={{padding:20}}>
+    <div style={{padding: 20}}>
       {bottom}
     </div>
   </>
 
-
-
   return (
       <Drawer
-          title="Branch manage"
-          bodyStyle={{display:'flex',flexDirection:"column",padding:0}}
+          title={<div className="branch-manage-title">
+            <div>Branch manage</div>
+            <div style={{fontSize:12,color:'#999'}}>Total：{branch.length}</div>
+          </div>}
+          bodyStyle={{display: 'flex', flexDirection: "column", padding: 0}}
           placement="right"
           onClose={onCloseBranch}
           open={showRepositoryBranch}
       >
         <MergeDialog ref={mergeDialogComponentRef}/>
-        {selectedRepositoryId?content:<Empty style={{marginTop:200}} description="please select a git repository first" />}
+        {selectedRepositoryId ? content :
+            <Empty style={{marginTop: 200}} description="please select a git repository first"/>}
       </Drawer>
   );
 };

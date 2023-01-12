@@ -59,7 +59,7 @@ const categoriesSlice = createSlice({
         let c =  state.val[i]
         let index = c.repositories.findIndex(r=>r.id === action.payload)
         if(index!==-1){
-          state.val[index].repositories.splice(i, 1)
+          state.val[i].repositories.splice(index, 1)
           saveJsonData(state.val)
           return
         }

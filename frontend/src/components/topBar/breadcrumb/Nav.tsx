@@ -4,7 +4,7 @@ import {setBranch} from "../../../store/sliceMain"
 import {getRepositoryById,updateWorkZone} from "../../../utils/repo"
 import {useSelector, useDispatch} from "react-redux";
 import {warning} from "../../../utils/common"
-import { SwitchBranch} from "../../../../wailsjs/go/main/App"
+import { SwitchBranch} from "../../../../wailsjs/go/repository/Repository"
 import {HomeOutlined, BranchesOutlined} from '@ant-design/icons';
 import {resetState as resetWorkDiffState} from "../../../store/sliceWorkDiff";
 import {resetState as resetCommitDiffState} from "../../../store/sliceCommitDiff";
