@@ -1,11 +1,11 @@
-import {main} from "../../../wailsjs/go/models"
+import {repository} from "../../../wailsjs/go/models"
 import React from "react";
 import {Checkbox, Dropdown, MenuProps,Modal} from 'antd';
 import { WarningOutlined } from "@ant-design/icons"
 import {asyncDiffWorkStage} from "../../store/sliceWorkDiff"
 import {useSelector} from "react-redux";
 import {State} from "../../store";
-import { DiscardChanges } from "../../../wailsjs/go/main/App"
+import { DiscardChanges } from "../../../wailsjs/go/repository/Repository"
 import {success, warning} from "../../utils/common"
 import {updateWorkZone} from "../../utils/repo";
 
@@ -38,7 +38,7 @@ const color = (s: string) => {
 }
 
 
-const FileState = (props: { s: main.Status }) => {
+const FileState = (props: { s: repository.FileStatus }) => {
   const path = useSelector((state: State) => state.diffWork.filePath);
   const repoId = useSelector((state: State) => state.main.selectedRepositoryId);
   const branchName = useSelector((state: State) => state.main.selectedRepositoryBranch);

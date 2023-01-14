@@ -4,11 +4,21 @@ import {repository} from '../models';
 
 export function AddBranch(arg1:string):Promise<Error>;
 
+export function Commit(arg1:string,arg2:string,arg3:Array<string>):Promise<string>;
+
 export function Commits(arg1:string):Promise<Array<repository.Commit>>;
+
+export function CreateTag(arg1:string,arg2:string):Promise<string>;
+
+export function CreateTagByCommitId(arg1:string,arg2:string):Promise<string>;
 
 export function DelBranch(arg1:string,arg2:boolean):Promise<string>;
 
 export function DelTag(arg1:string,arg2:boolean):Promise<string>;
+
+export function DiscardChanges(arg1:string):Promise<string>;
+
+export function FileStatus():Promise<Array<repository.FileStatus>>;
 
 export function GetAllBranch():Promise<Array<repository.Branch>>;
 

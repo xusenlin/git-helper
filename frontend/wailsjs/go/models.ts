@@ -78,24 +78,6 @@ export namespace main {
 	        this.count = source["count"];
 	    }
 	}
-	export class Status {
-	    name: string;
-	    path: string;
-	    staging: string;
-	    worktree: string;
-	
-	    static createFrom(source: any = {}) {
-	        return new Status(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.name = source["name"];
-	        this.path = source["path"];
-	        this.staging = source["staging"];
-	        this.worktree = source["worktree"];
-	    }
-	}
 
 }
 
@@ -174,6 +156,24 @@ export namespace repository {
 		    }
 		    return a;
 		}
+	}
+	export class FileStatus {
+	    name: string;
+	    path: string;
+	    staging: string;
+	    worktree: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new FileStatus(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.path = source["path"];
+	        this.staging = source["staging"];
+	        this.worktree = source["worktree"];
+	    }
 	}
 	
 	export class Tag {

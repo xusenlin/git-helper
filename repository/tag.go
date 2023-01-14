@@ -23,7 +23,7 @@ func (r *Repository) Tags() ([]Tag, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println(out)
 	outs := strings.Split(out, "<|n|>")
 
 	for _, tag := range outs {
@@ -77,14 +77,27 @@ func (r *Repository) DelTag(tagName string, delRemote bool) (string, error) {
 }
 
 //git tag  v10.0 -m "version 1.0"
-//func (r *Repository) createTag(tag string, msg string,commitId string) error {
-//	arg := [""]
-//}
-//
-//func (r *Repository) CreateTag(tag string, msg string) error {
-//
-//}
-//
-//func (r *Repository) CreateTagByCommitId(tag string, msg string,commitId string) error {
-//
-//}
+//git push origin v1.0
+
+func (r *Repository) CreateTag(tag string, msg string) (string, error) {
+	var out string
+	var err error
+	if msg == "" {
+		out, err = utils.RunCmdByPath(r.Path, "git", "tag", tag)
+	} else {
+		out, err = utils.RunCmdByPath(r.Path, "git", "tag", tag, "-m", msg)
+	}
+	if err != nil {
+		return out, err
+	}
+	return out, nil
+}
+
+func (r *Repository) CreateTagByCommitId(tag string, commitId string) (string, error) {
+	//git tag v1.0 a867b4af
+	out, err := utils.RunCmdByPath(r.Path, "git", "tag", tag, commitId)
+	if err != nil {
+		return out, err
+	}
+	return out, nil
+}

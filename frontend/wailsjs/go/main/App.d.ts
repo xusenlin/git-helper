@@ -6,17 +6,9 @@ export function BindRepository(arg1:string):Promise<boolean>;
 
 export function Clipboard(arg1:string):Promise<Error>;
 
-export function Commit(arg1:string,arg2:string,arg3:Array<string>):Promise<string>;
-
-export function CreateTag(arg1:string,arg2:string):Promise<Error>;
-
 export function DiffCommit(arg1:string,arg2:string):Promise<main.DiffCommitInfo>;
 
 export function DiffWorkStage(arg1:string):Promise<Array<main.DiffContent>>;
-
-export function DiscardChanges(arg1:string):Promise<string>;
-
-export function FileStatus():Promise<Array<main.Status>>;
 
 export function MergeCommit(arg1:string,arg2:string):Promise<string>;
 

@@ -26,12 +26,6 @@ const Item = (props:{t:repository.Tag,refresh:()=>void}) => {
         DelTag(name,checkbox.checked).then(()=>{
           success("Delete success");
           props.refresh()
-          // Tags().then(t=>{
-          //   dispatch(setTag(t))
-          // }).catch(e=>{
-          //   console.log(e)
-          //   warning("Tag："+JSON.stringify(e))
-          // })
         }).catch(e=>{
           warning(JSON.stringify(e))
         })
@@ -58,7 +52,9 @@ const Item = (props:{t:repository.Tag,refresh:()=>void}) => {
               <span style={{marginLeft:10}}>{props.t.time}</span>
             </div>
           </div>
-          <div className="msg">{props.t.message}</div>
+          {
+            props.t.type !=="commit" && <div className="msg">{props.t.message}</div>
+          }
         </div>
       </Card>
   );

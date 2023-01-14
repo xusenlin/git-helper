@@ -6,8 +6,20 @@ export function AddBranch(arg1) {
   return window['go']['repository']['Repository']['AddBranch'](arg1);
 }
 
+export function Commit(arg1, arg2, arg3) {
+  return window['go']['repository']['Repository']['Commit'](arg1, arg2, arg3);
+}
+
 export function Commits(arg1) {
   return window['go']['repository']['Repository']['Commits'](arg1);
+}
+
+export function CreateTag(arg1, arg2) {
+  return window['go']['repository']['Repository']['CreateTag'](arg1, arg2);
+}
+
+export function CreateTagByCommitId(arg1, arg2) {
+  return window['go']['repository']['Repository']['CreateTagByCommitId'](arg1, arg2);
 }
 
 export function DelBranch(arg1, arg2) {
@@ -16,6 +28,14 @@ export function DelBranch(arg1, arg2) {
 
 export function DelTag(arg1, arg2) {
   return window['go']['repository']['Repository']['DelTag'](arg1, arg2);
+}
+
+export function DiscardChanges(arg1) {
+  return window['go']['repository']['Repository']['DiscardChanges'](arg1);
+}
+
+export function FileStatus() {
+  return window['go']['repository']['Repository']['FileStatus']();
 }
 
 export function GetAllBranch() {

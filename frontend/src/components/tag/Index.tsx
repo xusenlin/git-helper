@@ -4,9 +4,9 @@ import {State} from "../../store";
 import React, {useState,useMemo,useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input, Space,Drawer,Empty} from "antd";
-import { CreateTag } from "../../../wailsjs/go/main/App"
+import { CreateTag } from "../../../wailsjs/go/repository/Repository"
 import { Tags } from "../../../wailsjs/go/repository/Repository"
-import {warning} from "../../utils/common";
+import {success, warning} from "../../utils/common";
 import {setOpenRepositoryTag} from "../../store/sliceSetting";
 import {repository} from "../../../wailsjs/go/models";
 
@@ -43,10 +43,11 @@ const Tag = () => {
   }, [selectedRepositoryId]);
 
   const addTag = () => {
-    CreateTag(tagName,tagMessage).then(()=>{
+    CreateTag(tagName,tagMessage).then(out=>{
       getTag()
       setTagName("")
       setTagMessage("")
+      success(out)
     }).catch(e=>{
       warning("CreateTag" + JSON.stringify(e))
     })

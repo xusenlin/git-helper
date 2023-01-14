@@ -1,5 +1,5 @@
 import {Category, Repository,updateRepositoryStatus} from "../store/sliceCategory";
-import {FileStatus} from "../../wailsjs/go/main/App";
+import {FileStatus} from "../../wailsjs/go/repository/Repository";
 import {Commits} from "../../wailsjs/go/repository/Repository";
 import {setLog, setStatus} from "../store/sliceMain";
 import {warning} from "./common";

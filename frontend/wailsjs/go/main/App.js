@@ -10,28 +10,12 @@ export function Clipboard(arg1) {
   return window['go']['main']['App']['Clipboard'](arg1);
 }
 
-export function Commit(arg1, arg2, arg3) {
-  return window['go']['main']['App']['Commit'](arg1, arg2, arg3);
-}
-
-export function CreateTag(arg1, arg2) {
-  return window['go']['main']['App']['CreateTag'](arg1, arg2);
-}
-
 export function DiffCommit(arg1, arg2) {
   return window['go']['main']['App']['DiffCommit'](arg1, arg2);
 }
 
 export function DiffWorkStage(arg1) {
   return window['go']['main']['App']['DiffWorkStage'](arg1);
-}
-
-export function DiscardChanges(arg1) {
-  return window['go']['main']['App']['DiscardChanges'](arg1);
-}
-
-export function FileStatus() {
-  return window['go']['main']['App']['FileStatus']();
 }
 
 export function MergeCommit(arg1, arg2) {

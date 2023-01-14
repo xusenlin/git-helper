@@ -6,7 +6,7 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {Input, Button, Space, Checkbox,Badge,Tooltip} from 'antd';
 import { PresetStatusColorType } from "antd/es/_util/colors"
-import {Commit, FileStatus} from "../../../wailsjs/go/main/App"
+import {FileStatus,Commit} from "../../../wailsjs/go/repository/Repository"
 import type {CheckboxChangeEvent} from 'antd/es/checkbox';
 import type {CheckboxValueType} from 'antd/es/checkbox/Group';
 import {success, warning} from "../../utils/common";
@@ -22,7 +22,7 @@ const Changes = () => {
   const dispatch = useDispatch();
   const branch = useSelector((state: State) => state.main.selectedRepositoryBranch);
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
-  const fileState = useSelector((state: State) => state.main.currentlyRepositoryState);
+  const fileState = useSelector((state: State) => state.main.currentlyRepositoryFileState);
 
   const [commitName,setCommitName] = useState<string>("")
   const [commitMessage,setCommitMessage] = useState<string>("")

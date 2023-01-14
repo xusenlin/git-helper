@@ -5,7 +5,7 @@ export type Main = {
   selectedRepositoryId: string
   selectedRepositoryBranch: string
   currentlyRepositoryLocalBranch: repository.Branch[]
-  currentlyRepositoryState: main.Status[]
+  currentlyRepositoryFileState: repository.FileStatus[]
   currentlyRepositoryCommits: repository.Commit[]
 }
 
@@ -14,7 +14,7 @@ const initialState: Main = {
   selectedRepositoryId: "",
   selectedRepositoryBranch: "",
   currentlyRepositoryLocalBranch: [],
-  currentlyRepositoryState: [],
+  currentlyRepositoryFileState: [],
   currentlyRepositoryCommits: []
 }
 const mainSlice = createSlice({
@@ -24,7 +24,7 @@ const mainSlice = createSlice({
     resetState(state) {
       state.selectedRepositoryBranch = ''
       state.currentlyRepositoryLocalBranch = []
-      state.currentlyRepositoryState = []
+      state.currentlyRepositoryFileState = []
       state.currentlyRepositoryCommits = []
     },
     setRepository(state, action: PayloadAction<string>) {
@@ -36,8 +36,8 @@ const mainSlice = createSlice({
     setAllBranch(state, action: PayloadAction<repository.Branch[]>) {
       state.currentlyRepositoryLocalBranch = action.payload || []
     },
-    setStatus(state, {payload}: PayloadAction<main.Status[]>) {
-      state.currentlyRepositoryState = payload || []
+    setStatus(state, {payload}: PayloadAction<repository.FileStatus[]>) {
+      state.currentlyRepositoryFileState = payload || []
     },
     setLog(state, action: PayloadAction<repository.Commit[]>){
       state.currentlyRepositoryCommits = action.payload||[]
