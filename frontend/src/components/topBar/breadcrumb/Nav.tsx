@@ -43,7 +43,7 @@ const Nav = () => {
     return null
   }
 
-  const branch = main.currentlyRepositoryAllBranch.map(r => {
+  const branch = main.currentlyRepositoryLocalBranch.map(r => {
     return {
       key: r.name, label: <a href="#!" onClick={() => selectBranch(r.name)}>{r.name}</a>
     }

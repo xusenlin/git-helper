@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import {State} from "../../store";
 
 const History = () => {
-  const logs = useSelector((state: State) => state.main.currentlyRepositoryLogs);
+  const logs = useSelector((state: State) => state.main.currentlyRepositoryCommits);
 
   return (
       <Block>

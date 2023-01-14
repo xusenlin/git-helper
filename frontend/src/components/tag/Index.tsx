@@ -1,14 +1,14 @@
 import "./style.scss"
 import Item from "./Item"
 import {State} from "../../store";
-import React, {useState,useMemo} from "react";
+import React, {useState,useMemo,useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input, Space,Drawer,Empty} from "antd";
 import { CreateTag } from "../../../wailsjs/go/main/App"
 import { Tags } from "../../../wailsjs/go/repository/Repository"
 import {warning} from "../../utils/common";
-import {setTag} from "../../store/sliceMain";
 import {setOpenRepositoryTag} from "../../store/sliceSetting";
+import {repository} from "../../../wailsjs/go/models";
 
 const { TextArea } = Input;
 const Tag = () => {
@@ -16,9 +16,9 @@ const Tag = () => {
   const limit = 20
 
   const dispatch = useDispatch();
-  const tags = useSelector((state: State) => state.main.currentlyRepositoryTag);
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
   const showRepositoryTag = useSelector((state: State) => state.setting.showRepositoryTag);
+  const [tags,setTags] = useState<repository.Tag[]>([])
 
   const [tagName,setTagName] = useState<string>("")
   const [tagMessage,setTagMessage] = useState<string>("")
@@ -26,18 +26,29 @@ const Tag = () => {
 
   const computedTags = useMemo(() => (tags.filter(r=>r.name.indexOf(keyword)!==-1)), [keyword,tags]);
 
+  const getTag = () => {
+    if(!selectedRepositoryId){
+      return
+    }
+    Tags().then(t=>{
+      setTags(t||[])
+    }).catch(e=>{
+      console.log(e)
+      warning("Tag：" + JSON.stringify(e))
+    })
+  }
+
+  useEffect(() => {
+    getTag()
+  }, [selectedRepositoryId]);
+
   const addTag = () => {
     CreateTag(tagName,tagMessage).then(()=>{
-      Tags().then(t=>{
-        dispatch(setTag(t))
-        setTagName("")
-        setTagMessage("")
-      }).catch(e=>{
-        console.log(e)
-        warning("Tag："+JSON.stringify(e))
-      })
+      getTag()
+      setTagName("")
+      setTagMessage("")
     }).catch(e=>{
-      warning("CreateTag"+JSON.stringify(e))
+      warning("CreateTag" + JSON.stringify(e))
     })
   }
   const onCloseTag = () => {
@@ -61,7 +72,7 @@ const Tag = () => {
       <Input value={keyword} style={{marginBottom:10}} placeholder="Search all tags" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         setKeyword(e.target.value)
       }} />
-      { (computedTags.length > limit ? computedTags.slice(0,limit) : computedTags).map(r=><Item t={r} key={r.hash} />)}
+      { (computedTags.length > limit ? computedTags.slice(0,limit) : computedTags).map(r=><Item refresh={getTag} t={r} key={r.hash} />)}
     </div>
     <div style={{padding:20}}>
       {bottom}
@@ -69,13 +80,12 @@ const Tag = () => {
   </>
   return (
       <Drawer
-          title={<div className="tag-manage-title">
-            <div>Tag manage</div>
-            <div style={{fontSize:12,color:'#999'}}>Total：{tags.length}</div>
-          </div>}
+          title="Tag manage"
+          extra={<div style={{fontSize:12,color:'#999'}}>Total：{tags.length}</div>}
           bodyStyle={{display:'flex',flexDirection:"column",padding:0}}
           placement="right"
           onClose={onCloseTag}
+          destroyOnClose={true}
           open={showRepositoryTag}
       >
         {selectedRepositoryId?content:<Empty style={{marginTop:200}} description="please select a git repository first" />}

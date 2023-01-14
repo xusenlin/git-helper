@@ -19,7 +19,7 @@ func (r *Repository) Tags() ([]Tag, error) {
 	var tags []Tag
 	f := fmt.Sprintf("--format=%s", `%(refname:short)<||>%(refname)<||>%(objecttype)<||>%(subject)<||>%(objectname)<||>%(creatordate:relative)<|n|>`)
 
-	out, err := utils.RunCmdByPath(r.path, "git", "tag", f)
+	out, err := utils.RunCmdByPath(r.Path, "git", "tag", f)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (r *Repository) Tags() ([]Tag, error) {
 	//var tags []Tag
 	//f := fmt.Sprintf("--format=%s", `{"name":"%(refname:short)","refName":"%(refname)","type":"%(objecttype)","message":"%(subject)","hash":"%(objectname)","time":"%(creatordate:relative)"},`)
 	//
-	//out, err := utils.RunCmdByPath(r.path, "git", "tag", f)
+	//out, err := utils.RunCmdByPath(r.Path, "git", "tag", f)
 	//if err != nil {
 	//	return nil, err
 	//}
@@ -62,16 +62,29 @@ func (r *Repository) Tags() ([]Tag, error) {
 func (r *Repository) DelTag(tagName string, delRemote bool) (string, error) {
 
 	if delRemote {
-		out, err := utils.RunCmdByPath(r.path, "git", "push", "origin", "--delete", "tag", tagName)
+		out, err := utils.RunCmdByPath(r.Path, "git", "push", "origin", "--delete", "tag", tagName)
 		if err != nil {
 			return out, err
 		}
 	}
 
-	out, err := utils.RunCmdByPath(r.path, "git", "tag", "-d", tagName)
+	out, err := utils.RunCmdByPath(r.Path, "git", "tag", "-d", tagName)
 	if err != nil {
 		return out, err
 	}
 
 	return out, nil
 }
+
+//git tag  v10.0 -m "version 1.0"
+//func (r *Repository) createTag(tag string, msg string,commitId string) error {
+//	arg := [""]
+//}
+//
+//func (r *Repository) CreateTag(tag string, msg string) error {
+//
+//}
+//
+//func (r *Repository) CreateTagByCommitId(tag string, msg string,commitId string) error {
+//
+//}

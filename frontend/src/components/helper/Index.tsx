@@ -12,7 +12,7 @@ const Helper = () => {
   const {token} = useToken();
   const dispatch = useDispatch();
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
-  const showMoreHelper = useSelector((state: State) => state.setting.showMoreHelper);
+  const showMore = useSelector((state: State) => state.setting.showMore);
   const [keyword, setKeyword] = useState<string>("")
 
   const onCloseHelper = () => {
@@ -62,7 +62,7 @@ const Helper = () => {
           bodyStyle={{display: 'flex', flexDirection: "column", padding: 0}}
           placement="right"
           onClose={onCloseHelper}
-          open={showMoreHelper}
+          open={showMore}
       >
         {selectedRepositoryId ? content :
             <Empty style={{marginTop: 200}} description="please select a git repository first"/>}

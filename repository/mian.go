@@ -3,7 +3,7 @@ package repository
 import "git-helper/utils"
 
 type Repository struct {
-	path string
+	Path string
 }
 
 func New() *Repository {
@@ -11,13 +11,13 @@ func New() *Repository {
 }
 
 func (r *Repository) SwitchRepository(path string) {
-	r.path = path
+	r.Path = path
 	//前端最后一个改的函数
 }
 
 func (r *Repository) GitPull() (string, error) {
-	return utils.RunCmdByPath(r.path, "git", "pull")
+	return utils.RunCmdByPath(r.Path, "git", "pull")
 }
 func (r *Repository) GitPush() (string, error) {
-	return utils.RunCmdByPath(r.path, "git", "push")
+	return utils.RunCmdByPath(r.Path, "git", "push")
 }

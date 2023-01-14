@@ -1,7 +1,6 @@
 // import dayjs from "dayjs"
 import {Card, Checkbox, Modal} from "antd"
-import {useDispatch} from "react-redux";
-import {setTag} from "../../store/sliceMain";
+// import {useDispatch} from "react-redux";
 import { repository } from "../../../wailsjs/go/models"
 // import relativeTime from 'dayjs/plugin/relativeTime';
 import {DelTag} from "../../../wailsjs/go/repository/Repository"
@@ -13,8 +12,7 @@ import {DeleteOutlined, FieldTimeOutlined, SnippetsOutlined, TagOutlined} from "
 // dayjs.extend(relativeTime)
 
 
-const Item = (props:{t:repository.Tag}) => {
-  const dispatch = useDispatch();
+const Item = (props:{t:repository.Tag,refresh:()=>void}) => {
   const delTag = (name:string)=>{
     Modal.warning({
       closable:true,
@@ -27,12 +25,13 @@ const Item = (props:{t:repository.Tag}) => {
         const checkbox = document.getElementById("delRemoteTagCheckbox") as HTMLInputElement
         DelTag(name,checkbox.checked).then(()=>{
           success("Delete success");
-          Tags().then(t=>{
-            dispatch(setTag(t))
-          }).catch(e=>{
-            console.log(e)
-            warning("Tag："+JSON.stringify(e))
-          })
+          props.refresh()
+          // Tags().then(t=>{
+          //   dispatch(setTag(t))
+          // }).catch(e=>{
+          //   console.log(e)
+          //   warning("Tag："+JSON.stringify(e))
+          // })
         }).catch(e=>{
           warning(JSON.stringify(e))
         })

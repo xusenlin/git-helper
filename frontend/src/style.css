@@ -25,3 +25,12 @@ body {
 .branch{
     cursor: pointer;
 }
+
+.active-history-card-head .ant-badge-status-text{
+  color: #fff!important;
+}
+
+.active-history-card-head .ant-space-item span{
+  color: #fff!important;
+  opacity: 1!important;
+}

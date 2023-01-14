@@ -22,9 +22,9 @@ func (r *Repository) getBranch(isAll bool) ([]Branch, error) {
 	var out string
 	var err error
 	if isAll {
-		out, err = utils.RunCmdByPath(r.path, "git", "branch", f, "-a")
+		out, err = utils.RunCmdByPath(r.Path, "git", "branch", f, "-a")
 	} else {
-		out, err = utils.RunCmdByPath(r.path, "git", "branch", f)
+		out, err = utils.RunCmdByPath(r.Path, "git", "branch", f)
 	}
 	if err != nil {
 		return nil, err
@@ -47,7 +47,7 @@ func (r *Repository) GetAllBranch() ([]Branch, error) { //use branch manage
 }
 
 func (r *Repository) SwitchBranch(branchName string) (bool, error) {
-	_, err := utils.RunCmdByPath(r.path, "git", "checkout", branchName)
+	_, err := utils.RunCmdByPath(r.Path, "git", "checkout", branchName)
 	if err != nil {
 		return false, err
 	}
@@ -55,7 +55,7 @@ func (r *Repository) SwitchBranch(branchName string) (bool, error) {
 }
 
 func (r *Repository) AddBranch(branchName string) error {
-	_, err := utils.RunCmdByPath(r.path, "git", "branch", branchName)
+	_, err := utils.RunCmdByPath(r.Path, "git", "branch", branchName)
 	if err != nil {
 		return err
 	}
@@ -65,13 +65,13 @@ func (r *Repository) AddBranch(branchName string) error {
 func (r *Repository) DelBranch(branchName string, delRemote bool) (string, error) {
 
 	if delRemote {
-		out, err := utils.RunCmdByPath(r.path, "git", "push", "origin", "-d", branchName)
+		out, err := utils.RunCmdByPath(r.Path, "git", "push", "origin", "-d", branchName)
 		if err != nil {
 			return out, err
 		}
 	}
 
-	out, err := utils.RunCmdByPath(r.path, "git", "branch", "-d", branchName)
+	out, err := utils.RunCmdByPath(r.Path, "git", "branch", "-d", branchName)
 	if err != nil {
 		return out, err
 	}
@@ -81,7 +81,7 @@ func (r *Repository) DelBranch(branchName string, delRemote bool) (string, error
 
 func (r *Repository) GetBranchHash(branchName string) (string, error) {
 
-	hash, err := utils.RunCmdByPath(r.path, "git", "rev-parse", branchName)
+	hash, err := utils.RunCmdByPath(r.Path, "git", "rev-parse", branchName)
 	if err != nil {
 		return "", err
 	}

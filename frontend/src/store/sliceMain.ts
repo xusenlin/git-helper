@@ -4,20 +4,18 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 export type Main = {
   selectedRepositoryId: string
   selectedRepositoryBranch: string
-  currentlyRepositoryAllBranch: repository.Branch[]
-  currentlyRepositoryTag: repository.Tag[]
+  currentlyRepositoryLocalBranch: repository.Branch[]
   currentlyRepositoryState: main.Status[]
-  currentlyRepositoryLogs: repository.Commit[]
+  currentlyRepositoryCommits: repository.Commit[]
 }
 
 
 const initialState: Main = {
   selectedRepositoryId: "",
   selectedRepositoryBranch: "",
-  currentlyRepositoryAllBranch: [],
-  currentlyRepositoryTag: [],
+  currentlyRepositoryLocalBranch: [],
   currentlyRepositoryState: [],
-  currentlyRepositoryLogs: []
+  currentlyRepositoryCommits: []
 }
 const mainSlice = createSlice({
   name: 'mainSlice',
@@ -25,10 +23,9 @@ const mainSlice = createSlice({
   reducers: {
     resetState(state) {
       state.selectedRepositoryBranch = ''
-      state.currentlyRepositoryAllBranch = []
-      state.currentlyRepositoryTag = []
+      state.currentlyRepositoryLocalBranch = []
       state.currentlyRepositoryState = []
-      state.currentlyRepositoryLogs = []
+      state.currentlyRepositoryCommits = []
     },
     setRepository(state, action: PayloadAction<string>) {
       state.selectedRepositoryId = action.payload
@@ -37,16 +34,13 @@ const mainSlice = createSlice({
       state.selectedRepositoryBranch = action.payload
     },
     setAllBranch(state, action: PayloadAction<repository.Branch[]>) {
-      state.currentlyRepositoryAllBranch = action.payload || []
+      state.currentlyRepositoryLocalBranch = action.payload || []
     },
     setStatus(state, {payload}: PayloadAction<main.Status[]>) {
       state.currentlyRepositoryState = payload || []
     },
-    setTag(state, action: PayloadAction<repository.Tag[]>) {
-      state.currentlyRepositoryTag = action.payload || []
-    },
     setLog(state, action: PayloadAction<repository.Commit[]>){
-      state.currentlyRepositoryLogs = action.payload||[]
+      state.currentlyRepositoryCommits = action.payload||[]
     }
   },
 });
@@ -57,7 +51,6 @@ export const {
   setBranch,
   setAllBranch,
   setStatus,
-  setTag,
   setLog,
   resetState,
 } = mainSlice.actions

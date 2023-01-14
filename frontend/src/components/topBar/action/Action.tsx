@@ -1,4 +1,4 @@
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Button, message, notification, Space} from 'antd';
 import {warning} from "../../../utils/common";
 import {warningNotification,successNotification} from "../../../utils/notification";
@@ -14,14 +14,20 @@ import {
   BranchesOutlined,
 } from '@ant-design/icons';
 import React, {useState} from "react";
+import {State} from "../../../store";
 
 const Action = () => {
   const [pullLoading,setPullLoading] = useState<boolean>(false)
   const [pushLoading,setPushLoading] = useState<boolean>(false)
+  const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
 
   const dispatch = useDispatch();
 
   const openTerminal = async () => {
+    if(!selectedRepositoryId){
+      warning("please select a git repository first")
+      return
+    }
     try {
       await OpenTerminal()
     } catch (e) {
@@ -29,6 +35,10 @@ const Action = () => {
     }
   }
   const openFileManage = () => {
+    if(!selectedRepositoryId){
+      warning("please select a git repository first")
+      return
+    }
     OpenFileManage().then(() => {
     }).catch(e => {
       warning(JSON.stringify(e))
@@ -45,6 +55,10 @@ const Action = () => {
   //   dispatch(setOpenMoreHelper(true))
   // }
   const pushRepo = () => {
+    if(!selectedRepositoryId){
+      warning("please select a git repository first")
+      return
+    }
     setPushLoading(true)
     GitPush().then(out => {
       successNotification(out,{width:500})
@@ -53,6 +67,10 @@ const Action = () => {
     }).finally(()=>{setPushLoading(false)})
   }
   const pullRepo = () => {
+    if(!selectedRepositoryId){
+      warning("please select a git repository first")
+      return
+    }
     setPullLoading(true)
     GitPull().then(out => {
       successNotification(out,{width:500})

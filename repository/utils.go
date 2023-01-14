@@ -19,7 +19,7 @@ func (r *Repository) OpenTerminal() error {
 	var cmd *exec.Cmd
 	switch sysRuntime.GOOS {
 	case "darwin":
-		cmd = exec.Command("open", "-b", "com.apple.Terminal", r.path)
+		cmd = exec.Command("open", "-b", "com.apple.Terminal", r.Path)
 	case "linux":
 		cmd = exec.Command("x-terminal-emulator")
 	case "windows":
@@ -38,11 +38,11 @@ func (r *Repository) OpenFileManage() error {
 	var cmd *exec.Cmd
 	switch sysRuntime.GOOS {
 	case "darwin":
-		cmd = exec.Command("open", r.path)
+		cmd = exec.Command("open", r.Path)
 	case "linux":
-		cmd = exec.Command("xdg-open", r.path)
+		cmd = exec.Command("xdg-open", r.Path)
 	case "windows":
-		cmd = exec.Command(`cmd`, `/c`, `explorer`, r.path)
+		cmd = exec.Command(`cmd`, `/c`, `explorer`, r.Path)
 	default:
 		return errors.New("unsupported operating system")
 	}

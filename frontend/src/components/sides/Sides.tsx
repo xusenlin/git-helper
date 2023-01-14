@@ -4,7 +4,7 @@ import type {MenuProps} from 'antd';
 import {State} from '../../store/index'
 import {warning} from "../../utils/common";
 import {getRepositoryPathById} from "../../utils/repo";
-import {setRepository, setAllBranch, resetState, setTag} from "../../store/sliceMain"
+import {setRepository, setAllBranch, resetState} from "../../store/sliceMain"
 import {useDispatch, useSelector} from 'react-redux';
 import {BindRepository} from "../../../wailsjs/go/main/App";
 import { GetLocalBranch,Tags} from "../../../wailsjs/go/repository/Repository";
@@ -64,10 +64,6 @@ const Sides = () => {
 
       const b = await GetLocalBranch()
       dispatch(setAllBranch(b))
-
-      const t = await Tags()
-      dispatch(setTag(t))
-
 
     } catch (e) {
       warning(JSON.stringify(e))

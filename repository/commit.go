@@ -31,7 +31,7 @@ func (r *Repository) Commits(branch string) ([]Commit, error) {
 	var logs []Commit
 	f := fmt.Sprintf("--format=format:%s", `{"hash":"%H","author":"%an","message":"%s","treeHash":"%T","parentHashes":"%P","committer":{"name":"%cn","email":"%ce","when":"%cr"}},`)
 
-	out, err := utils.RunCmdByPath(r.path, "git", "log", branch, f, "-n 100")
+	out, err := utils.RunCmdByPath(r.Path, "git", "log", branch, f, "-n 60")
 	if err != nil {
 		return nil, err
 	}

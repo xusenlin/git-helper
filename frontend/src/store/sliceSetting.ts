@@ -6,7 +6,7 @@ export type SettingState = {
   showRepositoryTag:boolean
   showRepositoryBranch:boolean
   showThemeSetting:boolean
-  showMoreHelper:boolean
+  showMore:boolean
   themeColor:string
 }
 
@@ -15,7 +15,7 @@ const initialState: SettingState = {
   showRepositoryTag:false,
   showRepositoryBranch:false,
   showThemeSetting:false,
-  showMoreHelper:false,
+  showMore:false,
   themeColor:theme[0]
 }
 const settingSlice = createSlice({
@@ -38,7 +38,7 @@ const settingSlice = createSlice({
       state.themeColor = action.payload
     },
     setOpenMoreHelper(state, action: PayloadAction<boolean>){
-      state.showMoreHelper = action.payload
+      state.showMore = action.payload
     }
   },
 });

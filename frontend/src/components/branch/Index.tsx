@@ -1,7 +1,7 @@
 import "./style.scss"
 import Item from "./Item"
 import {State} from "../../store";
-import React, {useState, useRef, useMemo} from "react";
+import React, {useState, useRef, useMemo, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input, Space, Drawer, Empty} from "antd";
 import {AddBranch, GetLocalBranch,GetAllBranch} from "../../../wailsjs/go/repository/Repository"
@@ -16,7 +16,6 @@ const Branch = () => {
   const limit = 20
 
   const dispatch = useDispatch();
-  // const branch = useSelector((state: State) => state.main.currentlyRepositoryAllBranch);
   const [branch,setBranch] = useState<repository.Branch[]>([]);
 
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
@@ -28,20 +27,23 @@ const Branch = () => {
   const computedBranch = useMemo(() => (branch.filter(r=>r.name.indexOf(keyword)!==-1)), [keyword,branch]);
 
   const getAllBranch = () => {
+    if(!selectedRepositoryId){
+      return
+    }
     GetAllBranch().then(b=>{
-      setBranch(b)
+      setBranch(b||[])
     }).catch(e=>{
       warning(JSON.stringify(e))
     })
   }
-  getAllBranch()
+  useEffect(() => {
+    getAllBranch()
+  }, [selectedRepositoryId]);
+
 
   const addBranch = async () => {
     try {
       await AddBranch(branchName)
-      // const t = await GetLocalBranch()
-      // const t = await GetAllBranch()
-      // dispatch(setAllBranch(t))
       getAllBranch()
       setBranchName("")
     } catch (e) {
@@ -82,13 +84,12 @@ const Branch = () => {
 
   return (
       <Drawer
-          title={<div className="branch-manage-title">
-            <div>Branch manage</div>
-            <div style={{fontSize:12,color:'#999'}}>Total：{branch.length}</div>
-          </div>}
+          title="Branch manage"
+          extra={<div style={{fontSize:12,color:'#999'}}>Total：{branch.length}</div>}
           bodyStyle={{display: 'flex', flexDirection: "column", padding: 0}}
           placement="right"
           onClose={onCloseBranch}
+          destroyOnClose={true}
           open={showRepositoryBranch}
       >
         <MergeDialog ref={mergeDialogComponentRef}/>
