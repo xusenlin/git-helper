@@ -1,7 +1,7 @@
 import {Space} from 'antd';
 import {useDispatch} from "react-redux";
 import {delCategory} from "../../store/sliceCategory";
-import { EditOutlined,DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 function Action(props:{name:string}) {
 
     const dispatch = useDispatch()

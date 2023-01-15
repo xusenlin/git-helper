@@ -1,4 +1,4 @@
-package main
+package repository
 
 import (
 	"git-helper/utils"
@@ -15,15 +15,11 @@ type DiffCommitInfo struct {
 	Statistics   string        `json:"statistics"`
 }
 
-func (a *App) DiffCommit(newCommitId, oldCommitId string) (DiffCommitInfo, error) {
-	path, err := a.RepositoryPath()
+func (r *Repository) DiffCommit(newCommitId, oldCommitId string) (DiffCommitInfo, error) {
 
 	var content DiffCommitInfo
 
-	if err != nil {
-		return content, err
-	}
-	out, err := utils.RunCmdByPath(path, "git", "diff", oldCommitId, newCommitId, "--stat")
+	out, err := utils.RunCmdByPath(r.Path, "git", "diff", oldCommitId, newCommitId, "--stat")
 	if err != nil {
 		return content, err
 	}

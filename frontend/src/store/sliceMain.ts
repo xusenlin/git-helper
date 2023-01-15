@@ -1,4 +1,4 @@
-import {main,repository} from "../../wailsjs/go/models"
+import {repository} from "../../wailsjs/go/models"
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type Main = {

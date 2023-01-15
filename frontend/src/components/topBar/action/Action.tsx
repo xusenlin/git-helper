@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {Button, message, notification, Space} from 'antd';
+import {Button, Space} from 'antd';
 import {warning} from "../../../utils/common";
 import {warningNotification,successNotification} from "../../../utils/notification";
 import {OpenTerminal,OpenFileManage,GitPull, GitPush} from "../../../../wailsjs/go/repository/Repository"

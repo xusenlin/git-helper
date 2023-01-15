@@ -2,7 +2,7 @@ import './style.scss'
 import { Badge } from "antd"
 import {useSelector} from "react-redux";
 import {State} from "../../store";
-import {main} from "../../../wailsjs/go/models"
+import {repository} from "../../../wailsjs/go/models"
 
 const buildFlag = (d:string) => {
   let str = d.split("")
@@ -19,7 +19,7 @@ const buildFlag = (d:string) => {
   })
 }
 
-const diffRow = (c: main.ChangesFile) => {
+const diffRow = (c: repository.ChangesFile) => {
 
       const color = (d:string):string => {
         if(/Bin 0 ->/.test(d)){

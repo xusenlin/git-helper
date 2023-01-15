@@ -1,12 +1,12 @@
-import { theme  } from "../config/app"
+import { theme,localThemeKey  } from "../config/app"
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-
+const localTheme = localStorage.getItem(localThemeKey)
 export type SettingState = {
   showRepositorySetting:boolean
   showRepositoryTag:boolean
   showRepositoryBranch:boolean
   showThemeSetting:boolean
-  showMore:boolean
+  showAbout:boolean
   themeColor:string
 }
 
@@ -15,8 +15,8 @@ const initialState: SettingState = {
   showRepositoryTag:false,
   showRepositoryBranch:false,
   showThemeSetting:false,
-  showMore:false,
-  themeColor:theme[0]
+  showAbout:false,
+  themeColor:localTheme?localTheme:theme[0]
 }
 const settingSlice = createSlice({
   name: 'settingSlice',
@@ -37,8 +37,8 @@ const settingSlice = createSlice({
     setThemeColor(state, action: PayloadAction<string>){
       state.themeColor = action.payload
     },
-    setOpenMoreHelper(state, action: PayloadAction<boolean>){
-      state.showMore = action.payload
+    setOpenAbout(state, action: PayloadAction<boolean>){
+      state.showAbout = action.payload
     }
   },
 });
@@ -49,7 +49,7 @@ export const {
   setOpenRepositoryTag,
   setOpenRepositoryBranch,
   setOpenThemeSetting,
-  setOpenMoreHelper,
+  setOpenAbout,
   setThemeColor
 } = settingSlice.actions
 

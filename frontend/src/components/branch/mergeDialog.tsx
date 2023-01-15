@@ -4,9 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {State} from "../../store";
 import {useState, useImperativeHandle, forwardRef} from "react";
 import {success, warning} from "../../utils/common";
-import { PreMergeResult, MergeCommit, MergeRebase, MergeSquash} from "../../../wailsjs/go/main/App";
+import { PreMergeResult, MergeCommit, MergeRebase, MergeSquash} from "../../../wailsjs/go/repository/Repository";
 import {GetBranchHash,Commits} from "../../../wailsjs/go/repository/Repository";
-import {main} from "../../../wailsjs/go/models";
+import {repository} from "../../../wailsjs/go/models";
 import {warningNotification} from "../../utils/notification";
 import {setLog} from "../../store/sliceMain";
 
@@ -17,7 +17,7 @@ const MergeDialog = (props: {}, ref: any) => {
   const [openMerge, setOpenMerge] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [preMergeResult, setPreMergeResult] = useState<main.MergeResult | null>(null);
+  const [preMergeResult, setPreMergeResult] = useState<repository.MergeResult | null>(null);
 
   const [mergeContent, setMergeContent] = useState({
     ourBranchHash: "",

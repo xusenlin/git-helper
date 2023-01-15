@@ -17,7 +17,7 @@ func main() {
 	// Create an instance of the app structure
 	app := NewApp()
 	repo := repository.New()
-	app.repo = repo
+	app.setRepository(repo)
 
 	// Create application with options
 	err := wails.Run(&options.App{

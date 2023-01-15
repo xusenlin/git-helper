@@ -30,6 +30,14 @@ export function DelTag(arg1, arg2) {
   return window['go']['repository']['Repository']['DelTag'](arg1, arg2);
 }
 
+export function DiffCommit(arg1, arg2) {
+  return window['go']['repository']['Repository']['DiffCommit'](arg1, arg2);
+}
+
+export function DiffWorkStage(arg1) {
+  return window['go']['repository']['Repository']['DiffWorkStage'](arg1);
+}
+
 export function DiscardChanges(arg1) {
   return window['go']['repository']['Repository']['DiscardChanges'](arg1);
 }
@@ -58,8 +66,16 @@ export function GitPush() {
   return window['go']['repository']['Repository']['GitPush']();
 }
 
-export function IsGitRepository(arg1) {
-  return window['go']['repository']['Repository']['IsGitRepository'](arg1);
+export function MergeCommit(arg1, arg2) {
+  return window['go']['repository']['Repository']['MergeCommit'](arg1, arg2);
+}
+
+export function MergeRebase(arg1, arg2) {
+  return window['go']['repository']['Repository']['MergeRebase'](arg1, arg2);
+}
+
+export function MergeSquash(arg1, arg2) {
+  return window['go']['repository']['Repository']['MergeSquash'](arg1, arg2);
 }
 
 export function OpenFileManage() {
@@ -68,6 +84,14 @@ export function OpenFileManage() {
 
 export function OpenTerminal() {
   return window['go']['repository']['Repository']['OpenTerminal']();
+}
+
+export function PreMergeResult(arg1, arg2) {
+  return window['go']['repository']['Repository']['PreMergeResult'](arg1, arg2);
+}
+
+export function RunCmdInRepository(arg1, arg2) {
+  return window['go']['repository']['Repository']['RunCmdInRepository'](arg1, arg2);
 }
 
 export function SwitchBranch(arg1) {

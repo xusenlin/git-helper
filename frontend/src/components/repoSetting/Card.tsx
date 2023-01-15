@@ -1,12 +1,12 @@
 import React from 'react';
-import {Card, Space,Popover,Modal} from 'antd';
-import {DeleteOutlined, InfoCircleOutlined, EditOutlined} from "@ant-design/icons"
-import Action from "./Action"
-import {Category, Repository, delRepository, editRepositoryName} from "../../store/sliceCategory";
-import {Droppable, Draggable} from 'react-beautiful-dnd'
-import {useDispatch, useSelector} from "react-redux";
 import {State} from "../../store";
+import Action from "./Action"
 import DialogInput from "../dialog/Input";
+import {Card, Space,Popover,Modal} from 'antd';
+import {useDispatch, useSelector} from "react-redux";
+import {Droppable, Draggable} from 'react-beautiful-dnd'
+import {DeleteOutlined, InfoCircleOutlined, EditOutlined} from "@ant-design/icons"
+import {Category, Repository, delRepository, editRepositoryName} from "../../store/sliceCategory";
 
 const Details = (p: {r:Repository}) => <div>
   <p>ID:{p.r.id}</p>

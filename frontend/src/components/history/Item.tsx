@@ -1,11 +1,11 @@
+import {State} from "../../store";
 import {Badge, Card, Space} from "antd"
+import {useSelector} from "react-redux";
+import {hashLength} from "../../config/app";
 import {copyHashClipboard} from "../../utils/common"
-import {SnippetsOutlined, FieldTimeOutlined, UserOutlined, EyeOutlined} from "@ant-design/icons"
 import {repository} from "../../../wailsjs/go/models";
 import {asyncDiffCommit} from "../../store/sliceCommitDiff";
-import {hashLength} from "../../config/app";
-import {useSelector} from "react-redux";
-import {State} from "../../store";
+import {SnippetsOutlined, FieldTimeOutlined, UserOutlined, EyeOutlined} from "@ant-design/icons"
 
 
 const style = {

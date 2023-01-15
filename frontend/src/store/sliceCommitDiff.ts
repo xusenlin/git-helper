@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {DiffCommit} from "../../wailsjs/go/main/App"
-import {main} from "../../wailsjs/go/models"
+import {DiffCommit} from "../../wailsjs/go/repository/Repository"
+import {repository} from "../../wailsjs/go/models"
 import {warning} from "../utils/common";
 import {store} from './index';
 
 
 export type DiffCommitState = {
-  filesInfo: main.ChangesFile[]
+  filesInfo: repository.ChangesFile[]
   statistics: string
   commitId: string
 }

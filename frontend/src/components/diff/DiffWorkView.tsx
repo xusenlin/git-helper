@@ -1,10 +1,10 @@
 import './style.scss'
 import {useSelector} from "react-redux";
 import {State} from "../../store";
-import {main} from "../../../wailsjs/go/models"
+import {repository} from "../../../wailsjs/go/models"
 
 
-const diffRow = (c: main.DiffContent) => {
+const diffRow = (c: repository.DiffContent) => {
   switch (c.type) {
     case 1:
       return <p key={c.index} style={{background: "#e7ffed"}}>{c.content}</p>

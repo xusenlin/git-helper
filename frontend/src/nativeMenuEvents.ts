@@ -2,9 +2,9 @@ import {store} from './store';
 import {warning} from './utils/common';
 import {getRepositoryPathById} from './utils/repo';
 import {EventsOn} from "../wailsjs/runtime"
-import {IsGitRepository} from "../wailsjs/go/repository/Repository"
+import {IsGitRepository} from "../wailsjs/go/main/App"
 import {addDefaultRepository} from "./store/sliceCategory"
-import {setOpenRepositorySetting} from "./store/sliceSetting"
+import {setOpenRepositorySetting,setOpenRepositoryBranch,setOpenRepositoryTag,setOpenThemeSetting,setOpenAbout} from "./store/sliceSetting"
 
 
 //===================Repository Menu Event========
@@ -34,16 +34,20 @@ EventsOn("Repository_M",()=>{
   store.dispatch(setOpenRepositorySetting(true))
 })
 
-//===================Branch  Menu Event=========
+//===================Branch&Tag  Menu Event=========
 EventsOn("Branch_M",()=>{
-  store.dispatch(setOpenRepositorySetting(true))
+  store.dispatch(setOpenRepositoryBranch(true))
+})
+EventsOn("Tag_M",()=>{
+  store.dispatch(setOpenRepositoryTag(true))
 })
 
-//===================Settings  Menu Event=========
+
+//===================other  Menu Event=========
 EventsOn("Settings_Theme",()=>{
-  store.dispatch(setOpenRepositorySetting(true))
+  store.dispatch(setOpenThemeSetting(true))
+})
+EventsOn("Settings_About",()=>{
+  store.dispatch(setOpenAbout(true))
 })
 
-
-
-//

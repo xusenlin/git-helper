@@ -7,13 +7,6 @@ import (
 	sysRuntime "runtime"
 )
 
-func (r *Repository) IsGitRepository(path string) (bool, error) {
-	if !utils.IsDir(path + "/.git") {
-		return false, errors.New("please select a git repository")
-	}
-	return true, nil
-}
-
 func (r *Repository) OpenTerminal() error {
 
 	var cmd *exec.Cmd
@@ -51,4 +44,8 @@ func (r *Repository) OpenFileManage() error {
 		return err
 	}
 	return nil
+}
+
+func (r *Repository) RunCmdInRepository(cmd string, arg []string) (string, error) {
+	return utils.RunCmdByPath(r.Path, cmd, arg...)
 }

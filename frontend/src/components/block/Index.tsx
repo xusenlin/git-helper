@@ -13,7 +13,6 @@ const Block = (props: propType) => {
       <div className="main-block">
         { props.action || props.title ?<div className="top-title">
           <div className='title'>{props.title}</div>
-          {/*<div className='title'></div>*/}
           <div className="action">{props.action}</div>
         </div>:'' }
 

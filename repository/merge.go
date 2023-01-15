@@ -1,4 +1,4 @@
-package main
+package repository
 
 import (
 	"errors"
@@ -23,32 +23,30 @@ type MergeResult struct {
 	Count int       `json:"count"`
 }
 
-func (a *App) PreMergeResult(currentHash, MergeHash string) (MergeResult, error) {
-	path, err := a.RepositoryPath()
+func (r *Repository) PreMergeResult(currentHash, MergeHash string) (MergeResult, error) {
+
 	var invalidResult = MergeResult{
 		Kind:  Invalid,
 		Count: 0,
 	}
-	if err != nil {
-		return invalidResult, err
-	}
-	h, err := utils.RunCmdByPath(path, "git", "merge-base", currentHash, MergeHash)
+
+	h, err := utils.RunCmdByPath(r.Path, "git", "merge-base", currentHash, MergeHash)
 	if err != nil {
 		return invalidResult, err
 	}
 	baseHash := strings.TrimSpace(h)
-	out, err := utils.RunCmdByPath(path, "git", "merge-tree", baseHash, currentHash, MergeHash)
+	out, err := utils.RunCmdByPath(r.Path, "git", "merge-tree", baseHash, currentHash, MergeHash)
 	if err != nil {
 		return invalidResult, err
 	}
 
-	r := regexp.MustCompile(conflictRegexp)
-	matches := r.FindAllString(out, -1)
+	reg := regexp.MustCompile(conflictRegexp)
+	matches := reg.FindAllString(out, -1)
 
 	if len(matches) != 0 {
 		return MergeResult{Kind: Conflicted, Count: len(matches)}, nil
 	}
-	out, err = utils.RunCmdByPath(path, "git", "rev-list", "--left-right", "--count", currentHash+"..."+MergeHash)
+	out, err = utils.RunCmdByPath(r.Path, "git", "rev-list", "--left-right", "--count", currentHash+"..."+MergeHash)
 	if err != nil {
 		return invalidResult, err
 	}
@@ -65,20 +63,16 @@ func (a *App) PreMergeResult(currentHash, MergeHash string) (MergeResult, error)
 	return MergeResult{Kind: Clean, Count: int(i)}, nil
 }
 
-func (a *App) MergeRebase(ourBranch, theirBranch string) (string, error) {
-	path, err := a.RepositoryPath()
-	if err != nil {
-		return "", err
-	}
-	//TODO
-	ok, err := a.repo.SwitchBranch(ourBranch)
+func (r *Repository) MergeRebase(ourBranch, theirBranch string) (string, error) {
+
+	ok, err := r.SwitchBranch(ourBranch)
 	if err != nil {
 		return "", err
 	}
 	if !ok {
 		return "", errors.New("switch branch error")
 	}
-	out, err := utils.RunCmdByPath(path, "git", "rebase", theirBranch)
+	out, err := utils.RunCmdByPath(r.Path, "git", "rebase", theirBranch)
 
 	if err != nil {
 		return "", err
@@ -86,19 +80,15 @@ func (a *App) MergeRebase(ourBranch, theirBranch string) (string, error) {
 	return out, nil
 }
 
-func (a *App) MergeCommit(ourBranch, theirBranch string) (string, error) {
-	path, err := a.RepositoryPath()
-	if err != nil {
-		return "", err
-	}
-	ok, err := a.repo.SwitchBranch(ourBranch)
+func (r *Repository) MergeCommit(ourBranch, theirBranch string) (string, error) {
+	ok, err := r.SwitchBranch(ourBranch)
 	if err != nil {
 		return "", err
 	}
 	if !ok {
 		return "", errors.New("switch branch error")
 	}
-	out, err := utils.RunCmdByPath(path, "git", "merge", theirBranch)
+	out, err := utils.RunCmdByPath(r.Path, "git", "merge", theirBranch)
 
 	if err != nil {
 		return "", err
@@ -106,19 +96,15 @@ func (a *App) MergeCommit(ourBranch, theirBranch string) (string, error) {
 	return out, nil
 }
 
-func (a *App) MergeSquash(ourBranch, theirBranch string) (string, error) {
-	path, err := a.RepositoryPath()
-	if err != nil {
-		return "", err
-	}
-	ok, err := a.repo.SwitchBranch(ourBranch)
+func (r *Repository) MergeSquash(ourBranch, theirBranch string) (string, error) {
+	ok, err := r.SwitchBranch(ourBranch)
 	if err != nil {
 		return "", err
 	}
 	if !ok {
 		return "", errors.New("switch branch error")
 	}
-	out, err := utils.RunCmdByPath(path, "git", "merge", "--squash", theirBranch)
+	out, err := utils.RunCmdByPath(r.Path, "git", "merge", "--squash", theirBranch)
 
 	if err != nil {
 		return "", err

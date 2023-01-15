@@ -1,14 +1,12 @@
 package main
 
 import (
+	"errors"
 	"git-helper/utils"
 	"github.com/atotto/clipboard"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"io/ioutil"
-	"strings"
 )
-
-const TimeLayout = "2006-01-02 15:04:05"
 
 func (a *App) Sha256(s string) string {
 	return utils.Sha256(s)
@@ -43,14 +41,9 @@ func (a *App) ReadJsonFile() (string, error) {
 func (a *App) Clipboard(t string) error {
 	return clipboard.WriteAll(t)
 }
-
-func (a *App) RunCmd(cmd string) (string, error) {
-	path, err := a.RepositoryPath()
-	if err != nil {
-		return "", err
+func (a *App) IsGitRepository(path string) (bool, error) {
+	if !utils.IsDir(path + "/.git") {
+		return false, errors.New("not a git repository")
 	}
-	c := strings.Split(cmd, " ")
-
-	return utils.RunCmdByPath(path, c[0], c[1:]...)
-
+	return true, nil
 }

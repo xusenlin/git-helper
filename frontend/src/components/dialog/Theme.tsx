@@ -1,11 +1,9 @@
 import React from "react"
-import {Button, Modal,Space} from "antd";
+import { Modal,Space} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {State} from "../../store";
-import { theme } from "../../config/app"
+import { theme,localThemeKey } from "../../config/app"
 import {setOpenThemeSetting,setThemeColor} from "../../store/sliceSetting";
-
-
 
 
 const ColorsBlock = (p:{c:string})=>{
@@ -13,7 +11,10 @@ const ColorsBlock = (p:{c:string})=>{
   const dispatch = useDispatch();
 
   return <div
-      onClick={()=>{dispatch(setThemeColor(p.c))}}
+      onClick={()=>{
+        dispatch(setThemeColor(p.c))
+        localStorage.setItem(localThemeKey,p.c)
+      }}
       style={{
         width:40,
         height:40,

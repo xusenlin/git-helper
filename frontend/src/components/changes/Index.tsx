@@ -1,10 +1,10 @@
 import "./style.scss"
-import {State, store} from "../../store";
+import {State} from "../../store";
 import Block from "../block/Index"
 import FileState from "./FileState"
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Input, Button, Space, Checkbox,Badge,Tooltip} from 'antd';
+import {Input, Button, Space, Checkbox,Badge} from 'antd';
 import { PresetStatusColorType } from "antd/es/_util/colors"
 import {FileStatus,Commit} from "../../../wailsjs/go/repository/Repository"
 import type {CheckboxChangeEvent} from 'antd/es/checkbox';

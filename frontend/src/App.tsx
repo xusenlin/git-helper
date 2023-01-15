@@ -7,14 +7,13 @@ import Changes from "./components/changes/Index"
 import History from "./components/history/Index"
 import Tag from "./components/tag/Index"
 import Theme from "./components/dialog/Theme"
+import About from "./components/dialog/About"
 import Branch from "./components/branch/Index"
 import TopBar from "./components/topBar/TopBar"
 import DiffWorkView from "./components/diff/DiffWorkView"
 import DiffCommitView from "./components/diff/DiffCommitView"
-import {setRepository, Category} from "./store/sliceCategory"
 import {useDispatch, useSelector} from "react-redux";
-import {ReadJsonFile} from "../wailsjs/go/main/App";
-import {useState,useEffect} from "react";
+import {useState} from "react";
 
 
 function App() {
@@ -22,17 +21,6 @@ function App() {
   const themeColor = useSelector((state: State) => state.setting.themeColor);
   const dispatch = useDispatch();
   const [activeTab,setActiveTab] = useState("1")
-
-
-
-  // ReadJsonFile().then(r => {
-  //   console.log("ReadJsonFile")
-  //   const data = JSON.parse(r) as Category[]
-  //   dispatch(setRepository(data))
-  // }).catch(e => {
-  //   // warning(JSON.stringify(e))
-  //   // console.log(e)
-  // })
 
 
   const content = <>
@@ -89,7 +77,7 @@ function App() {
             <Tag/>
             <Branch/>
             <Theme/>
-            {/*<Helper/>*/}
+            <About/>
           </>
         </div>
       </ConfigProvider>

@@ -1,15 +1,9 @@
-// import dayjs from "dayjs"
 import {Card, Checkbox, Modal} from "antd"
-// import {useDispatch} from "react-redux";
 import { repository } from "../../../wailsjs/go/models"
-// import relativeTime from 'dayjs/plugin/relativeTime';
 import {DelTag} from "../../../wailsjs/go/repository/Repository"
-import {Tags} from "../../../wailsjs/go/repository/Repository"
-
 import {warning, success, copyHashClipboard} from "../../utils/common";
 import {DeleteOutlined, FieldTimeOutlined, SnippetsOutlined, TagOutlined} from "@ant-design/icons"
 
-// dayjs.extend(relativeTime)
 
 
 const Item = (props:{t:repository.Tag,refresh:()=>void}) => {

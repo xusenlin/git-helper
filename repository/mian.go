@@ -10,9 +10,9 @@ func New() *Repository {
 	return &Repository{}
 }
 
-func (r *Repository) SwitchRepository(path string) {
+func (r *Repository) SwitchRepository(path string) error {
 	r.Path = path
-	//前端最后一个改的函数
+	return nil
 }
 
 func (r *Repository) GitPull() (string, error) {

@@ -4,10 +4,9 @@ import {State} from "../../store";
 import React, {useState, useRef, useMemo, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input, Space, Drawer, Empty} from "antd";
-import {AddBranch, GetLocalBranch,GetAllBranch} from "../../../wailsjs/go/repository/Repository"
+import {AddBranch,GetAllBranch} from "../../../wailsjs/go/repository/Repository"
 import {repository} from "../../../wailsjs/go/models"
 import {setOpenRepositoryBranch} from "../../store/sliceSetting";
-import {setAllBranch} from "../../store/sliceMain";
 import {warning} from "../../utils/common"
 import MergeDialog from "./mergeDialog"
 

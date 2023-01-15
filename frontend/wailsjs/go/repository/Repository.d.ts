@@ -16,6 +16,10 @@ export function DelBranch(arg1:string,arg2:boolean):Promise<string>;
 
 export function DelTag(arg1:string,arg2:boolean):Promise<string>;
 
+export function DiffCommit(arg1:string,arg2:string):Promise<repository.DiffCommitInfo>;
+
+export function DiffWorkStage(arg1:string):Promise<Array<repository.DiffContent>>;
+
 export function DiscardChanges(arg1:string):Promise<string>;
 
 export function FileStatus():Promise<Array<repository.FileStatus>>;
@@ -30,14 +34,22 @@ export function GitPull():Promise<string>;
 
 export function GitPush():Promise<string>;
 
-export function IsGitRepository(arg1:string):Promise<boolean>;
+export function MergeCommit(arg1:string,arg2:string):Promise<string>;
+
+export function MergeRebase(arg1:string,arg2:string):Promise<string>;
+
+export function MergeSquash(arg1:string,arg2:string):Promise<string>;
 
 export function OpenFileManage():Promise<Error>;
 
 export function OpenTerminal():Promise<Error>;
 
+export function PreMergeResult(arg1:string,arg2:string):Promise<repository.MergeResult>;
+
+export function RunCmdInRepository(arg1:string,arg2:Array<string>):Promise<string>;
+
 export function SwitchBranch(arg1:string):Promise<boolean>;
 
-export function SwitchRepository(arg1:string):Promise<void>;
+export function SwitchRepository(arg1:string):Promise<Error>;
 
 export function Tags():Promise<Array<repository.Tag>>;

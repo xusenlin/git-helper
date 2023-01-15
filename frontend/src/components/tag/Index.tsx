@@ -1,14 +1,14 @@
 import "./style.scss"
 import Item from "./Item"
 import {State} from "../../store";
-import React, {useState,useMemo,useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input, Space,Drawer,Empty} from "antd";
-import { CreateTag } from "../../../wailsjs/go/repository/Repository"
-import { Tags } from "../../../wailsjs/go/repository/Repository"
 import {success, warning} from "../../utils/common";
-import {setOpenRepositoryTag} from "../../store/sliceSetting";
 import {repository} from "../../../wailsjs/go/models";
+import React, {useState,useMemo,useEffect} from "react";
+import {setOpenRepositoryTag} from "../../store/sliceSetting";
+import { Tags } from "../../../wailsjs/go/repository/Repository"
+import { CreateTag } from "../../../wailsjs/go/repository/Repository"
 
 const { TextArea } = Input;
 const Tag = () => {
@@ -73,7 +73,7 @@ const Tag = () => {
       <Input value={keyword} style={{marginBottom:10}} placeholder="Search all tags" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         setKeyword(e.target.value)
       }} />
-      { (computedTags.length > limit ? computedTags.slice(0,limit) : computedTags).map(r=><Item refresh={getTag} t={r} key={r.hash} />)}
+      { (computedTags.length > limit ? computedTags.slice(0,limit) : computedTags).map(r=><Item refresh={getTag} t={r} key={r.name} />)}
     </div>
     <div style={{padding:20}}>
       {bottom}

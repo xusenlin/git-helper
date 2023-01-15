@@ -3,11 +3,10 @@ import React from 'react';
 import type {MenuProps} from 'antd';
 import {State} from '../../store/index'
 import {warning} from "../../utils/common";
+import {useDispatch, useSelector} from 'react-redux';
 import {getRepositoryPathById} from "../../utils/repo";
 import {setRepository, setAllBranch, resetState} from "../../store/sliceMain"
-import {useDispatch, useSelector} from 'react-redux';
-import {BindRepository} from "../../../wailsjs/go/main/App";
-import { GetLocalBranch,Tags} from "../../../wailsjs/go/repository/Repository";
+import { GetLocalBranch,SwitchRepository} from "../../../wailsjs/go/repository/Repository";
 
 
 
@@ -52,11 +51,7 @@ const Sides = () => {
         warning("No git repository path was found for the specified ID.")
         return
       }
-      const ok = await BindRepository(path)
-      if(!ok){
-        warning("Error binding repository.")
-        return
-      }
+      await SwitchRepository(path)
 
       dispatch(resetState())
 
