@@ -6,7 +6,7 @@ import {warning} from "../../utils/common";
 import {useDispatch, useSelector} from 'react-redux';
 import {getRepositoryPathById} from "../../utils/repo";
 import {setRepository, setAllBranch, resetState} from "../../store/sliceMain"
-import { GetLocalBranch,SwitchRepository} from "../../../wailsjs/go/repository/Repository";
+import { GetLocalBranch,SwitchRepository,CommitsLog} from "../../../wailsjs/go/repository/Repository";
 
 
 
@@ -60,6 +60,9 @@ const Sides = () => {
       const b = await GetLocalBranch()
       dispatch(setAllBranch(b))
 
+      // const x = await CommitsLog()
+      // console.log(x)
+      // console.log(JSON.stringify(x))
     } catch (e) {
       warning(JSON.stringify(e))
     }

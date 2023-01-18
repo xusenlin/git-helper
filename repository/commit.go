@@ -44,3 +44,68 @@ func (r *Repository) Commits(branch string) ([]Commit, error) {
 
 	return logs, nil
 }
+
+type LogDesc struct {
+	Tag    []string `json:"tag"`
+	Branch []string `json:"branch"`
+}
+
+type Log struct {
+	Hash         string   `json:"hash"`
+	ParentHashes []string `json:"parentHashes"`
+	Desc         LogDesc  `json:"desc"`
+	Author       string   `json:"author"`
+	Message      string   `json:"message"`
+}
+
+func (r *Repository) CommitsLog() ([]Log, error) {
+	//git log --all --date-order --pretty="%h<|>%p<|>%d<|>%an<|>%s<|n|>"
+	var logs []Log
+	f := fmt.Sprintf("--pretty=%s", `%h<||>%p<||>%d<||>%an<||>%s<|n|>`)
+
+	out, err := utils.RunCmdByPath(r.Path, "git", "log", "--all", "--date-order", "-n 100", f)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println(out)
+	outs := strings.Split(out, "<|n|>")
+	lastIndex := len(outs) - 1
+	for i := lastIndex; i >= 0; i-- {
+		rows := strings.Split(strings.TrimSpace(outs[i]), "<||>")
+		if len(rows) != 5 {
+			continue
+		}
+		ph := strings.Split(strings.TrimSpace(rows[1]), " ")
+
+		if i == lastIndex-1 {
+			ph = nil
+		}
+
+		logs = append(logs, Log{
+			Hash:         rows[0],
+			ParentHashes: ph,
+			Desc:         parseDesc(rows[2]),
+			Author:       rows[3],
+			Message:      rows[4],
+		})
+	}
+	return logs, nil
+}
+
+func parseDesc(d string) LogDesc {
+	s := strings.TrimSpace(d)
+	r := strings.TrimRight(s, ")")
+	str := strings.TrimLeft(r, "(")
+	outs := strings.Split(str, ",")
+	var desc LogDesc
+	for _, f := range outs {
+		flag := strings.TrimSpace(f)
+		if strings.HasPrefix(flag, "tag:") {
+			tag := strings.TrimLeft(flag, "tag:")
+			desc.Tag = append(desc.Tag, strings.TrimSpace(tag))
+		} else if flag != "" {
+			desc.Branch = append(desc.Branch, flag)
+		}
+	}
+	return desc
+}

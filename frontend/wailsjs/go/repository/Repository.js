@@ -14,6 +14,10 @@ export function Commits(arg1) {
   return window['go']['repository']['Repository']['Commits'](arg1);
 }
 
+export function CommitsLog() {
+  return window['go']['repository']['Repository']['CommitsLog']();
+}
+
 export function CreateTag(arg1, arg2) {
   return window['go']['repository']['Repository']['CreateTag'](arg1, arg2);
 }

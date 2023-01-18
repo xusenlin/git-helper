@@ -18,13 +18,13 @@ func (r *Repository) getBranch(isAll bool) ([]Branch, error) {
 
 	var branch []Branch
 
-	f := fmt.Sprintf("--format=%s", `{"hash":"%(objectname)","name":"%(refname:short)","refName":"%(refname)","upstream":"%(upstream)"},`)
+	f := fmt.Sprintf("--format=%s", `{"hash":"%(objectname)","name":"%(refname:strip=2)","refName":"%(refname)","upstream":"%(upstream)"},`)
 	var out string
 	var err error
 	if isAll {
-		out, err = utils.RunCmdByPath(r.Path, "git", "branch", f, "-a")
+		out, err = utils.RunCmdByPath(r.Path, "git", "branch", f, "-a", "--sort=-committerdate")
 	} else {
-		out, err = utils.RunCmdByPath(r.Path, "git", "branch", f)
+		out, err = utils.RunCmdByPath(r.Path, "git", "branch", f, "--sort=-committerdate")
 	}
 	if err != nil {
 		return nil, err

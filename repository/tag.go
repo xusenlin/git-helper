@@ -17,13 +17,12 @@ type Tag struct {
 
 func (r *Repository) Tags() ([]Tag, error) {
 	var tags []Tag
-	f := fmt.Sprintf("--format=%s", `%(refname:short)<||>%(refname)<||>%(objecttype)<||>%(subject)<||>%(objectname)<||>%(creatordate:relative)<|n|>`)
+	f := fmt.Sprintf("--format=%s", `%(refname:strip=2)<||>%(refname)<||>%(objecttype)<||>%(subject)<||>%(objectname)<||>%(creatordate:relative)<|n|>`)
 
-	out, err := utils.RunCmdByPath(r.Path, "git", "tag", f)
+	out, err := utils.RunCmdByPath(r.Path, "git", "tag", "--sort=-creatordate", f)
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(out)
 	outs := strings.Split(out, "<|n|>")
 
 	for _, tag := range outs {

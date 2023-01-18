@@ -8,6 +8,8 @@ export function Commit(arg1:string,arg2:string,arg3:Array<string>):Promise<strin
 
 export function Commits(arg1:string):Promise<Array<repository.Commit>>;
 
+export function CommitsLog():Promise<Array<repository.Log>>;
+
 export function CreateTag(arg1:string,arg2:string):Promise<string>;
 
 export function CreateTagByCommitId(arg1:string,arg2:string):Promise<string>;
