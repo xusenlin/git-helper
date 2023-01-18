@@ -1,7 +1,7 @@
 import React from "react"
 import { Modal,Space} from "antd";
-import {useDispatch, useSelector} from "react-redux";
 import {State} from "../../store";
+import {useDispatch, useSelector} from "react-redux";
 import { theme,localThemeKey } from "../../config/app"
 import {setOpenThemeSetting,setThemeColor} from "../../store/sliceSetting";
 

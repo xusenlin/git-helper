@@ -21,6 +21,7 @@ type Commit struct {
 	Message      string    `json:"message"`
 	TreeHash     string    `json:"treeHash"`
 	ParentHashes string    `json:"parentHashes"`
+	UnRemoteSync bool      `json:"unRemoteSync"`
 }
 
 func (r *Repository) Commits(branch string) ([]Commit, error) {
@@ -40,6 +41,19 @@ func (r *Repository) Commits(branch string) ([]Commit, error) {
 	err = json.Unmarshal([]byte(jsonStr), &logs)
 	if err != nil {
 		return nil, err
+	}
+	arg := fmt.Sprintf("origin/%s...%s", branch, branch)
+
+	unRemoteSyncOut, err := utils.RunCmdByPath(r.Path, "git", "log", `--pretty=format:"%H"`, arg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for i, r := range logs {
+		if strings.Contains(unRemoteSyncOut, r.Hash) {
+			logs[i].UnRemoteSync = true
+		}
 	}
 
 	return logs, nil

@@ -7,11 +7,9 @@ import {setOpenAbout} from "../../store/sliceSetting";
 
 
 
-
 const About =  () => {
   const showAbout = useSelector((state: State) => state.setting.showAbout);
   const dispatch = useDispatch();
-
 
   return (<>
     <Modal
