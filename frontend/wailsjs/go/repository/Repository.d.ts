@@ -30,6 +30,8 @@ export function GetAllBranch():Promise<Array<repository.Branch>>;
 
 export function GetBranchHash(arg1:string):Promise<string>;
 
+export function GetCurrentBranch():Promise<string>;
+
 export function GetLocalBranch():Promise<Array<repository.Branch>>;
 
 export function GitPull():Promise<string>;

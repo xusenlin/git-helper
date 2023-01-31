@@ -12,14 +12,13 @@ import Branch from "./components/branch/Index"
 import TopBar from "./components/topBar/TopBar"
 import DiffWorkView from "./components/diff/DiffWorkView"
 import DiffCommitView from "./components/diff/DiffCommitView"
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {useState} from "react";
 
 
 function App() {
   const main = useSelector((state: State) => state.main);
   const themeColor = useSelector((state: State) => state.setting.themeColor);
-  const dispatch = useDispatch();
   const [activeTab,setActiveTab] = useState("1")
 
 

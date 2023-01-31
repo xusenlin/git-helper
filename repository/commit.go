@@ -74,7 +74,7 @@ type Log struct {
 
 func (r *Repository) CommitsLog() ([]Log, error) {
 	//git log --all --date-order --pretty="%h<|>%p<|>%d<|>%an<|>%s<|n|>"
-	var logs []Log
+
 	f := fmt.Sprintf("--pretty=%s", `%h<||>%p<||>%d<||>%an<||>%s<|n|>`)
 
 	out, err := utils.RunCmdByPath(r.Path, "git", "log", "--all", "--date-order", "-n 100", f)
@@ -83,26 +83,38 @@ func (r *Repository) CommitsLog() ([]Log, error) {
 	}
 	fmt.Println(out)
 	outs := strings.Split(out, "<|n|>")
-	lastIndex := len(outs) - 1
-	for i := lastIndex; i >= 0; i-- {
-		rows := strings.Split(strings.TrimSpace(outs[i]), "<||>")
+	var commitIds []string
+	var logs []Log
+	for _, log := range outs {
+		rows := strings.Split(strings.TrimSpace(log), "<||>")
 		if len(rows) != 5 {
 			continue
 		}
-		ph := strings.Split(strings.TrimSpace(rows[1]), " ")
-
-		if i == lastIndex-1 {
-			ph = nil
-		}
-
+		commitIds = append(commitIds, rows[0])
 		logs = append(logs, Log{
 			Hash:         rows[0],
-			ParentHashes: ph,
+			ParentHashes: strings.Split(strings.TrimSpace(rows[1]), " "),
 			Desc:         parseDesc(rows[2]),
 			Author:       rows[3],
 			Message:      rows[4],
 		})
 	}
+
+	commitIdsStr := strings.Join(commitIds, "")
+	for i, log := range logs {
+		var ph []string
+		for _, p := range log.ParentHashes {
+			//如果父元素等于空字符表示它没有父元素，是提交的起点
+			//因为只取了100条日志，如果父元素没在本次的记录里面，也当为空
+			if p == "" || !strings.Contains(commitIdsStr, p) {
+				ph = append(ph, "")
+			} else {
+				ph = append(ph, p)
+			}
+		}
+		logs[i].ParentHashes = ph
+	}
+
 	return logs, nil
 }
 

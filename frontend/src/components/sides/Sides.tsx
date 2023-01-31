@@ -4,10 +4,11 @@ import type {MenuProps} from 'antd';
 import {State} from '../../store/index'
 import {warning} from "../../utils/common";
 import {useDispatch, useSelector} from 'react-redux';
-import {getRepositoryPathById} from "../../utils/repo";
-import {setRepository, setAllBranch, resetState} from "../../store/sliceMain"
-import { GetLocalBranch,SwitchRepository,CommitsLog} from "../../../wailsjs/go/repository/Repository";
-
+import {getRepositoryPathById, updateWorkZone} from "../../utils/repo";
+import {setRepository, setAllBranch, resetState,setBranch} from "../../store/sliceMain"
+import {GetLocalBranch,SwitchRepository,GetCurrentBranch} from "../../../wailsjs/go/repository/Repository";
+import {resetState as resetCommitDiffState} from "../../store/sliceCommitDiff";
+import {resetState as resetWorkDiffState} from "../../store/sliceWorkDiff";
 
 
 
@@ -60,9 +61,12 @@ const Sides = () => {
       const b = await GetLocalBranch()
       dispatch(setAllBranch(b))
 
-      // const x = await CommitsLog()
-      // console.log(x)
-      // console.log(JSON.stringify(x))
+      const branch = await GetCurrentBranch()
+      dispatch(setBranch(branch))
+      await updateWorkZone(key,branch)
+      dispatch(resetCommitDiffState())
+      dispatch(resetWorkDiffState())
+
     } catch (e) {
       warning(JSON.stringify(e))
     }

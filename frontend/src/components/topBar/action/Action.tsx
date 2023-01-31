@@ -2,7 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {Button, Space} from 'antd';
 import {warning} from "../../../utils/common";
 import {warningNotification,successNotification} from "../../../utils/notification";
-import {OpenTerminal,OpenFileManage,GitPull, GitPush} from "../../../../wailsjs/go/repository/Repository"
+import {OpenTerminal, OpenFileManage, GitPull, GitPush, Commits} from "../../../../wailsjs/go/repository/Repository"
 
 import {setOpenRepositoryTag, setOpenRepositoryBranch} from "../../../store/sliceSetting";
 import {
@@ -14,12 +14,14 @@ import {
   BranchesOutlined,
 } from '@ant-design/icons';
 import React, {useState} from "react";
-import {State} from "../../../store";
+import {State, store} from "../../../store";
+import {setLog} from "../../../store/sliceMain";
 
 const Action = () => {
   const [pullLoading,setPullLoading] = useState<boolean>(false)
   const [pushLoading,setPushLoading] = useState<boolean>(false)
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
+  const branchName = useSelector((state: State) => state.main.selectedRepositoryBranch);
 
   const dispatch = useDispatch();
 
@@ -62,6 +64,9 @@ const Action = () => {
     setPushLoading(true)
     GitPush().then(out => {
       successNotification(out,{width:500})
+      return Commits(branchName)
+    }).then(l=>{
+      dispatch(setLog(l))
     }).catch(e => {
       warningNotification(e,{width:500})
     }).finally(()=>{setPushLoading(false)})

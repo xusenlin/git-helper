@@ -58,6 +58,10 @@ export function GetBranchHash(arg1) {
   return window['go']['repository']['Repository']['GetBranchHash'](arg1);
 }
 
+export function GetCurrentBranch() {
+  return window['go']['repository']['Repository']['GetCurrentBranch']();
+}
+
 export function GetLocalBranch() {
   return window['go']['repository']['Repository']['GetLocalBranch']();
 }

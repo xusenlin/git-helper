@@ -45,7 +45,6 @@ func (r *Repository) GetLocalBranch() ([]Branch, error) { //menu
 func (r *Repository) GetAllBranch() ([]Branch, error) { //use branch manage
 	return r.getBranch(true)
 }
-
 func (r *Repository) SwitchBranch(branchName string) (bool, error) {
 	_, err := utils.RunCmdByPath(r.Path, "git", "checkout", branchName)
 	if err != nil {
@@ -53,7 +52,6 @@ func (r *Repository) SwitchBranch(branchName string) (bool, error) {
 	}
 	return true, nil
 }
-
 func (r *Repository) AddBranch(branchName string) error {
 	_, err := utils.RunCmdByPath(r.Path, "git", "branch", branchName)
 	if err != nil {
@@ -61,7 +59,6 @@ func (r *Repository) AddBranch(branchName string) error {
 	}
 	return nil
 }
-
 func (r *Repository) DelBranch(branchName string, delRemote bool) (string, error) {
 
 	if delRemote {
@@ -87,4 +84,16 @@ func (r *Repository) GetBranchHash(branchName string) (string, error) {
 	}
 	h := strings.TrimSpace(hash)
 	return h, nil
+}
+
+func (r *Repository) GetCurrentBranch() (string, error) {
+	branch, err := utils.RunCmdByPath(r.Path, "git", "rev-parse", "--abbrev-ref", "HEAD")
+	if err != nil {
+		return "", err
+	}
+	b := strings.TrimSpace(branch)
+	if strings.HasPrefix(b, "heads/") {
+		b = strings.TrimLeft(b, "heads/")
+	}
+	return b, nil
 }
