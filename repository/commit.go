@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"git-helper/utils"
@@ -28,32 +27,53 @@ func (r *Repository) Commits(branch string) ([]Commit, error) {
 	if branch == "" {
 		return nil, errors.New("branch name error")
 	}
-
+	fmt.Println(branch)
 	var logs []Commit
-	f := fmt.Sprintf("--format=format:%s", `{"hash":"%H","author":"%an","message":"%s","treeHash":"%T","parentHashes":"%P","committer":{"name":"%cn","email":"%ce","when":"%cr"}},`)
-
+	//f := fmt.Sprintf("--format=format:%s", `{"hash":"%H","author":"%an","message":"%s","treeHash":"%T","parentHashes":"%P","committer":{"name":"%cn","email":"%ce","when":"%cr"}},`)
+	f := fmt.Sprintf("--format=format:%s", `%H<||>%an<||>%s<||>%T<||>%P<||>%cn<||>%ce<||>%cr<|n|>`)
 	out, err := utils.RunCmdByPath(r.Path, "git", "log", branch, f, "-n 60")
 	if err != nil {
 		return nil, err
 	}
-	jsonStr := fmt.Sprintf("[%s]", strings.TrimRight(out, ","))
 
-	err = json.Unmarshal([]byte(jsonStr), &logs)
+	unRemoteSyncOut, err := utils.RunCmdByPath(r.Path, "git", "remote", "-v")
 	if err != nil {
 		return nil, err
 	}
-	arg := fmt.Sprintf("origin/%s...%s", branch, branch)
-
-	unRemoteSyncOut, err := utils.RunCmdByPath(r.Path, "git", "log", `--pretty=format:"%H"`, arg)
-
-	if err != nil {
-		return nil, err
-	}
-
-	for i, r := range logs {
-		if strings.Contains(unRemoteSyncOut, r.Hash) {
-			logs[i].UnRemoteSync = true
+	if strings.TrimSpace(unRemoteSyncOut) != "" {
+		arg := fmt.Sprintf("origin/%s...%s", branch, branch)
+		unRemoteSyncOut, err = utils.RunCmdByPath(r.Path, "git", "log", `--pretty=format:"%H"`, arg)
+		if err != nil {
+			return nil, err
 		}
+	}
+	//jsonStr := fmt.Sprintf("[%s]", strings.TrimRight(out, ","))
+
+	//err = json.Unmarshal([]byte(jsonStr), &logs)
+	//if err != nil {
+	//	return nil, err
+	//}
+	outs := strings.Split(out, "<|n|>")
+	for _, r := range outs {
+		rows := strings.Split(strings.TrimSpace(r), "<||>")
+		if len(rows) != 8 {
+			continue
+		}
+		//`{"hash":"%H","author":"%an","message":"%s","treeHash":"%T","parentHashes":"%P","committer":{"name":"%cn","email":"%ce","when":"%cr"}},`
+		hash := strings.TrimSpace(rows[0])
+		logs = append(logs, Commit{
+			Hash:         hash,
+			Author:       rows[1],
+			Message:      rows[2],
+			TreeHash:     rows[3],
+			ParentHashes: rows[4],
+			Committer: Signature{
+				Name:  rows[5],
+				Email: rows[6],
+				When:  rows[7],
+			},
+			UnRemoteSync: strings.Contains(unRemoteSyncOut, hash),
+		})
 	}
 
 	return logs, nil
@@ -81,7 +101,7 @@ func (r *Repository) CommitsLog() ([]Log, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(out)
+
 	outs := strings.Split(out, "<|n|>")
 	var commitIds []string
 	var logs []Log
