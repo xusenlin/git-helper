@@ -42,7 +42,7 @@ const Item = (props: { l: repository.Commit, nextHash: string }) => {
           size="small"
           className={props.l.hash === commitId ? 'active-history-card-head' : ''}
           headStyle={{background: props.l.hash === commitId ? themeColor : "#fff"}}
-          title={<Badge status={props.l.unRemoteSync ? 'warning':'success'} text={props.l.hash.substring(0, hashLength)}/>}
+          title={<Badge status={props.l.isRemoteSync ? 'success':'warning'} text={props.l.hash.substring(0, hashLength)}/>}
           extra={extra}
           style={{marginBottom: 10}}
       >

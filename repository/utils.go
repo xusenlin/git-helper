@@ -5,6 +5,7 @@ import (
 	"git-helper/utils"
 	"os/exec"
 	sysRuntime "runtime"
+	"strings"
 )
 
 func (r *Repository) OpenTerminal() error {
@@ -48,4 +49,16 @@ func (r *Repository) OpenFileManage() error {
 
 func (r *Repository) RunCmdInRepository(cmd string, arg []string) (string, error) {
 	return utils.RunCmdByPath(r.Path, cmd, arg...)
+}
+func (r *Repository) IsRemoteRepo() (bool, error) {
+
+	out, err := utils.RunCmdByPath(r.Path, "git", "remote", "-v")
+	if err != nil {
+		return false, err
+	}
+
+	if strings.TrimSpace(out) == "" {
+		return false, nil
+	}
+	return true, nil
 }

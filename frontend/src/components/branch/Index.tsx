@@ -4,19 +4,20 @@ import {State} from "../../store";
 import React, {useState, useRef, useMemo, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Button, Input, Space, Drawer, Empty} from "antd";
-import {AddBranch,GetAllBranch} from "../../../wailsjs/go/repository/Repository"
+import {AddBranch, GetAllBranch, GetLocalBranch} from "../../../wailsjs/go/repository/Repository"
 import {repository} from "../../../wailsjs/go/models"
 import {setOpenRepositoryBranch} from "../../store/sliceSetting";
 import {warning} from "../../utils/common"
 import MergeDialog from "./mergeDialog"
+import {setAllBranch} from "../../store/sliceMain";
 
 
 const Branch = () => {
   const limit = 20
 
   const dispatch = useDispatch();
-  const [branch,setBranch] = useState<repository.Branch[]>([]);
-
+  // const [branch,setBranch] = useState<repository.Branch[]>([]);
+  const branch = useSelector((state: State) => state.main.currentlyRepositoryLocalBranch);
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
   const showRepositoryBranch = useSelector((state: State) => state.setting.showRepositoryBranch);
   const mergeDialogComponentRef = useRef<{ OpenMergeDialog: (branchName: string) => void }>(null);
@@ -25,25 +26,26 @@ const Branch = () => {
   const [keyword,setKeyword] = useState<string>("")
   const computedBranch = useMemo(() => (branch.filter(r=>r.name.indexOf(keyword)!==-1)), [keyword,branch]);
 
-  const getAllBranch = () => {
-    if(!selectedRepositoryId){
-      return
-    }
-    GetAllBranch().then(b=>{
-      setBranch(b||[])
-    }).catch(e=>{
-      warning(JSON.stringify(e))
-    })
-  }
-  useEffect(() => {
-    getAllBranch()
-  }, [selectedRepositoryId]);
+  // const getAllBranch = () => {
+  //   if(!selectedRepositoryId){
+  //     return
+  //   }
+  //   GetAllBranch().then(b=>{
+  //     setBranch(b||[])
+  //   }).catch(e=>{
+  //     warning(JSON.stringify(e))
+  //   })
+  // }
+  // useEffect(() => {
+  //   getAllBranch()
+  // }, [selectedRepositoryId]);
 
 
   const addBranch = async () => {
     try {
       await AddBranch(branchName)
-      getAllBranch()
+      const b = await GetLocalBranch()
+      dispatch(setAllBranch(b))
       setBranchName("")
     } catch (e) {
       console.log(e)

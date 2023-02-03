@@ -74,6 +74,10 @@ export function GitPush() {
   return window['go']['repository']['Repository']['GitPush']();
 }
 
+export function IsRemoteRepo() {
+  return window['go']['repository']['Repository']['IsRemoteRepo']();
+}
+
 export function MergeCommit(arg1, arg2) {
   return window['go']['repository']['Repository']['MergeCommit'](arg1, arg2);
 }

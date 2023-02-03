@@ -20,14 +20,14 @@ type Commit struct {
 	Message      string    `json:"message"`
 	TreeHash     string    `json:"treeHash"`
 	ParentHashes string    `json:"parentHashes"`
-	UnRemoteSync bool      `json:"unRemoteSync"`
+	IsRemoteSync bool      `json:"isRemoteSync"`
 }
 
 func (r *Repository) Commits(branch string) ([]Commit, error) {
 	if branch == "" {
 		return nil, errors.New("branch name error")
 	}
-	fmt.Println(branch)
+
 	var logs []Commit
 	//f := fmt.Sprintf("--format=format:%s", `{"hash":"%H","author":"%an","message":"%s","treeHash":"%T","parentHashes":"%P","committer":{"name":"%cn","email":"%ce","when":"%cr"}},`)
 	f := fmt.Sprintf("--format=format:%s", `%H<||>%an<||>%s<||>%T<||>%P<||>%cn<||>%ce<||>%cr<|n|>`)
@@ -35,24 +35,18 @@ func (r *Repository) Commits(branch string) ([]Commit, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	unRemoteSyncOut, err := utils.RunCmdByPath(r.Path, "git", "remote", "-v")
+	isRemoteRepo, err := r.IsRemoteRepo()
 	if err != nil {
 		return nil, err
 	}
-	if strings.TrimSpace(unRemoteSyncOut) != "" {
+	var noRemoteSyncHash string
+	if isRemoteRepo {
 		arg := fmt.Sprintf("origin/%s...%s", branch, branch)
-		unRemoteSyncOut, err = utils.RunCmdByPath(r.Path, "git", "log", `--pretty=format:"%H"`, arg)
+		noRemoteSyncHash, err = utils.RunCmdByPath(r.Path, "git", "log", `--pretty=format:"%H"`, arg)
 		if err != nil {
 			return nil, err
 		}
 	}
-	//jsonStr := fmt.Sprintf("[%s]", strings.TrimRight(out, ","))
-
-	//err = json.Unmarshal([]byte(jsonStr), &logs)
-	//if err != nil {
-	//	return nil, err
-	//}
 	outs := strings.Split(out, "<|n|>")
 	for _, r := range outs {
 		rows := strings.Split(strings.TrimSpace(r), "<||>")
@@ -61,6 +55,12 @@ func (r *Repository) Commits(branch string) ([]Commit, error) {
 		}
 		//`{"hash":"%H","author":"%an","message":"%s","treeHash":"%T","parentHashes":"%P","committer":{"name":"%cn","email":"%ce","when":"%cr"}},`
 		hash := strings.TrimSpace(rows[0])
+
+		var isRemoteSync bool
+		if isRemoteRepo {
+			isRemoteSync = !strings.Contains(noRemoteSyncHash, hash)
+		}
+
 		logs = append(logs, Commit{
 			Hash:         hash,
 			Author:       rows[1],
@@ -72,7 +72,7 @@ func (r *Repository) Commits(branch string) ([]Commit, error) {
 				Email: rows[6],
 				When:  rows[7],
 			},
-			UnRemoteSync: strings.Contains(unRemoteSyncOut, hash),
+			IsRemoteSync: isRemoteSync,
 		})
 	}
 

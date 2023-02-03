@@ -57,7 +57,7 @@ export namespace repository {
 	    message: string;
 	    treeHash: string;
 	    parentHashes: string;
-	    unRemoteSync: boolean;
+	    isRemoteSync: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new Commit(source);
@@ -71,7 +71,7 @@ export namespace repository {
 	        this.message = source["message"];
 	        this.treeHash = source["treeHash"];
 	        this.parentHashes = source["parentHashes"];
-	        this.unRemoteSync = source["unRemoteSync"];
+	        this.isRemoteSync = source["isRemoteSync"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
