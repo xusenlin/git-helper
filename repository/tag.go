@@ -3,6 +3,7 @@ package repository
 import (
 	"fmt"
 	"git-helper/utils"
+	"regexp"
 	"strings"
 )
 
@@ -76,7 +77,6 @@ func (r *Repository) DelTag(tagName string, delRemote bool) (string, error) {
 }
 
 //git tag  v10.0 -m "version 1.0"
-//git push origin v1.0
 
 func (r *Repository) CreateTag(tag string, msg string) (string, error) {
 	var out string
@@ -89,6 +89,33 @@ func (r *Repository) CreateTag(tag string, msg string) (string, error) {
 	if err != nil {
 		return out, err
 	}
+	return out, nil
+}
+
+func (r *Repository) RemoteTags() ([]string, error) {
+	var tags []string
+
+	out, err := utils.RunCmdByPath(r.Path, "git", "ls-remote", "--tags", "--refs", "origin")
+	if err != nil {
+		return tags, err
+	}
+	re := regexp.MustCompile(`refs/tags/(.+)\b`)
+	matches := re.FindAllStringSubmatch(out, -1)
+	for _, match := range matches {
+		tags = append(tags, match[1])
+	}
+	return tags, nil
+}
+
+//git push origin v1.0
+
+func (r *Repository) PushTag(name string) (string, error) {
+
+	out, err := utils.RunCmdByPath(r.Path, "git", "push", "origin", name)
+	if err != nil {
+		return "", err
+	}
+
 	return out, nil
 }
 

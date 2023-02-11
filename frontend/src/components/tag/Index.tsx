@@ -7,7 +7,7 @@ import {success, warning} from "../../utils/common";
 import {repository} from "../../../wailsjs/go/models";
 import React, {useState,useMemo,useEffect} from "react";
 import {setOpenRepositoryTag} from "../../store/sliceSetting";
-import { Tags } from "../../../wailsjs/go/repository/Repository"
+import { Tags,RemoteTags } from "../../../wailsjs/go/repository/Repository"
 import { CreateTag } from "../../../wailsjs/go/repository/Repository"
 
 const { TextArea } = Input;
@@ -19,6 +19,7 @@ const Tag = () => {
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
   const showRepositoryTag = useSelector((state: State) => state.setting.showRepositoryTag);
   const [tags,setTags] = useState<repository.Tag[]>([])
+  const [remoteTags,setRemoteTags] = useState<string[]>([])
 
   const [tagName,setTagName] = useState<string>("")
   const [tagMessage,setTagMessage] = useState<string>("")
@@ -27,19 +28,26 @@ const Tag = () => {
   const computedTags = useMemo(() => (tags.filter(r=>r.name.indexOf(keyword)!==-1)), [keyword,tags]);
 
   const getTag = () => {
-    if(!selectedRepositoryId){
-      return
-    }
     Tags().then(t=>{
       setTags(t||[])
     }).catch(e=>{
       console.log(e)
       warning("Tag：" + JSON.stringify(e))
     })
+
+    RemoteTags().then(t=>{
+      setRemoteTags(t||[])
+    }).catch(e=>{
+      warning("RemoteTags：" + JSON.stringify(e))
+    })
   }
 
   useEffect(() => {
+    if (!selectedRepositoryId){
+      return
+    }
     getTag()
+
   }, [selectedRepositoryId]);
 
   const addTag = () => {
@@ -73,7 +81,7 @@ const Tag = () => {
       <Input value={keyword} style={{marginBottom:10}} placeholder="Search all tags" onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         setKeyword(e.target.value)
       }} />
-      { (computedTags.length > limit ? computedTags.slice(0,limit) : computedTags).map(r=><Item refresh={getTag} t={r} key={r.name} />)}
+      { (computedTags.length > limit ? computedTags.slice(0,limit) : computedTags).map(r=><Item isRemoteSync={remoteTags.indexOf(r.name)!==-1} refresh={getTag} t={r} key={r.name} />)}
     </div>
     <div style={{padding:20}}>
       {bottom}

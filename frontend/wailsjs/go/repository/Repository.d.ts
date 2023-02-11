@@ -52,6 +52,10 @@ export function OpenTerminal():Promise<Error>;
 
 export function PreMergeResult(arg1:string,arg2:string):Promise<repository.MergeResult>;
 
+export function PushTag(arg1:string):Promise<string>;
+
+export function RemoteTags():Promise<Array<string>>;
+
 export function RunCmdInRepository(arg1:string,arg2:Array<string>):Promise<string>;
 
 export function SwitchBranch(arg1:string):Promise<boolean>;

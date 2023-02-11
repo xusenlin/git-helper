@@ -60,7 +60,7 @@ func (r *Repository) Commit(title, msg string, fileList []string) (string, error
 	}
 	var message = title
 	if msg != "" {
-		message = message + "/n" + msg
+		message = message + ":" + msg
 	}
 	out, err := utils.RunCmdByPath(r.Path, "git", "commit", "-m", message)
 

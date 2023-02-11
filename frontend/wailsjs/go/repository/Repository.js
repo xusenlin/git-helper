@@ -102,6 +102,14 @@ export function PreMergeResult(arg1, arg2) {
   return window['go']['repository']['Repository']['PreMergeResult'](arg1, arg2);
 }
 
+export function PushTag(arg1) {
+  return window['go']['repository']['Repository']['PushTag'](arg1);
+}
+
+export function RemoteTags() {
+  return window['go']['repository']['Repository']['RemoteTags']();
+}
+
 export function RunCmdInRepository(arg1, arg2) {
   return window['go']['repository']['Repository']['RunCmdInRepository'](arg1, arg2);
 }
