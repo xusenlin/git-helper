@@ -94,7 +94,10 @@ func (r *Repository) CreateTag(tag string, msg string) (string, error) {
 
 func (r *Repository) RemoteTags() ([]string, error) {
 	var tags []string
-
+	isRemoteRepo, err := r.IsRemoteRepo()
+	if err != nil || !isRemoteRepo {
+		return tags, nil
+	}
 	out, err := utils.RunCmdByPath(r.Path, "git", "ls-remote", "--tags", "--refs", "origin")
 	if err != nil {
 		return tags, err

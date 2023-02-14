@@ -15,7 +15,7 @@ func (r *Repository) OpenTerminal() error {
 	case "darwin":
 		cmd = exec.Command("open", "-b", "com.apple.Terminal", r.Path)
 	case "linux":
-		cmd = exec.Command("x-terminal-emulator")
+		cmd = exec.Command("x-terminal-emulator", "-e", "cd "+r.Path+";bash")
 	case "windows":
 		cmd = exec.Command("start", "cmd")
 	default:

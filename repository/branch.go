@@ -14,6 +14,16 @@ type Branch struct {
 	Upstream string `json:"upstream"`
 }
 
+func (r *Repository) PushBranch(name string) (string, error) {
+	//git push -u origin main
+	out, err := utils.RunCmdByPath(r.Path, "git", "push", "-u", "origin", name)
+	if err != nil {
+		return "", err
+	}
+
+	return out, nil
+}
+
 func (r *Repository) getBranch(isAll bool) ([]Branch, error) {
 
 	var branch []Branch

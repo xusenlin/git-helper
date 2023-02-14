@@ -41,6 +41,7 @@ func (r *Repository) Commits(branch string) ([]Commit, error) {
 	}
 	var noRemoteSyncHash string
 	if isRemoteRepo {
+		//TODO是否有这个远程分支
 		arg := fmt.Sprintf("origin/%s...%s", branch, branch)
 		noRemoteSyncHash, err = utils.RunCmdByPath(r.Path, "git", "log", `--pretty=format:"%H"`, arg)
 		if err != nil {

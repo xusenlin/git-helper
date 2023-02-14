@@ -1,10 +1,10 @@
-import {Card, Modal,Space,Checkbox} from "antd"
+import {Card, Modal, Space, Checkbox, Badge, message} from "antd"
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
 import {warning, success, copyHashClipboard} from "../../utils/common";
 import {repository} from "../../../wailsjs/go/models"
-import {DelBranch, GetLocalBranch} from "../../../wailsjs/go/repository/Repository"
-import {DeleteOutlined, SnippetsOutlined,ArrowLeftOutlined} from "@ant-design/icons"
+import {DelBranch, GetLocalBranch, PushBranch} from "../../../wailsjs/go/repository/Repository"
+import {DeleteOutlined, SnippetsOutlined, ArrowLeftOutlined, ArrowUpOutlined} from "@ant-design/icons"
 import {setAllBranch} from "../../store/sliceMain";
 import {useDispatch, useSelector} from "react-redux";
 import {mainBranch} from "../../config/app";
@@ -15,6 +15,7 @@ dayjs.extend(relativeTime)
 
 const Item = (props: { b: repository.Branch,merge:()=>void }) => {
   const sledBranch = useSelector((state: State) => state.main.selectedRepositoryBranch);
+  const [messageApi, contextHolder] = message.useMessage();
 
   const dispatch = useDispatch();
 
@@ -48,7 +49,27 @@ const Item = (props: { b: repository.Branch,merge:()=>void }) => {
     props.merge()
   }
 
+  const pushBranch = (name:string) => {
+    messageApi.open({
+      type: 'loading',
+      content: 'Pushing...',
+      duration: 0,
+    });
+    PushBranch(name).then(out=>{
+      success(out)
+      return GetLocalBranch()
+    }).then(b => {
+      dispatch(setAllBranch(b))
+    }).catch(e=>{
+      warning(e)
+    }).finally(messageApi.destroy)
+  }
+
+
   const extra = <Space>
+    { !props.b.upstream && <ArrowUpOutlined  onClick={() => {
+      pushBranch(props.b.name)
+    }} style={{cursor: "pointer", opacity: 0.45}}/> }
     {
         (sledBranch != props.b.name ) && <ArrowLeftOutlined onClick={merge} style={{cursor: "pointer", opacity: 0.45}} />
     }
@@ -61,7 +82,10 @@ const Item = (props: { b: repository.Branch,merge:()=>void }) => {
   </Space>
 
   return (
-      <Card size="small" title={props.b.name} extra={extra} style={{marginBottom: 10}}>
+      <Card
+          size="small"
+          title={<Badge status={props.b.upstream ?'success':'warning'} text={props.b.name}/>}
+          extra={extra} style={{marginBottom: 10}}>
         <div className="branch-content">
           <p>{props.b.refName}</p>
           <div className="item">
@@ -71,6 +95,7 @@ const Item = (props: { b: repository.Branch,merge:()=>void }) => {
             }} style={{cursor: "pointer", opacity: 0.65}}/>
           </div>
         </div>
+        {contextHolder}
       </Card>
   );
 };
