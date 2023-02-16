@@ -74,6 +74,10 @@ export function GitPush() {
   return window['go']['repository']['Repository']['GitPush']();
 }
 
+export function GitRemoteUrl(arg1) {
+  return window['go']['repository']['Repository']['GitRemoteUrl'](arg1);
+}
+
 export function IsRemoteRepo() {
   return window['go']['repository']['Repository']['IsRemoteRepo']();
 }

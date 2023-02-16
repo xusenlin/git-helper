@@ -2,7 +2,7 @@ import {State} from "../../store";
 import {Badge, Card, Space} from "antd"
 import {useSelector} from "react-redux";
 import {hashLength} from "../../config/app";
-import {copyHashClipboard} from "../../utils/common";
+import {clipboard} from "../../utils/common";
 import {repository} from "../../../wailsjs/go/models";
 import {asyncDiffCommit} from "../../store/sliceCommitDiff";
 import {SnippetsOutlined, FieldTimeOutlined, UserOutlined, EyeOutlined} from "@ant-design/icons";
@@ -25,7 +25,7 @@ const Item = (props: { l: repository.Commit, nextHash: string }) => {
   const extra = <Space>
     <SnippetsOutlined
         onClick={async () => {
-          await copyHashClipboard(props.l.hash)
+          await clipboard(props.l.hash)
         }}
         style={{cursor: "pointer", opacity: 0.45}}/>
     {props.nextHash &&

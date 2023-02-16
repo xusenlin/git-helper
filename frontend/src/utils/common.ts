@@ -19,10 +19,10 @@ export const success = (desc: string) => {
 
 
 
-export const copyHashClipboard = async (r: string) => {
+export const clipboard = async (r: string,tip= "Hash") => {
   try {
     await Clipboard(r)
-    await message.success("Hash has been copied to clipboard.")
+    await message.success(`${tip} has been copied to clipboard.`)
   } catch (e) {
     warning(JSON.stringify(e))
   }

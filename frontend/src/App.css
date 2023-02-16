@@ -21,6 +21,10 @@
     justify-content: flex-end;
     --wails-draggable: drag;
 }
+.sides-content{
+    overflow-y: auto;
+    height: calc(100vh - 60px);
+}
 
 .theme-icon {
     width: 15px;

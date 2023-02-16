@@ -1,7 +1,7 @@
 import {Badge, Card, Checkbox, Modal,Space,Spin,message} from "antd"
 import {repository} from "../../../wailsjs/go/models"
 import {DelTag,PushTag} from "../../../wailsjs/go/repository/Repository"
-import {warning, success, copyHashClipboard} from "../../utils/common";
+import {warning, success, clipboard} from "../../utils/common";
 import {DeleteOutlined,ArrowUpOutlined, FieldTimeOutlined, SnippetsOutlined, TagOutlined} from "@ant-design/icons"
 
 
@@ -63,7 +63,7 @@ const Item = (props: {isRemoteSync:boolean, t: repository.Tag, refresh: () => vo
           <div className="item">
             <div>hash:{props.t.hash.substring(0, 7)}</div>
             <SnippetsOutlined onClick={async () => {
-              await copyHashClipboard(props.t.hash)
+              await clipboard(props.t.hash)
             }} style={{cursor: "pointer", opacity: 0.65}}/>
           </div>
           <div className="item">

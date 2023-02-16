@@ -1,7 +1,7 @@
 import {Card, Modal, Space, Checkbox, Badge, message} from "antd"
 import dayjs from "dayjs"
 import relativeTime from 'dayjs/plugin/relativeTime';
-import {warning, success, copyHashClipboard} from "../../utils/common";
+import {warning, success, clipboard} from "../../utils/common";
 import {repository} from "../../../wailsjs/go/models"
 import {DelBranch, GetLocalBranch, PushBranch} from "../../../wailsjs/go/repository/Repository"
 import {DeleteOutlined, SnippetsOutlined, ArrowLeftOutlined, ArrowUpOutlined} from "@ant-design/icons"
@@ -91,7 +91,7 @@ const Item = (props: { b: repository.Branch,merge:()=>void }) => {
           <div className="item">
             <div>Hash:{props.b.hash.substring(0, 7)}</div>
             <SnippetsOutlined onClick={async () => {
-              await copyHashClipboard(props.b.hash)
+              await clipboard(props.b.hash)
             }} style={{cursor: "pointer", opacity: 0.65}}/>
           </div>
         </div>

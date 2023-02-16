@@ -2,11 +2,13 @@ import React from 'react';
 import {State} from "../../store";
 import Action from "./Action"
 import DialogInput from "../dialog/Input";
-import {Card, Space,Popover,Modal} from 'antd';
+import {Card, Space, Popover, Modal} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import {Droppable, Draggable} from 'react-beautiful-dnd'
-import {DeleteOutlined, InfoCircleOutlined, EditOutlined} from "@ant-design/icons"
+import { GitRemoteUrl } from "../../../wailsjs/go/repository/Repository"
+import {DeleteOutlined, InfoCircleOutlined, EditOutlined, CopyOutlined} from "@ant-design/icons"
 import {Category, Repository, delRepository, editRepositoryName} from "../../store/sliceCategory";
+import {clipboard, warning} from "../../utils/common";
 
 const Details = (p: {r:Repository}) => <div>
   <p>ID:{p.r.id}</p>
@@ -19,6 +21,13 @@ const Block = (props: Category) => {
   const dispatch = useDispatch();
   const selectedId = useSelector((state: State) => state.main.selectedRepositoryId);
 
+  const copyRemoteUrl = (path:string)=>{
+    GitRemoteUrl(path).then(r=>{
+      return clipboard(r,"RemoteUrl")
+    }).catch(e=>{
+      warning(e)
+    })
+  }
 
   const delRepo = (id:string)=>{
     Modal.warning({
@@ -54,6 +63,7 @@ const Block = (props: Category) => {
                                         { r.name }
                                       </div>
                                       <Space className="action">
+                                        <CopyOutlined onClick={()=>{copyRemoteUrl(r.path)}}  style={{cursor: "pointer", opacity: 0.45}} />
                                         <Popover content={<Details r={r}/>} title="Repository details" trigger="hover">
                                           <InfoCircleOutlined style={{cursor: "pointer", opacity: 0.45}} />
                                         </Popover>

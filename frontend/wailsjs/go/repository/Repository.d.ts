@@ -38,6 +38,8 @@ export function GitPull():Promise<string>;
 
 export function GitPush():Promise<string>;
 
+export function GitRemoteUrl(arg1:string):Promise<string>;
+
 export function IsRemoteRepo():Promise<boolean>;
 
 export function MergeCommit(arg1:string,arg2:string):Promise<string>;
