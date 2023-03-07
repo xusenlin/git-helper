@@ -41,6 +41,27 @@ func (r *Repository) DiffWorkStage(filePath string) ([]DiffContent, error) {
 	return content, nil
 }
 
+func (r *Repository) ShowWorkTreeFile(filePath string, flag DiffFlag) ([]DiffContent, error) {
+
+	var content []DiffContent
+
+	out, err := utils.RunCmdByPath(r.Path, "git", "show", ":"+filePath)
+	if err != nil {
+		return content, err
+	}
+	outs := strings.Split(out, "\n")
+
+	for i, s := range outs {
+		content = append(content, DiffContent{
+			Index:   i,
+			Content: s,
+			Type:    flag,
+		})
+	}
+
+	return content, nil
+}
+
 func getDiffFlag(c string) DiffFlag {
 	if strings.HasPrefix(c, "+") {
 		return ADDED

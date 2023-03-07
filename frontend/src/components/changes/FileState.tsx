@@ -2,7 +2,7 @@ import {repository} from "../../../wailsjs/go/models"
 import React from "react";
 import {Checkbox, Dropdown, MenuProps,Modal} from 'antd';
 import { WarningOutlined } from "@ant-design/icons"
-import {asyncDiffWorkStage} from "../../store/sliceWorkDiff"
+import {asyncDiffWorkStage, asyncShowWorkTreeFile, updateWorkDiffTip} from "../../store/sliceWorkDiff"
 import {useSelector} from "react-redux";
 import {State} from "../../store";
 import { DiscardChanges } from "../../../wailsjs/go/repository/Repository"
@@ -76,13 +76,25 @@ const FileState = (props: { s: repository.FileStatus }) => {
   }
 
   return <div className="file">
-    <Checkbox value={props.s.path} style={{marginRight: 6}}/>
+    <Checkbox disabled={(props.s.staging != " " ) && (props.s.staging != "?")} value={props.s.path} style={{marginRight: 6}}/>
     <Dropdown menu={{ items:contextMenu(props.s.path) }} trigger={['contextMenu']}>
       <span
           className="file-name"
           style={{opacity: path == props.s.path ? 1 : 0.45}}
           onClick={() => {
-            asyncDiffWorkStage(props.s.path)
+            if(props.s.worktree=="M"){
+              asyncDiffWorkStage(props.s.path)
+            }else if (props.s.staging=="R") {
+              asyncShowWorkTreeFile(props.s.path,1)
+            }else if (props.s.staging=="A") {
+              asyncShowWorkTreeFile(props.s.path,1)
+            } else if (props.s.staging=="D"||props.s.worktree=="D") {
+              updateWorkDiffTip(props.s.path,"This file has been deleted.")
+            }else if (props.s.staging=="?" && props.s.staging=="?") {
+              updateWorkDiffTip(props.s.path,"This file is not tracked by git.")
+            }else {
+              updateWorkDiffTip(props.s.path,"Unprocessed file status.")
+            }
           }}
       >{props.s.name}</span>
     </Dropdown>

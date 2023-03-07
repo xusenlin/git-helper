@@ -13,7 +13,7 @@ import {
   TagOutlined,
   BranchesOutlined,
 } from '@ant-design/icons';
-import React, {useState} from "react";
+import React, {useState,useEffect} from "react";
 import {State, store} from "../../../store";
 import {setLog} from "../../../store/sliceMain";
 
@@ -24,7 +24,10 @@ const Action = () => {
   const branchName = useSelector((state: State) => state.main.selectedRepositoryBranch);
 
   const dispatch = useDispatch();
-
+  useEffect(()=>{
+    setPullLoading(false)
+    setPushLoading(false)
+  },[selectedRepositoryId])
   const openTerminal = async () => {
     if(!selectedRepositoryId){
       warning("please select a git repository first")

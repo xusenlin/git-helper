@@ -122,6 +122,10 @@ export function RunCmdInRepository(arg1, arg2) {
   return window['go']['repository']['Repository']['RunCmdInRepository'](arg1, arg2);
 }
 
+export function ShowWorkTreeFile(arg1, arg2) {
+  return window['go']['repository']['Repository']['ShowWorkTreeFile'](arg1, arg2);
+}
+
 export function SwitchBranch(arg1) {
   return window['go']['repository']['Repository']['SwitchBranch'](arg1);
 }

@@ -64,7 +64,8 @@ const Changes = () => {
   };
 
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    setCheckedList(e.target.checked ? fileState.map(r => r.path) : []);
+    let file = fileState.filter(r=>(r.staging==" "||r.staging=="?")).map(r => r.path)
+    setCheckedList(e.target.checked ? file : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
   };
