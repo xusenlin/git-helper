@@ -4,14 +4,16 @@ import {categoriesReducer} from "./sliceCategory";
 import {SettingState,settingReducer} from "./sliceSetting";
 import {CategoryState} from "./sliceCategory";
 import { Main } from "./sliceMain"
-import { DiffWorkState,diffWorkReducer } from "./sliceWorkDiff"
+import { DiffStateType,diffWorkReducer } from "./sliceWorkDiff"
 import { DiffCommitState,diffCommitReducer } from "./sliceCommitDiff"
+
+export type AsyncStatus = "loading"|"succeeded"|"failed"
 
 export type State = {
   categories:CategoryState,
   main:Main,
   setting:SettingState,
-  diffWork:DiffWorkState,
+  diffWork:DiffStateType,
   diffCommit:DiffCommitState,
 }
 

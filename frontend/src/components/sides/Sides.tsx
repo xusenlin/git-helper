@@ -7,8 +7,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getRepositoryPathById, updateWorkZone} from "../../utils/repo";
 import {setRepository, setAllBranch, resetState,setBranch} from "../../store/sliceMain"
 import {GetLocalBranch,SwitchRepository,GetCurrentBranch} from "../../../wailsjs/go/repository/Repository";
-import {resetState as resetCommitDiffState} from "../../store/sliceCommitDiff";
-import {resetState as resetWorkDiffState} from "../../store/sliceWorkDiff";
 
 
 
@@ -64,8 +62,6 @@ const Sides = () => {
       const branch = await GetCurrentBranch()
       dispatch(setBranch(branch))
       await updateWorkZone(key,branch)
-      dispatch(resetCommitDiffState())
-      dispatch(resetWorkDiffState())
 
     } catch (e) {
       warning(JSON.stringify(e))

@@ -44,10 +44,10 @@ function App() {
       />
     </div>
     <div className="right">
-      <div style={{display:activeTab==="1"?"block":"none",padding: "12px 0"}}>
+      <div style={{display:activeTab==="1"?"block":"none",padding: "12px 0",height:"100%"}}>
         <DiffWorkView />
       </div>
-      <div style={{display:activeTab==="2"?"block":"none",padding:0}}>
+      <div style={{display:activeTab==="2"?"block":"none",padding:0,height:"100%"}}>
         <DiffCommitView/>
       </div>
     </div>

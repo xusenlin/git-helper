@@ -1,10 +1,10 @@
 import {State} from "../../store";
 import {Badge, Card, Space} from "antd"
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {hashLength} from "../../config/app";
 import {clipboard} from "../../utils/common";
 import {repository} from "../../../wailsjs/go/models";
-import {asyncDiffCommit} from "../../store/sliceCommitDiff";
+import {diffCommitAsync} from "../../store/sliceCommitDiff";
 import {SnippetsOutlined, FieldTimeOutlined, UserOutlined, EyeOutlined} from "@ant-design/icons";
 
 
@@ -21,6 +21,7 @@ const style = {
 const Item = (props: { l: repository.Commit, nextHash: string }) => {
   const themeColor = useSelector((state: State) => state.setting.themeColor);
   const commitId = useSelector((state: State) => state.diffCommit.commitId);
+  const dispatch = useDispatch<any>()
 
   const extra = <Space>
     <SnippetsOutlined
@@ -31,7 +32,9 @@ const Item = (props: { l: repository.Commit, nextHash: string }) => {
     {props.nextHash &&
         <EyeOutlined
             onClick={() => {
-              asyncDiffCommit(props.l.hash, props.nextHash)
+              let commitId= props.l.hash
+              let commitId2 = props.nextHash
+              dispatch(diffCommitAsync({commitId,commitId2}))
             }}
             style={{cursor: "pointer", opacity: 0.45}}/>
     }

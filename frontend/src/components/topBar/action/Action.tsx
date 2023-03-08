@@ -82,6 +82,9 @@ const Action = () => {
     setPullLoading(true)
     GitPull().then(out => {
       successNotification(out,{width:500})
+      return Commits(branchName)
+    }).then(l=>{
+      store.dispatch(setLog(l))
     }).catch(e => {
       warningNotification(e,{width:500})
     }).finally(()=>{setPullLoading(false)})

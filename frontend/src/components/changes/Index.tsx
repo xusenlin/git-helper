@@ -12,7 +12,6 @@ import type {CheckboxValueType} from 'antd/es/checkbox/Group';
 import {success, warning} from "../../utils/common";
 import {setRepositoryStatus, updateWorkZone} from "../../utils/repo";
 import {setStatus} from "../../store/sliceMain";
-import {resetState} from "../../store/sliceWorkDiff";
 
 
 const {TextArea} = Input;
@@ -50,7 +49,6 @@ const Changes = () => {
       setCommitMessage("")
       setCheckedList([])
       await updateWorkZone(selectedRepositoryId,branch)
-      dispatch(resetState())
     }catch (e) {
       console.log(e)
       warning(JSON.stringify(e))

@@ -1,8 +1,11 @@
 import './style.scss'
-import { Badge } from "antd"
-import {useSelector} from "react-redux";
+import {Badge} from "antd"
+import {useDispatch, useSelector} from "react-redux";
 import {State} from "../../store";
 import {repository} from "../../../wailsjs/go/models"
+import FailedInfo from "./FailedInfo"
+import {useEffect} from "react";
+import {resetState} from "../../store/sliceCommitDiff";
 
 const buildFlag = (d:string) => {
   let str = d.split("")
@@ -41,13 +44,22 @@ const diffRow = (c: repository.ChangesFile) => {
 
 const DiffCommitView = () => {
   const diff = useSelector((state: State) => state.diffCommit);
+  const logs = useSelector((state: State) => state.main.currentlyRepositoryCommits);
+
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    console.log("DiffCommitViewEffect")
+    dispatch(resetState())
+  },[logs])
+
   return <div className="diff-commit">
     <div className="diff-commit-row" style={{height:46,marginBottom:10,borderBottom:"1px solid rgba(5, 5, 5, 0.06)"}}>
       <div className="diff-commit-left" style={{paddingLeft:10}}><Badge status="processing" text={'Hash ：'+diff.commitId.substring(0, 7)} /></div>
       <div className="diff-commit-right" style={{color:"#4caf50"}}>{ diff.statistics }</div>
     </div>
     <div className="diff-changes-file">
-      {diff.filesInfo.map(r=>diffRow(r))}
+      { diff.failedInfo ? FailedInfo(diff.failedInfo) : diff.filesInfo.map(r=>diffRow(r))}
     </div>
   </div>
 }

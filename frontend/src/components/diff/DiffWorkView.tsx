@@ -1,8 +1,10 @@
 import './style.scss'
-import {useSelector} from "react-redux";
+import { useEffect } from "react"
+import {useDispatch, useSelector} from "react-redux";
 import {State} from "../../store";
 import {repository} from "../../../wailsjs/go/models"
-
+import {resetState} from "../../store/sliceWorkDiff";
+import FailedInfo from "./FailedInfo"
 
 const diffRow = (c: repository.DiffContent) => {
   switch (c.type) {
@@ -16,10 +18,18 @@ const diffRow = (c: repository.DiffContent) => {
 }
 
 
+
 const DiffWorkView = () => {
-  const content = useSelector((state: State) => state.diffWork.content);
+  const dispatch = useDispatch();
+  const diff = useSelector((state: State) => state.diffWork);
+  const changesFileFile = useSelector((state: State) => state.main.currentlyRepositoryFileState);
+  useEffect(()=>{
+    console.log("DiffWorkViewUseEffect")
+    dispatch(resetState())
+  },[changesFileFile])
+
   return <div className="diff">
-    {content.map(r => diffRow(r))}
+    { diff.failedInfo ? FailedInfo(diff.failedInfo) : diff.diffText.map(r => diffRow(r))}
   </div>
 }
 export default DiffWorkView

@@ -2,8 +2,8 @@ import {repository} from "../../../wailsjs/go/models"
 import React from "react";
 import {Checkbox, Dropdown, MenuProps,Modal} from 'antd';
 import { WarningOutlined } from "@ant-design/icons"
-import {asyncDiffWorkStage, asyncShowWorkTreeFile, updateWorkDiffTip} from "../../store/sliceWorkDiff"
-import {useSelector} from "react-redux";
+import {diffWorkTreeStageAsync} from "../../store/sliceWorkDiff"
+import {useDispatch, useSelector} from "react-redux";
 import {State} from "../../store";
 import { DiscardChanges } from "../../../wailsjs/go/repository/Repository"
 import {success, warning} from "../../utils/common"
@@ -39,9 +39,10 @@ const color = (s: string) => {
 
 
 const FileState = (props: { s: repository.FileStatus }) => {
-  const path = useSelector((state: State) => state.diffWork.filePath);
+  const path = useSelector((state: State) => state.diffWork.fileStatus?.path);
   const repoId = useSelector((state: State) => state.main.selectedRepositoryId);
   const branchName = useSelector((state: State) => state.main.selectedRepositoryBranch);
+  const dispatch = useDispatch<any>();
 
   const contextMenu = (path:string):MenuProps['items'] => {
 
@@ -81,21 +82,7 @@ const FileState = (props: { s: repository.FileStatus }) => {
       <span
           className="file-name"
           style={{opacity: path == props.s.path ? 1 : 0.45}}
-          onClick={() => {
-            if(props.s.worktree=="M"){
-              asyncDiffWorkStage(props.s.path)
-            }else if (props.s.staging=="R") {
-              asyncShowWorkTreeFile(props.s.path,1)
-            }else if (props.s.staging=="A") {
-              asyncShowWorkTreeFile(props.s.path,1)
-            } else if (props.s.staging=="D"||props.s.worktree=="D") {
-              updateWorkDiffTip(props.s.path,"This file has been deleted.")
-            }else if (props.s.staging=="?" && props.s.staging=="?") {
-              updateWorkDiffTip(props.s.path,"This file is not tracked by git.")
-            }else {
-              updateWorkDiffTip(props.s.path,"Unprocessed file status.")
-            }
-          }}
+          onClick={async () => {dispatch(diffWorkTreeStageAsync(props.s))}}
       >{props.s.name}</span>
     </Dropdown>
     <div style={{display: "flex"}}>
