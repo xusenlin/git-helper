@@ -77,7 +77,7 @@ const FileState = (props: { s: repository.FileStatus }) => {
   }
 
   return <div className="file">
-    <Checkbox disabled={(props.s.staging != " " ) && (props.s.staging != "?")} value={props.s.path} style={{marginRight: 6}}/>
+    <Checkbox disabled={props.s.worktree == " " } value={props.s.path} style={{marginRight: 6}}/>
     <Dropdown menu={{ items:contextMenu(props.s.path) }} trigger={['contextMenu']}>
       <span
           className="file-name"

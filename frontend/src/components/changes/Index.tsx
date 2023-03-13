@@ -2,51 +2,51 @@ import "./style.scss"
 import {State} from "../../store";
 import Block from "../block/Index"
 import FileState from "./FileState"
-import React, {useState} from 'react';
+import React, {useState,useMemo,useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
-import {Input, Button, Space, Checkbox,Badge} from 'antd';
+import { Space, Checkbox,Badge} from 'antd';
 import { PresetStatusColorType } from "antd/es/_util/colors"
-import {FileStatus,Commit} from "../../../wailsjs/go/repository/Repository"
+import {FileStatus} from "../../../wailsjs/go/repository/Repository"
 import type {CheckboxChangeEvent} from 'antd/es/checkbox';
 import type {CheckboxValueType} from 'antd/es/checkbox/Group';
 import {success, warning} from "../../utils/common";
 import {setRepositoryStatus, updateWorkZone} from "../../utils/repo";
 import {setStatus} from "../../store/sliceMain";
+import SubmitView  from "./SubmitView";
 
-
-const {TextArea} = Input;
 
 
 const Changes = () => {
   const dispatch = useDispatch();
   const branch = useSelector((state: State) => state.main.selectedRepositoryBranch);
   const selectedRepositoryId = useSelector((state: State) => state.main.selectedRepositoryId);
-  const fileState = useSelector((state: State) => state.main.currentlyRepositoryFileState);
-
-  const [commitName,setCommitName] = useState<string>("")
-  const [commitMessage,setCommitMessage] = useState<string>("")
-
   const [badgeStatus,setBadgeStatus] = useState<PresetStatusColorType>("success")
 
+  const fileState = useSelector((state: State) => state.main.currentlyRepositoryFileState);
 
-  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([]);
+  const changedFileInWorkspace = useMemo( ()=>fileState.filter(r=>(r.worktree != " ")).map(r => r.path),[fileState])
+  const unchangedFileInWorkspace = useMemo( ()=>fileState.filter(r=>(r.worktree == " ")).map(r => r.path),[fileState])
+
+  const [checkedList, setCheckedList] = useState<string[]>(unchangedFileInWorkspace);
   const [indeterminate, setIndeterminate] = useState(true);
   const [checkAll, setCheckAll] = useState(false);
 
-  const commit = async () => {
-    if(commitName.length === 0){
-      warning("Please fill in the title for the submission.")
+  useEffect(()=>{
+    setCheckedList(unchangedFileInWorkspace)
+  },[fileState])
+
+  useEffect(()=>{
+    if(fileState.length===0){
+      setCheckAll(false);
+      setIndeterminate(false);
       return
     }
-    if(checkedList.length === 0){
-      warning("Please check the box for the file you want to submit.")
-      return
-    }
+    setCheckAll(checkedList.length === fileState.length);
+    setIndeterminate(checkedList.length !==0 && checkedList.length < fileState.length);
+  },[checkedList])
+
+  const commitSuccess = async () => {
     try {
-      const hash = await Commit(commitName,commitMessage,checkedList as string[]);
-      success("Commit hash:"+hash)
-      setCommitName("")
-      setCommitMessage("")
       setCheckedList([])
       await updateWorkZone(selectedRepositoryId,branch)
     }catch (e) {
@@ -56,16 +56,12 @@ const Changes = () => {
   }
 
   const onChange = (list: CheckboxValueType[]) => {
-    setCheckedList(list);
-    setIndeterminate(!!list.length && list.length < fileState.length);
-    setCheckAll(list.length === fileState.length);
+    setCheckedList(list as string[]);
   };
 
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    let file = fileState.filter(r=>(r.staging==" "||r.staging=="?")).map(r => r.path)
-    setCheckedList(e.target.checked ? file : []);
-    setIndeterminate(false);
-    setCheckAll(e.target.checked);
+    let checkedList = e.target.checked ? [...changedFileInWorkspace,...unchangedFileInWorkspace] : unchangedFileInWorkspace
+    setCheckedList(checkedList);
   };
 
   const getChangesStatus = () => {
@@ -83,18 +79,6 @@ const Changes = () => {
     })
   }
 
-  const bottom = <div style={{padding: 12}}>
-    <Space direction="vertical" size="middle" style={{display: 'flex'}}>
-      <Input value={commitName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-        setCommitName(e.target.value)
-      }} placeholder="Title"/>
-      <TextArea value={commitMessage} onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setCommitMessage(e.target.value)
-      }} rows={4}/>
-      <Button block type="primary" onClick={async ()=>{await commit()}}>Commit to { branch }</Button>
-    </Space>
-  </div>
-
   const action = <Space size="middle" style={{display: 'flex'}}>
     <div>{checkedList.length}</div>
     <Checkbox indeterminate={indeterminate} onChange={onCheckAllChange} checked={checkAll}>
@@ -103,16 +87,14 @@ const Changes = () => {
   </Space>
 
 
-
   return (
       <Block
-          // title={<Badge status="success" /><RedoOutlined onClick={getChangesStatus} style={{cursor:'pointer'}} />}
           title={
             <div style={{cursor:'pointer'}} onClick={getChangesStatus}>
               <Badge status={badgeStatus} text="Refresh"/>
             </div>
           }
-          bottom={bottom}
+          bottom={<SubmitView checkedList={checkedList} success={commitSuccess} unchangedFileInWorkspace={unchangedFileInWorkspace}/>}
           action={action}>
         <Checkbox.Group
             value={checkedList}
